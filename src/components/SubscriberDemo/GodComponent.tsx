@@ -1,5 +1,4 @@
-import { memo, ReactElement, useContext, useState } from "react";
-import { ControlContext } from "../../contexts/ControlContext";
+import { memo, ReactElement, useState } from "react";
 import { Style } from "../../types/common-types";
 import { DescriptionHolder } from "./DescriptionHolder";
 import { NameHolder } from "./NameHolder";
@@ -12,7 +11,6 @@ const style: Style = {
 };
 
 export const GodComponent = memo((): ReactElement => {
-    const { setValue } = useContext(ControlContext);
     const [something, setSomething] = useState(0);
     const [show, setShow] = useState(true);
 

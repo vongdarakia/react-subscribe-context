@@ -1,8 +1,6 @@
 import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
 import { Style } from "../../types/common-types";
-import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
-import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
 import {
     MassiveSubscriberContext,
     MassiveSubscriberKey,
@@ -42,7 +40,7 @@ const StyledFormGroup = styled("div")`
 `;
 
 export const MassiveSubscriberList = (): ReactElement => {
-    const { setState, getValue, state } = useContext(MassiveSubscriberContext.Context);
+    const { state } = useContext(MassiveSubscriberContext.Context);
     const [inputValue, setInputValue] = useState("");
     const [numElements, setNumElements] = useState(NUM_SUBSCRIBED_ITEMS);
     const keys: MassiveSubscriberKey[] = [];
@@ -55,23 +53,22 @@ export const MassiveSubscriberList = (): ReactElement => {
         keys.push(i % 2 === 0 ? `prop-num-${i}` : `prop-str-${i}`);
     }
 
-    const updateAll = () => {
-        const nextState: typeof state = {};
+    // const updateAll = () => {
+    //     const nextState: typeof state = {};
 
-        for (let i = 0; i < NUM_SUBSCRIBED_ITEMS; i++) {
-            if (i % 2 === 0) {
-                nextState[`prop-num-${i}`] = getIncrementedNumValue(getValue(`prop-num-${i}`));
-            } else {
-                nextState[`prop-str-${i}`] = getIncrementedCharValue(getValue(`prop-str-${i}`));
-            }
-        }
+    //     for (let i = 0; i < NUM_SUBSCRIBED_ITEMS; i++) {
+    //         if (i % 2 === 0) {
+    //             nextState[`prop-num-${i}`] = getIncrementedNumValue(getValue(`prop-num-${i}`));
+    //         } else {
+    //             nextState[`prop-str-${i}`] = getIncrementedCharValue(getValue(`prop-str-${i}`));
+    //         }
+    //     }
 
-        setState(nextState);
-    };
+    //     setState(nextState);
+    // };
 
     const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         setInputValue(e.target.value);
-        // updateAll();
     };
 
     const handleNumElementsChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -85,15 +82,7 @@ export const MassiveSubscriberList = (): ReactElement => {
                 //@ts-ignore
                 nextState[key] = i % 2 === 0 ? 0 : "A";
             }
-            // if (i % 2 === 0) {
-            //     defaultState[`prop-num-${i}`] = num;
-            //     num = getIncrementedNumValue(num);
-            // } else {
-            //     defaultState[`prop-str-${i}`] = char;
-            //     char = getIncrementedCharValue(char);
-            // }
         }
-        // updateAll();
     };
 
     return (

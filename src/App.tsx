@@ -22,7 +22,6 @@ const buttonStyle: Style = {
 
 function App() {
     const apps = ["Basic Context", "Memo", "Subscriber", "Massive Subscriber"] as const;
-    const [showApp, setShowApp] = useState(true);
     const [selectedAppName, setApp] = useState<typeof apps[number]>("Memo");
 
     let app;
