@@ -8,6 +8,7 @@ const style: Style = {
     padding: 2,
     border: "1px solid white",
     width: 300,
+    minHeight: 350,
 };
 
 export const GodComponent = memo((): ReactElement => {
@@ -17,15 +18,14 @@ export const GodComponent = memo((): ReactElement => {
 
     return (
         <div style={style}>
+            <button onClick={() => setShow(!show)}>Toggle Show</button>
+            <button onClick={() => setSomething(something + 1)}>Render</button>
             {show && (
                 <>
                     <DescriptionHolder />
                     <NameHolder />
                 </>
             )}
-
-            <button onClick={() => setSomething(something + 1)}>Render</button>
-            <button onClick={() => setShow(!show)}>Toggle Show</button>
         </div>
     );
 });

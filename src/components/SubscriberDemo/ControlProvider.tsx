@@ -14,10 +14,10 @@ export const ControlProvider = ({ children }: { children: ReactElement }): React
         control.current.emitter.emit("update", { ...control.current.state });
     };
 
-    control.current.setValue = (field, value) => {
-        console.log({ field, value });
-        control.current.state[field] = value;
-        control.current.emitter.emit(`update-${field}`, value);
+    control.current.setValue = (key, value) => {
+        console.log({ key, value });
+        control.current.state[key] = value;
+        control.current.emitter.emit(`update-${key}`, value);
     };
 
     control.current.getValue = (fieldName) => control.current.state[fieldName];

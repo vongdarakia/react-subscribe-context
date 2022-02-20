@@ -9,9 +9,13 @@ export const AgeHolder = memo((): ReactElement => {
     const handleIncrementAge = () => {
         setValue("age", age + 1);
     };
+
     return (
         <div style={{ marginTop: 12, padding: "8px 0" }}>
-            Age <button onClick={handleIncrementAge}>{age}</button>
+            Age{" "}
+            <button style={{ padding: "12px 20px", fontSize: 16 }} onClick={handleIncrementAge}>
+                {age}
+            </button>
         </div>
     );
 });

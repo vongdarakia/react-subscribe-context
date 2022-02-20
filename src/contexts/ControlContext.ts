@@ -1,8 +1,8 @@
 import EventEmitter from "events";
 import { createContext } from "react";
 
-export type SetValue = <TField extends ControlStateField, TValue extends IncomingState[TField]>(
-    field: TField,
+export type SetValue = <TKey extends ControlStateField, TValue extends IncomingState[TKey]>(
+    key: TKey,
     value: TValue
 ) => void;
 

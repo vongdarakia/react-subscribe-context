@@ -1,11 +1,11 @@
 import { ReactElement } from "react";
-import { ControlProvider } from "./ControlProvider";
-import { GodComponent } from "./GodComponent";
+import { BasicControlContext } from "../../contexts/BasicControlContext";
+import { BasicControlComponent } from "./BasicControlComponent";
 
 export const SubscriberDemo = (): ReactElement => {
     return (
-        <ControlProvider>
-            <GodComponent />
-        </ControlProvider>
+        <BasicControlContext.Provider>
+            <BasicControlComponent />
+        </BasicControlContext.Provider>
     );
 };
