@@ -11,7 +11,7 @@ export const useControl = <
     const control = useRef<TControlState>({ ...defaultControl });
 
     control.current.setState = (nextState: Partial<TState>) => {
-        console.log(nextState);
+        console.log({ nextState });
         for (const key in nextState) {
             if (control.current.state[key] !== nextState[key]) {
                 control.current.emitter.emit(getUpdateEventName(key), nextState[key]);

@@ -1,7 +1,6 @@
-import { ReactElement } from "react";
 import styled from "styled-components";
 
-const StyledButton = styled("button")`
+export const Button = styled("button")`
     padding: 8px;
     width: 40px;
     height: 40px;
@@ -17,10 +16,3 @@ const StyledButton = styled("button")`
         background-color: #7296bd;
     }
 `;
-
-export const Button = ({
-    children,
-    ...props
-}: React.HTMLAttributes<HTMLButtonElement>): ReactElement => {
-    return <StyledButton {...props}>{children}</StyledButton>;
-};

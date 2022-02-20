@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { Style } from "../../types/common-types";
 import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
@@ -42,9 +42,16 @@ const getIncrementedValue = <
 export const SubscribedItem = ({ itemKey }: { itemKey: MassiveSubscriberKey }): ReactElement => {
     const [value, setValue] = MassiveSubscriberContext.useSubscribe(itemKey);
 
+    useEffect(() => {
+        console.log("mounted", itemKey);
+    }, []);
+
+    console.log("render SubscribedItem");
+
     return (
         <div style={containerStyle}>
             <Button onClick={() => setValue(getIncrementedValue(itemKey, value))}>{value}</Button>
+            {/* <Button>0</Button> */}
         </div>
     );
 };

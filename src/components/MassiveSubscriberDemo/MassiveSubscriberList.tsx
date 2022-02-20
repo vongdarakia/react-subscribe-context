@@ -1,25 +1,22 @@
-import { ReactElement, useContext, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Style } from "../../types/common-types";
+import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
+import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
+import { Input } from "../Input";
 import {
     MassiveSubscriberContext,
     MassiveSubscriberKey,
     MassiveSubscriberState,
     NUM_SUBSCRIBED_ITEMS,
 } from "./MassiveSubscriberContext";
+import { NumElementsInput } from "./NumElementsInput";
 import { SubscribedItem } from "./SubscribedItem";
 
 const style: Style = {
     display: "block",
     maxWidth: "100%",
 };
-
-const StyledInput = styled("input")`
-    margin-top: 8px;
-    padding: 8px;
-    font-size: 20px;
-    width: 300px;
-`;
 
 const StyledInputContainer = styled("div")`
     display: flex;
@@ -32,24 +29,22 @@ const StyledFormGroup = styled("div")`
     flex-direction: column;
     color: white;
     margin: 12px 0;
+    width: 300px;
 
     label {
         text-align: left;
         font-weight: 600;
+        margin-bottom: 8px;
     }
 `;
 
 export const MassiveSubscriberList = (): ReactElement => {
-    const { state } = useContext(MassiveSubscriberContext.Context);
+    const { state, getValue, setState } = useContext(MassiveSubscriberContext.Context);
     const [inputValue, setInputValue] = useState("");
-    const [numElements, setNumElements] = useState(NUM_SUBSCRIBED_ITEMS);
+    const [currentNumElements, setCurrentNumElements] = useState(NUM_SUBSCRIBED_ITEMS);
     const keys: MassiveSubscriberKey[] = [];
 
-    // for (const key in state) {
-    //     keys.push(key as MassiveSubscriberKey);
-    // }
-
-    for (let i = 0; i < numElements; i++) {
+    for (let i = 0; i < currentNumElements; i++) {
         keys.push(i % 2 === 0 ? `prop-num-${i}` : `prop-str-${i}`);
     }
 
@@ -71,42 +66,53 @@ export const MassiveSubscriberList = (): ReactElement => {
         setInputValue(e.target.value);
     };
 
-    const handleNumElementsChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        setNumElements(Number.parseInt(e.target.value));
+    const onClickDisplayNumElements = (nextNumElements: number) => {
+        setCurrentNumElements(nextNumElements);
+    };
+
+    useEffect(() => {
         const nextState: MassiveSubscriberState = {};
+        let num = 0;
+        let char = "A";
 
-        for (let i = 0; i < numElements; i++) {
-            const key: MassiveSubscriberKey = i % 2 === 0 ? `prop-num-${i}` : `prop-str-${i}`;
+        if (NUM_SUBSCRIBED_ITEMS % 2 === 0) {
+            num = getValue(`prop-num-${NUM_SUBSCRIBED_ITEMS - 2}`);
+            char = getValue(`prop-str-${NUM_SUBSCRIBED_ITEMS - 1}`);
+        } else {
+            num = getValue(`prop-num-${NUM_SUBSCRIBED_ITEMS - 1}`);
+            char = getValue(`prop-str-${NUM_SUBSCRIBED_ITEMS - 2}`);
+        }
 
-            if (state[key] === undefined) {
-                //@ts-ignore
-                nextState[key] = i % 2 === 0 ? 0 : "A";
+        for (let i = NUM_SUBSCRIBED_ITEMS; i < currentNumElements; i++) {
+            if (i % 2 === 0) {
+                num = getIncrementedNumValue(num);
+                nextState[`prop-num-${i}`] = num;
+            } else {
+                char = getIncrementedCharValue(char);
+                nextState[`prop-str-${i}`] = char;
             }
         }
-    };
+
+        setState(nextState);
+    }, [currentNumElements, setState, state, getValue]);
 
     return (
         <>
             <StyledInputContainer>
                 <StyledFormGroup>
                     <label>Type to trigger render</label>
-                    <StyledInput
+                    <Input
                         value={inputValue}
                         placeholder="Type to test performance"
                         onChange={handleInputChange}
                     />
                 </StyledFormGroup>
                 <StyledFormGroup>
-                    <label>Number of elements displayed</label>
-                    <StyledInput
-                        value={numElements}
-                        placeholder="Number of elements"
-                        onChange={handleNumElementsChange}
-                        type="number"
+                    <NumElementsInput
+                        currentNumElements={currentNumElements}
+                        onClickDisplayNumElements={onClickDisplayNumElements}
                     />
                 </StyledFormGroup>
-
-                {/* <button onClick={updateAll}>Update All</button> */}
             </StyledInputContainer>
             <div style={style}>
                 {keys.map((key) => (

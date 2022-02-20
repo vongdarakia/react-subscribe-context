@@ -48,7 +48,7 @@ function App() {
             <main>
                 <div style={buttonContainerStyle}>
                     {apps.map((appName) => (
-                        <button style={buttonStyle} onClick={() => setApp(appName)}>
+                        <button key={appName} style={buttonStyle} onClick={() => setApp(appName)}>
                             {appName}
                         </button>
                     ))}

@@ -8,7 +8,7 @@ export type MassiveSubscriberKey = NumberValueKey | StringValueKey;
 
 const defaultState: { [key: NumberValueKey]: number; [key: StringValueKey]: string } = {};
 
-export const NUM_SUBSCRIBED_ITEMS = 1000;
+export const NUM_SUBSCRIBED_ITEMS = 10;
 
 let num = 0;
 let char = "A";
