@@ -1,5 +1,6 @@
 import { memo, ReactElement, useContext, useEffect } from "react";
 import { Style } from "../../types/common-types";
+import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
 import { PerformanceOptionsContext } from "../PerformanceOptions/PerformanceOptionsContext";
 import { BasicContext } from "./BasicContext";
 import { BasicItem } from "./BasicItem";
@@ -26,7 +27,7 @@ export const BasicList = (): ReactElement => {
         const newState: typeof state = {};
 
         for (let i = 0; i < numElements; i++) {
-            newState[`basic-prop-${i}`] = i % 100;
+            newState[`basic-prop-${i}`] = getIncrementedNumValue(i - 1);
         }
 
         setState(newState);

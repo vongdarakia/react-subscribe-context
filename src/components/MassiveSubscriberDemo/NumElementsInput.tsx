@@ -1,7 +1,6 @@
 import { ReactElement, useState } from "react";
 import styled from "styled-components";
 import { Input } from "../Input";
-import { NUM_SUBSCRIBED_ITEMS } from "./MassiveSubscriberContext";
 
 const StyledInput = styled(Input)`
     margin-top: 0;
@@ -15,7 +14,7 @@ export const NumElementsInput = ({
     currentNumElements: number;
     onClickDisplayNumElements: (nextNumElements: number) => void;
 }): ReactElement => {
-    const [numElementsStr, setNumElementsStr] = useState(NUM_SUBSCRIBED_ITEMS.toString());
+    const [numElementsStr, setNumElementsStr] = useState(currentNumElements.toString());
     const parsedNumElements = Number.parseInt(numElementsStr || "0");
     const numElements = parsedNumElements < 0 ? 0 : parsedNumElements;
 
