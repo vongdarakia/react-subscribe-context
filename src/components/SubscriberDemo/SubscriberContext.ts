@@ -1,10 +1,10 @@
 import { createControlContext } from "../../contexts/createControlContext";
+import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
-import { getIncrementedCharValue } from "./../../utils/getIncrementedCharValue";
 
 export type NumberValueKey = `prop-num-${number}`;
 export type StringValueKey = `prop-str-${number}`;
-export type MassiveSubscriberKey = NumberValueKey | StringValueKey;
+export type SubscriberKey = NumberValueKey | StringValueKey;
 
 const defaultState: { [key: NumberValueKey]: number; [key: StringValueKey]: string } = {};
 
@@ -23,6 +23,6 @@ for (let i = 0; i < NUM_SUBSCRIBED_ITEMS; i++) {
     }
 }
 
-export type MassiveSubscriberState = typeof defaultState;
+export type SubscriberState = typeof defaultState;
 
-export const MassiveSubscriberContext = createControlContext({ defaultState });
+export const SubscriberContext = createControlContext({ defaultState });

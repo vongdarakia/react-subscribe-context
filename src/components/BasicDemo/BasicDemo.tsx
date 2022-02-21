@@ -1,7 +1,10 @@
 import { ReactElement, useState } from "react";
+import { RENDER_COLOR } from "../../constants/colors";
+import { logColor } from "../../utils/logColor";
 import { PerformanceOptions } from "../PerformanceOptions/PerformanceOptions";
 import { BasicContext, basicContextState } from "./BasicContext";
 import { BasicList } from "./BasicList";
+import { BASIC_COLOR } from "./colors";
 
 export const BasicDemo = (): ReactElement => {
     const [state, setState] = useState(basicContextState);
@@ -20,7 +23,7 @@ export const BasicDemo = (): ReactElement => {
         setState(newState);
     };
 
-    console.log("render basic demo");
+    console.log("%crender %cBasicDemo", logColor(RENDER_COLOR), logColor(BASIC_COLOR));
 
     return (
         <BasicContext.Provider

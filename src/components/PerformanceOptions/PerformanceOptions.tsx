@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
 import { Input } from "../Input";
-import { NumElementsInput } from "../MassiveSubscriberDemo/NumElementsInput";
+import { NumElementsInput } from "../SubscriberDemo/NumElementsInput";
 import { PerformanceOptionsContext } from "./PerformanceOptionsContext";
 
 const StyledInputContainer = styled("div")`

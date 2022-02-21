@@ -4,13 +4,13 @@ import { Style } from "../../types/common-types";
 import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
 import { PerformanceOptionsContext } from "../PerformanceOptions/PerformanceOptionsContext";
-import {
-    MassiveSubscriberContext,
-    MassiveSubscriberKey,
-    MassiveSubscriberState,
-    NUM_SUBSCRIBED_ITEMS,
-} from "./MassiveSubscriberContext";
 import { SubscribedItem } from "./SubscribedItem";
+import {
+    NUM_SUBSCRIBED_ITEMS,
+    SubscriberContext,
+    SubscriberKey,
+    SubscriberState,
+} from "./SubscriberContext";
 
 const style: Style = {
     display: "block",
@@ -29,19 +29,19 @@ const StyledButtonContainer = styled.div`
 
 const MemoizedSubscribedItem = memo(SubscribedItem);
 
-export const MassiveSubscriberList = memo((): ReactElement => {
-    const { getValue, setState } = useContext(MassiveSubscriberContext.Context);
+export const SubscriberList = memo((): ReactElement => {
+    const { getValue, setState } = useContext(SubscriberContext.Context);
     const {
         state: { numElements, shouldUseMemo },
     } = useContext(PerformanceOptionsContext);
-    const keys: MassiveSubscriberKey[] = [];
+    const keys: SubscriberKey[] = [];
 
     for (let i = 0; i < numElements; i++) {
         keys.push(i % 2 === 0 ? `prop-num-${i}` : `prop-str-${i}`);
     }
 
     const handleClickUpdateStrings = () => {
-        const nextState: Partial<MassiveSubscriberState> = {};
+        const nextState: Partial<SubscriberState> = {};
 
         for (let i = 1; i < numElements; i += 2) {
             nextState[`prop-str-${i}`] = getIncrementedCharValue(getValue(`prop-str-${i}`));
@@ -50,7 +50,7 @@ export const MassiveSubscriberList = memo((): ReactElement => {
     };
 
     const handleClickUpdateNumbers = () => {
-        const nextState: Partial<MassiveSubscriberState> = {};
+        const nextState: Partial<SubscriberState> = {};
 
         for (let i = 0; i < numElements; i += 2) {
             nextState[`prop-num-${i}`] = getIncrementedNumValue(getValue(`prop-num-${i}`));
@@ -59,7 +59,7 @@ export const MassiveSubscriberList = memo((): ReactElement => {
     };
 
     useEffect(() => {
-        const nextState: MassiveSubscriberState = {};
+        const nextState: SubscriberState = {};
         let num = 0;
         let char = "A";
 

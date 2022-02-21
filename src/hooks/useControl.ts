@@ -8,7 +8,7 @@ export const useControl = <TState, TControlState extends ControlState<TState>>(
     const control = useRef<TControlState>({ ...defaultControl });
 
     control.current.setState = (nextState: Partial<TState>) => {
-        console.log({ nextState });
+        // console.log({ nextState });
         for (const key in nextState) {
             if (control.current.state[key] !== nextState[key]) {
                 control.current.emitter.emit(getUpdateEventName(key), nextState[key]);
@@ -20,7 +20,7 @@ export const useControl = <TState, TControlState extends ControlState<TState>>(
     };
 
     control.current.setValue = (key, value) => {
-        console.log({ key, value });
+        // console.log({ key, value });
         control.current.state[key] = value;
         control.current.emitter.emit(getUpdateEventName(key), value);
     };

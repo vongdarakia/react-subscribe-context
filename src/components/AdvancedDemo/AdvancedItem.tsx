@@ -1,5 +1,7 @@
 import React, { ReactElement, useContext, useEffect } from "react";
+import { RENDER_COLOR } from "../../constants/colors";
 import { Style } from "../../types/common-types";
+import { logColor } from "../../utils/logColor";
 import { Button } from "../Button";
 import { AdvancedContext } from "./AdvancedContext";
 import { ADVANCED_COLOR, ADVANCED_COLOR_LIGHT } from "./colors";
@@ -19,7 +21,7 @@ export const AdvancedItem = ({ itemKey }: { itemKey: string; value?: number }): 
         console.log("mounted", itemKey);
     }, [itemKey]);
 
-    console.log("render AdvancedItem");
+    console.log("%crender %cAdvancedItem", logColor(RENDER_COLOR), logColor(ADVANCED_COLOR_LIGHT));
 
     return (
         <div style={containerStyle}>
