@@ -1,28 +1,19 @@
-import { memo, ReactElement } from "react";
+import { ReactElement } from "react";
 import { commonStyle } from "../../utils/common-styles";
-import { ComponentD } from "./ComponentD";
-import { ComponentE } from "./ComponentE";
+import { ComponentC } from "./ComponentC";
 
-export const ComponentB = memo((): ReactElement => {
-    // const {
-    //     state: { b },
-    //     setState,
-    // } = useContext(BasicContext);
-
+export const ComponentB = (): ReactElement => {
     return (
         <div
             style={{
                 ...commonStyle,
                 flexDirection: "column",
-                // background: "orange",
-                borderWidth: 2,
+                borderWidth: 1,
+                margin: 0,
             }}
         >
-            {/* <button onClick={() => setState("b", b + 1)}>{b}</button> */}
-            <div style={{ ...commonStyle, border: "none" }}>
-                <ComponentD />
-                <ComponentE />
-            </div>
+            <div style={{ marginBottom: 24 }}>Component B</div>
+            <ComponentC />
         </div>
     );
-});
+};

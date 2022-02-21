@@ -7,6 +7,7 @@ import { BasicDemo } from "./components/BasicDemo/BasicDemo";
 import { BASIC_COLOR } from "./components/BasicDemo/colors";
 import { SUBSCRIBER_COLOR } from "./components/MassiveSubscriberDemo/colors";
 import { MassiveSubscriberDemo } from "./components/MassiveSubscriberDemo/MassiveSubscriberDemo";
+import { MemoDemo } from "./components/MemoDemo/MemoDemo";
 import { PerformaceOptionsProvider } from "./components/PerformanceOptions/PerformanceOptionsProvider";
 import { SubscriberDemo } from "./components/SubscriberDemo/SubscriberDemo";
 import { Style } from "./types/common-types";
@@ -46,7 +47,7 @@ const StyledButton = styled("button")`
 `;
 
 function App() {
-    const apps = ["Basic Context", "Advanced Context", "Massive Subscriber"] as const;
+    const apps = ["Basic Context", "Memo Demo", "Advanced Context", "Massive Subscriber"] as const;
     const [selectedAppName, setApp] = useState<typeof apps[number]>("Basic Context");
 
     let app;
@@ -54,6 +55,9 @@ function App() {
     switch (selectedAppName) {
         case "Basic Context":
             app = <BasicDemo />;
+            break;
+        case "Memo Demo":
+            app = <MemoDemo />;
             break;
         case "Massive Subscriber":
             app = <MassiveSubscriberDemo />;

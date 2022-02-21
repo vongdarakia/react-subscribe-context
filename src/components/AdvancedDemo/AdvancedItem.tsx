@@ -17,7 +17,7 @@ export const AdvancedItem = ({ itemKey }: { itemKey: string; value?: number }): 
 
     useEffect(() => {
         console.log("mounted", itemKey);
-    }, []);
+    }, [itemKey]);
 
     console.log("render AdvancedItem");
 

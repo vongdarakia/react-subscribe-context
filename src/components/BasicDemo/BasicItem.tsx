@@ -26,7 +26,7 @@ export const BasicItem = ({
 
     useEffect(() => {
         console.log("mounted", itemKey);
-    }, []);
+    }, [itemKey]);
 
     console.log("render BasicItem");
 

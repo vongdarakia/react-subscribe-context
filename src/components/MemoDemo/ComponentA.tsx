@@ -1,22 +1,18 @@
-import { ReactElement, useContext } from "react";
-import { BasicContext } from "../../contexts/BasicContext";
+import { memo, ReactElement } from "react";
 import { commonStyle } from "../../utils/common-styles";
 import { ComponentB } from "./ComponentB";
-import { ComponentC } from "./ComponentC";
 
-export const ComponentA = (): ReactElement => {
-    const {
-        state: { a },
-        setState,
-    } = useContext(BasicContext);
+export const ComponentA = memo((): ReactElement => {
+    // const {
+    //     state: { a },
+    //     setState,
+    // } = useContext(BasicContext);
 
     return (
-        <div style={{ ...commonStyle, flexDirection: "column", borderWidth: 2 }}>
-            <button onClick={() => setState("a", a + 1)}>{a}</button>
-            <div style={{ ...commonStyle, border: "none" }}>
-                <ComponentB />
-                <ComponentC />
-            </div>
+        <div style={{ ...commonStyle, flexDirection: "column", borderWidth: 1, margin: 0 }}>
+            <div style={{ marginBottom: 24 }}>Component A (memoized)</div>
+            {/* <button onClick={() => setState("a", a + 1)}>{a}</button> */}
+            <ComponentB />
         </div>
     );
-};
+});

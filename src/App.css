@@ -44,3 +44,13 @@
         transform: rotate(360deg);
     }
 }
+
+.rendered-component {
+    border-width: 2px !important;
+    border-color: #ef6f6c !important;
+}
+
+.rendered-component .text {
+    color: #ef6f6c;
+    font-weight: bold;
+}

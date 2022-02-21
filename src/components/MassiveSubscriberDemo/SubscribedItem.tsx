@@ -49,7 +49,7 @@ export const SubscribedItem = ({ itemKey }: { itemKey: MassiveSubscriberKey }): 
 
     useEffect(() => {
         console.log("mounted", itemKey);
-    }, []);
+    }, [itemKey]);
 
     console.log("render SubscribedItem");
 

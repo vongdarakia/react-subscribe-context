@@ -1,22 +1,46 @@
 import { ReactElement, useContext } from "react";
-import { BasicContext } from "../../contexts/BasicContext";
 import { commonStyle } from "../../utils/common-styles";
-import { ComponentF } from "./ComponentF";
-import { ComponentG } from "./ComponentG";
+import { ComponentD } from "./ComponentD";
+import { MemoContext } from "./MemoContext";
+
+const buttonStyle = {
+    padding: 16,
+    minWidth: 100,
+    width: "fit-content",
+    cursor: "pointer",
+    marginBottom: 24,
+    fontSize: 16,
+    fontWeight: "bold",
+};
 
 export const ComponentC = (): ReactElement => {
     const {
+        showRendered,
         state: { c },
         setState,
-    } = useContext(BasicContext);
+        toggleShowRendered,
+    } = useContext(MemoContext);
 
     return (
-        <div style={{ ...commonStyle, flexDirection: "column" }}>
-            <button onClick={() => setState("c", c + 1)}>{c}</button>
-            <div style={{ ...commonStyle, border: "none" }}>
-                <ComponentF />
-                <ComponentG />
+        <div
+            style={{ ...commonStyle, flexDirection: "column", margin: 0 }}
+            className={showRendered ? "rendered-component" : ""}
+        >
+            <div className="text" style={{ marginBottom: 24 }}>
+                Component C (context)
             </div>
+            <div>
+                <button style={buttonStyle} onClick={() => setState("c", c + 1)}>
+                    Update {c}
+                </button>
+                <button
+                    style={{ ...buttonStyle, fontWeight: showRendered ? "bold" : "normal" }}
+                    onClick={toggleShowRendered}
+                >
+                    Highlight Rendered Components {showRendered ? "ON" : "OFF"}
+                </button>
+            </div>
+            <ComponentD showRendered={showRendered} />
         </div>
     );
 };

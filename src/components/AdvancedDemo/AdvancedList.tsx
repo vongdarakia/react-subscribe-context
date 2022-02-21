@@ -27,7 +27,11 @@ export const AdvancedList = (): ReactElement => {
                     if (item.id === key) {
                         const nextValue = getIncrementedNumValue(item.value);
 
-                        console.log({ key, currentValue: item.value, nextValue });
+                        console.log("setState advanced", {
+                            key,
+                            currentValue: item.value,
+                            nextValue,
+                        });
 
                         return { ...item, value: nextValue };
                     }
@@ -45,13 +49,14 @@ export const AdvancedList = (): ReactElement => {
         }
 
         setState(nextState);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [numElements]);
 
     return (
         <div style={style} onClick={handleItemClick}>
             {items.map(({ id, value }) =>
                 shouldUseMemo ? (
-                    <MemoizedAdvancedItem key={id} itemKey={id} />
+                    <MemoizedAdvancedItem key={id} itemKey={id} value={value} />
                 ) : (
                     <AdvancedItem key={id} itemKey={id} />
                 )

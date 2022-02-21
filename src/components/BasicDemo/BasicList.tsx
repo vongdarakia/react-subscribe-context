@@ -16,7 +16,11 @@ export const BasicList = (): ReactElement => {
     const {
         state: { numElements, shouldUseMemo },
     } = useContext(PerformanceOptionsContext);
-    const keys = Object.keys(state) as (keyof typeof state)[];
+    const keys: (keyof typeof state)[] = [];
+
+    for (let i = 0; i < numElements; i++) {
+        keys.push(`basic-item-${i}`);
+    }
 
     useEffect(() => {
         const newState: typeof state = {};
@@ -26,6 +30,7 @@ export const BasicList = (): ReactElement => {
         }
 
         setState(newState);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [numElements]);
 
     return (
