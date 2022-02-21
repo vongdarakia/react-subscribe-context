@@ -9,7 +9,7 @@ import { SUBSCRIBER_COLOR } from "./components/MassiveSubscriberDemo/colors";
 import { MassiveSubscriberDemo } from "./components/MassiveSubscriberDemo/MassiveSubscriberDemo";
 import { MemoDemo } from "./components/MemoDemo/MemoDemo";
 import { PerformaceOptionsProvider } from "./components/PerformanceOptions/PerformanceOptionsProvider";
-import { SubscriberDemo } from "./components/SubscriberDemo/SubscriberDemo";
+import { SubscriberDemo } from "./components/SubscriberDemoOld/SubscriberDemo";
 import { Style } from "./types/common-types";
 
 const appsStyle: Style = {
