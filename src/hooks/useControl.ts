@@ -2,10 +2,7 @@ import { useEffect, useRef } from "react";
 import { ControlState } from "../types/control-types";
 import { getUpdateEventName } from "../utils/getUpdateEventName";
 
-export const useControl = <
-    TState extends { [key: string]: any },
-    TControlState extends ControlState<TState>
->(
+export const useControl = <TState, TControlState extends ControlState<TState>>(
     defaultControl: TControlState
 ) => {
     const control = useRef<TControlState>({ ...defaultControl });

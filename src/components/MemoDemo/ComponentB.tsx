@@ -14,7 +14,7 @@ export const ComponentB = memo((): ReactElement => {
             style={{
                 ...commonStyle,
                 flexDirection: "column",
-                background: "orange",
+                // background: "orange",
                 borderWidth: 2,
             }}
         >

@@ -8,7 +8,7 @@ export const ComponentG = (): ReactElement => {
     // } = useContext(BasicContext);
 
     return (
-        <div style={{ ...commonStyle, background: "brown" }}>
+        <div style={{ ...commonStyle }}>
             {/* <button onClick={() => setState("g", g + 1)}>{g}</button> */}
         </div>
     );

@@ -3,6 +3,7 @@ import { Style } from "../../types/common-types";
 import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
 import { Button } from "../Button";
+import { SUBSCRIBER_COLOR, SUBSCRIBER_COLOR_LIGHT } from "./colors";
 import {
     MassiveSubscriberContext,
     MassiveSubscriberKey,
@@ -42,6 +43,10 @@ const getIncrementedValue = <
 export const SubscribedItem = ({ itemKey }: { itemKey: MassiveSubscriberKey }): ReactElement => {
     const [value, setValue] = MassiveSubscriberContext.useSubscribe(itemKey);
 
+    const handleClick = () => {
+        setValue(getIncrementedValue(itemKey, value));
+    };
+
     useEffect(() => {
         console.log("mounted", itemKey);
     }, []);
@@ -50,8 +55,13 @@ export const SubscribedItem = ({ itemKey }: { itemKey: MassiveSubscriberKey }): 
 
     return (
         <div style={containerStyle}>
-            <Button onClick={() => setValue(getIncrementedValue(itemKey, value))}>{value}</Button>
-            {/* <Button>0</Button> */}
+            <Button
+                onClick={handleClick}
+                backgroundColor={SUBSCRIBER_COLOR}
+                hoverColor={SUBSCRIBER_COLOR_LIGHT}
+            >
+                {value}
+            </Button>
         </div>
     );
 };

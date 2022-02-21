@@ -30,7 +30,13 @@ export const createUseSubscribe = <TState>(Context: Context<ControlState<TState>
             };
         }, [emitter, rerender, key]);
 
-        return [getValue(key), (value) => setValue(key, value)];
+        const value = getValue(key);
+
+        const updateValue: UseSubscribeReturn<TKey>["1"] = (value) => {
+            setValue(key, value);
+        };
+
+        return [value, updateValue];
     };
 
     return useSubscribe;

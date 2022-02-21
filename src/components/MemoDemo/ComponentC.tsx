@@ -11,7 +11,7 @@ export const ComponentC = (): ReactElement => {
     } = useContext(BasicContext);
 
     return (
-        <div style={{ ...commonStyle, flexDirection: "column", background: "yellow" }}>
+        <div style={{ ...commonStyle, flexDirection: "column" }}>
             <button onClick={() => setState("c", c + 1)}>{c}</button>
             <div style={{ ...commonStyle, border: "none" }}>
                 <ComponentF />

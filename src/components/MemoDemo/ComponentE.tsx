@@ -9,7 +9,7 @@ export const ComponentE = (): ReactElement => {
     } = useContext(BasicContext);
 
     return (
-        <div style={{ ...commonStyle, background: "blue" }}>
+        <div style={{ ...commonStyle }}>
             <button onClick={() => setState("e", e + 1)}>{e}</button>
         </div>
     );

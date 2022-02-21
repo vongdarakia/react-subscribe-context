@@ -16,7 +16,8 @@ export const NumElementsInput = ({
     onClickDisplayNumElements: (nextNumElements: number) => void;
 }): ReactElement => {
     const [numElementsStr, setNumElementsStr] = useState(NUM_SUBSCRIBED_ITEMS.toString());
-    const numElements = Number.parseInt(numElementsStr || "0");
+    const parsedNumElements = Number.parseInt(numElementsStr || "0");
+    const numElements = parsedNumElements < 0 ? 0 : parsedNumElements;
 
     const handleNumElementsChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         setNumElementsStr(e.target.value);

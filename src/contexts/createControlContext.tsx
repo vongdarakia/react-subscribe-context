@@ -31,7 +31,7 @@ export const createControlContext = <TState,>({
     const Provider = ({ children }: { children: ReactElement }) => {
         const control = useControl<TState, ControlState<TState>>(defaultControl);
 
-        return <Context.Provider value={control.current}>{children}</Context.Provider>;
+        return <Context.Provider value={{ ...control.current }}>{children}</Context.Provider>;
     };
 
     const useSubscribe = createUseSubscribe<TState>(Context);
