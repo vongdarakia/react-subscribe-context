@@ -19,14 +19,14 @@ export const BasicList = (): ReactElement => {
     const keys: (keyof typeof state)[] = [];
 
     for (let i = 0; i < numElements; i++) {
-        keys.push(`basic-item-${i}`);
+        keys.push(`basic-prop-${i}`);
     }
 
     useEffect(() => {
         const newState: typeof state = {};
 
         for (let i = 0; i < numElements; i++) {
-            newState[`basic-item-${i}`] = i % 100;
+            newState[`basic-prop-${i}`] = i % 100;
         }
 
         setState(newState);

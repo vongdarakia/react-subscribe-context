@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
 interface BasicContextState {
-    setState: (nextState: { [key: `basic-item-${number}`]: number }) => void;
-    setValue: (key: `basic-item-${number}`, value: number) => void;
-    [key: `basic-item-${number}`]: number;
+    setState: (nextState: { [key: `basic-prop-${number}`]: number }) => void;
+    setValue: (key: `basic-prop-${number}`, value: number) => void;
+    [key: `basic-prop-${number}`]: number;
 }
 
 export const basicContextState: BasicContextState = {

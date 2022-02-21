@@ -45,7 +45,7 @@ export const AdvancedList = (): ReactElement => {
         const nextState = { items: [] as typeof items };
 
         for (let i = 0; i < numElements; i++) {
-            nextState.items.push({ id: `advanced-item-${i}`, value: i % 100 });
+            nextState.items.push({ id: `advanced-prop-${i}`, value: i % 100 });
         }
 
         setState(nextState);

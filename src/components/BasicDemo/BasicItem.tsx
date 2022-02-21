@@ -15,7 +15,7 @@ const containerStyle: Style = {
 export const BasicItem = ({
     itemKey,
 }: {
-    itemKey: `basic-item-${number}`;
+    itemKey: `basic-prop-${number}`;
     value?: number;
 }): ReactElement => {
     const { setValue, ...props } = useContext(BasicContext);

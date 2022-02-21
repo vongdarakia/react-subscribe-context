@@ -1,4 +1,5 @@
 import { memo, ReactElement, useContext, useEffect } from "react";
+import styled from "styled-components";
 import { Style } from "../../types/common-types";
 import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
@@ -16,10 +17,20 @@ const style: Style = {
     maxWidth: "100%",
 };
 
+const StyledButtonContainer = styled.div`
+    padding: 16px;
+
+    button {
+        padding: 12px;
+        margin: 0px 6px;
+        cursor: pointer;
+    }
+`;
+
 const MemoizedSubscribedItem = memo(SubscribedItem);
 
 export const MassiveSubscriberList = memo((): ReactElement => {
-    const { state, getValue, setState } = useContext(MassiveSubscriberContext.Context);
+    const { getValue, setState } = useContext(MassiveSubscriberContext.Context);
     const {
         state: { numElements, shouldUseMemo },
     } = useContext(PerformanceOptionsContext);
@@ -28,6 +39,24 @@ export const MassiveSubscriberList = memo((): ReactElement => {
     for (let i = 0; i < numElements; i++) {
         keys.push(i % 2 === 0 ? `prop-num-${i}` : `prop-str-${i}`);
     }
+
+    const handleClickUpdateStrings = () => {
+        const nextState: Partial<MassiveSubscriberState> = {};
+
+        for (let i = 1; i < numElements; i += 2) {
+            nextState[`prop-str-${i}`] = getIncrementedCharValue(getValue(`prop-str-${i}`));
+        }
+        setState(nextState);
+    };
+
+    const handleClickUpdateNumbers = () => {
+        const nextState: Partial<MassiveSubscriberState> = {};
+
+        for (let i = 0; i < numElements; i += 2) {
+            nextState[`prop-num-${i}`] = getIncrementedNumValue(getValue(`prop-num-${i}`));
+        }
+        setState(nextState);
+    };
 
     useEffect(() => {
         const nextState: MassiveSubscriberState = {};
@@ -53,10 +82,14 @@ export const MassiveSubscriberList = memo((): ReactElement => {
         }
 
         setState(nextState);
-    }, [numElements, setState, state, getValue]);
+    }, [numElements, setState, getValue]);
 
     return (
-        <>
+        <div>
+            <StyledButtonContainer>
+                <button onClick={handleClickUpdateStrings}>Update All Strings</button>
+                <button onClick={handleClickUpdateNumbers}>Update All Numbers</button>
+            </StyledButtonContainer>
             <div style={style}>
                 {keys.map((key) =>
                     shouldUseMemo ? (
@@ -66,6 +99,6 @@ export const MassiveSubscriberList = memo((): ReactElement => {
                     )
                 )}
             </div>
-        </>
+        </div>
     );
 });
