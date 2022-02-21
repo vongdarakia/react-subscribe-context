@@ -6,10 +6,9 @@ import { ADVANCED_COLOR } from "./components/AdvancedDemo/colors";
 import { BasicDemo } from "./components/BasicDemo/BasicDemo";
 import { BASIC_COLOR } from "./components/BasicDemo/colors";
 import { MemoDemo } from "./components/MemoDemo/MemoDemo";
-import { PerformaceOptionsProvider } from "./components/PerformanceOptions/PerformanceOptionsProvider";
+import { PerformanceOptionsProvider } from "./components/PerformanceOptions/PerformanceOptionsProvider";
 import { SUBSCRIBER_COLOR } from "./components/SubscriberDemo/colors";
 import { SubscriberDemo } from "./components/SubscriberDemo/SubscriberDemo";
-// import { SubscriberDemo } from "./components/SubscriberDemo/SubscriberDemo";
 import { Style } from "./types/common-types";
 
 const appsStyle: Style = {
@@ -87,9 +86,9 @@ function App() {
                     ))}
                 </div>
                 <h2 style={{ color: "whitesmoke" }}>{selectedAppName}</h2>
-                <PerformaceOptionsProvider>
+                <PerformanceOptionsProvider>
                     <div style={appsStyle}>{app}</div>
-                </PerformaceOptionsProvider>
+                </PerformanceOptionsProvider>
             </main>
         </div>
     );

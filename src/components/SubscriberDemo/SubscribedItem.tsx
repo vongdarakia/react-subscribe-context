@@ -1,9 +1,9 @@
 import React, { ReactElement, useEffect } from "react";
-import { RENDER_COLOR } from "../../constants/colors";
 import { Style } from "../../types/common-types";
 import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
 import { logColor } from "../../utils/logColor";
+import { logRender } from "../../utils/logRender";
 import { Button } from "../Button";
 import { SUBSCRIBER_COLOR, SUBSCRIBER_COLOR_LIGHT } from "./colors";
 import {
@@ -50,11 +50,7 @@ export const SubscribedItem = ({ itemKey }: { itemKey: SubscriberKey }): ReactEl
         console.log("mounted", itemKey);
     }, [itemKey]);
 
-    console.log(
-        "%crender %cSubscribedItem",
-        logColor(RENDER_COLOR),
-        logColor(SUBSCRIBER_COLOR_LIGHT)
-    );
+    logRender("%cSubscribedItem", logColor(SUBSCRIBER_COLOR_LIGHT));
 
     return (
         <div style={containerStyle}>

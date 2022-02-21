@@ -1,8 +1,8 @@
 import { ReactElement, useContext, useEffect } from "react";
-import { RENDER_COLOR } from "../../constants/colors";
 import { Style } from "../../types/common-types";
 import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
 import { logColor } from "../../utils/logColor";
+import { logRender } from "../../utils/logRender";
 import { Button } from "../Button";
 import { BasicContext } from "./BasicContext";
 import { BASIC_COLOR, BASIC_COLOR_LIGHT } from "./colors";
@@ -30,7 +30,7 @@ export const BasicItem = ({
         console.log("mounted", itemKey);
     }, [itemKey]);
 
-    console.log("%crender %cBasicItem", logColor(RENDER_COLOR), logColor(BASIC_COLOR_LIGHT));
+    logRender("%cBasicItem", logColor(BASIC_COLOR_LIGHT));
 
     return (
         <div style={containerStyle}>

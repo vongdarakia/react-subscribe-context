@@ -1,7 +1,10 @@
 import { ReactElement, useRef, useState } from "react";
+import { logColor } from "../../utils/logColor";
+import { logRender } from "../../utils/logRender";
 import { PerformanceOptions } from "../PerformanceOptions/PerformanceOptions";
 import { AdvancedContext, AdvancedContextState, advancedContextState } from "./AdvancedContext";
 import { AdvancedList } from "./AdvancedList";
+import { ADVANCED_COLOR } from "./colors";
 
 export const AdvancedDemo = (): ReactElement => {
     const control = useRef<AdvancedContextState>(advancedContextState);
@@ -16,6 +19,8 @@ export const AdvancedDemo = (): ReactElement => {
         control.current.items = state.items;
         control.current.setState = handleSetState;
     }
+
+    logRender("%cAdvancedDemo", logColor(ADVANCED_COLOR));
 
     return (
         <AdvancedContext.Provider value={control.current}>

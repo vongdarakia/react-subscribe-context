@@ -29,7 +29,7 @@ const StyledButtonContainer = styled.div`
 
 const MemoizedSubscribedItem = memo(SubscribedItem);
 
-export const SubscriberList = memo((): ReactElement => {
+export const SubscriberList = (): ReactElement => {
     const { getValue, setState } = useContext(SubscriberContext.Context);
     const {
         state: { numElements, shouldUseMemo },
@@ -84,6 +84,8 @@ export const SubscriberList = memo((): ReactElement => {
         setState(nextState);
     }, [numElements, setState, getValue]);
 
+    console.log("render subscriber list");
+
     return (
         <div>
             <StyledButtonContainer>
@@ -101,4 +103,4 @@ export const SubscriberList = memo((): ReactElement => {
             </div>
         </div>
     );
-});
+};

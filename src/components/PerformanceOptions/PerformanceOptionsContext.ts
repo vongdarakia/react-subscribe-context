@@ -2,17 +2,17 @@ import { createContext } from "react";
 
 const DEFAULT_NUM_ITEMS = 10;
 
-export interface PerformanceOptionState {
+export interface PerformanceOptionsState {
     numElements: number;
     shouldUseMemo: boolean;
 }
 
-export interface PerformanceOptionContextState {
-    state: PerformanceOptionState;
-    setState: (nextState: Partial<PerformanceOptionState>) => void;
+export interface PerformanceOptionsContextState {
+    state: PerformanceOptionsState;
+    setState: (nextState: Partial<PerformanceOptionsState>) => void;
 }
 
-export const defaultPerformanceContextState: PerformanceOptionContextState = {
+export const defaultPerformanceContextState: PerformanceOptionsContextState = {
     state: {
         numElements: DEFAULT_NUM_ITEMS,
         shouldUseMemo: false,

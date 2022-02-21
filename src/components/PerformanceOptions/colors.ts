@@ -1,0 +1,1 @@
+export const PERFORMANCE_OPTIONS_COLOR = "#b399a2";

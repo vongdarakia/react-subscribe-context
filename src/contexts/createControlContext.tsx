@@ -28,7 +28,7 @@ export const createControlContext = <TState,>({
 
     const Context = createContext<ControlState<TState>>(defaultControl);
 
-    const Provider = ({ children }: { children: ReactElement }) => {
+    const Provider = ({ children }: { children: ReactElement | ReactElement[] }) => {
         const control = useControl<TState, ControlState<TState>>(defaultControl);
 
         return <Context.Provider value={{ ...control.current }}>{children}</Context.Provider>;

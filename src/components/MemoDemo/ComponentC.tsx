@@ -30,7 +30,10 @@ export const ComponentC = (): ReactElement => {
                 Component C (context)
             </div>
             <div>
-                <button style={buttonStyle} onClick={() => setState("c", c + 1)}>
+                <button
+                    style={{ ...buttonStyle, fontWeight: "normal" }}
+                    onClick={() => setState("c", c + 1)}
+                >
                     Update {c}
                 </button>
                 <button
