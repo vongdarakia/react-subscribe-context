@@ -1,14 +1,14 @@
 import EventEmitter from "events";
 import { createContext, ReactElement } from "react";
-import { useControl } from "../hooks/useControl";
-import { ControlState } from "../types/control-types";
 import { createUseSubscribe } from "./createUseSubscribe";
+import { ControlState } from "./subscriber-types";
+import { useSubscribeProvider } from "./useSubscribeProvider";
 
 interface CreateControlContextOptions<TState> {
     defaultState: TState;
 }
 
-export const createControlContext = <TState,>({
+export const createSubscriberContext = <TState,>({
     defaultState,
 }: CreateControlContextOptions<TState>) => {
     const defaultControl: ControlState<TState> = {
@@ -29,7 +29,7 @@ export const createControlContext = <TState,>({
     const Context = createContext<ControlState<TState>>(defaultControl);
 
     const Provider = ({ children }: { children: ReactElement | ReactElement[] }) => {
-        const control = useControl<TState, ControlState<TState>>(defaultControl);
+        const control = useSubscribeProvider<TState, ControlState<TState>>(defaultControl);
 
         return <Context.Provider value={{ ...control.current }}>{children}</Context.Provider>;
     };

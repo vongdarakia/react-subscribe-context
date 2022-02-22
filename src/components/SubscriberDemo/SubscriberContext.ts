@@ -1,4 +1,4 @@
-import { createControlContext } from "../../contexts/createControlContext";
+import { createSubscriberContext } from "../../react-subscribe-context/createSubscriberContext";
 import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
 
@@ -25,4 +25,4 @@ for (let i = 0; i < NUM_SUBSCRIBED_ITEMS; i++) {
 
 export type SubscriberState = typeof defaultState;
 
-export const SubscriberContext = createControlContext({ defaultState });
+export const SubscriberContext = createSubscriberContext({ defaultState });

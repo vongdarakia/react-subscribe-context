@@ -1,6 +1,6 @@
 import { Context, useCallback, useContext, useEffect, useState } from "react";
-import { ControlState } from "../types/control-types";
 import { getUpdateEventName } from "../utils/getUpdateEventName";
+import { ControlState } from "./subscriber-types";
 
 export const createUseSubscribe = <TState>(Context: Context<ControlState<TState>>) => {
     type UseSubscribeReturn<TKey extends keyof TState> = [
