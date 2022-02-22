@@ -20,7 +20,7 @@ export const AdvancedDemo = (): ReactElement => {
         control.current.setState = handleSetState;
     }
 
-    logRender("%cAdvancedDemo", logColor(ADVANCED_COLOR));
+    logRender("%cAdvancedProvider", logColor(ADVANCED_COLOR));
 
     return (
         <AdvancedContext.Provider value={control.current}>

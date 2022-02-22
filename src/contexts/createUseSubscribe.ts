@@ -25,7 +25,7 @@ export const createUseSubscribe = <TState>(Context: Context<ControlState<TState>
             emitter.on(eventName, handleValueUpdated);
 
             return () => {
-                console.log("unmounting emmiter for", eventName);
+                console.log("unmounting emitter for", eventName);
                 emitter.off(eventName, handleValueUpdated);
             };
         }, [emitter, rerender, key]);

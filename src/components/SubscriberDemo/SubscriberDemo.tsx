@@ -7,7 +7,7 @@ import { SubscriberContext } from "./SubscriberContext";
 import { SubscriberList } from "./SubscriberList";
 
 export const SubscriberDemo = (): ReactElement => {
-    logRender("%cSubscriberDemo", logColor(SUBSCRIBER_COLOR));
+    logRender("%cSubscriberProvider", logColor(SUBSCRIBER_COLOR));
 
     return (
         <SubscriberContext.Provider>

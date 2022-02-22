@@ -23,7 +23,7 @@ export const BasicDemo = (): ReactElement => {
         setState(newState);
     };
 
-    logRender("%cBasicDemo", logColor(BASIC_COLOR));
+    logRender("%cBasicProvider", logColor(BASIC_COLOR));
 
     return (
         <BasicContext.Provider

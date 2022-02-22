@@ -1,6 +1,7 @@
 import { ReactElement, useState } from "react";
 import { logColor } from "../../utils/logColor";
 import { logRender } from "../../utils/logRender";
+import { PERFORMANCE_OPTIONS_COLOR } from "./colors";
 import {
     defaultPerformanceContextState,
     PerformanceOptionsContext,
@@ -19,7 +20,7 @@ export const PerformanceOptionsProvider = ({
         setState: (nextState) => setState({ ...state, ...nextState }),
     };
 
-    logRender("%cPerformanceOptions", logColor("#"));
+    logRender("%cPerformanceOptionsProvider", logColor(PERFORMANCE_OPTIONS_COLOR));
 
     return (
         <PerformanceOptionsContext.Provider value={contextState}>

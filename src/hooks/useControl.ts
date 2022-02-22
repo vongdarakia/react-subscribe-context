@@ -25,6 +25,7 @@ export const useControl = <TState, TControlState extends ControlState<TState>>(
             control.current.state = { ...control.current.state, [key]: value };
             control.current.emitter.emit(getUpdateEventName(key), value);
         }
+        // control.current.emitter.emit("update-state", control.current.state);
     };
 
     control.current.getValue = (fieldName) => control.current.state[fieldName];

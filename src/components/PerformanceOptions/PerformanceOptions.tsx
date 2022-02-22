@@ -1,7 +1,10 @@
 import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
+import { logColor } from "../../utils/logColor";
+import { logRender } from "../../utils/logRender";
 import { Input } from "../Input";
 import { NumElementsInput } from "../SubscriberDemo/NumElementsInput";
+import { PERFORMANCE_OPTIONS_COLOR } from "./colors";
 import { PerformanceOptionsContext } from "./PerformanceOptionsContext";
 
 const StyledInputContainer = styled("div")`
@@ -57,6 +60,8 @@ export const PerformanceOptions = (): ReactElement => {
     const handleToggleUseMemo = () => {
         setState({ shouldUseMemo: !state.shouldUseMemo });
     };
+
+    logRender("%cPerformanceOptions", logColor(PERFORMANCE_OPTIONS_COLOR));
 
     return (
         <StyledContainer>

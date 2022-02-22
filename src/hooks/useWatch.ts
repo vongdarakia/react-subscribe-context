@@ -14,7 +14,7 @@ export const useWatch = <Key extends ControlStateField>(fieldName: Key): Incomin
         emitter.on(`update-${fieldName}`, handleValueUpdated);
 
         return () => {
-            console.log("unmounting emmiter for ", `update-${fieldName}`);
+            console.log("unmounting emitter for ", `update-${fieldName}`);
             emitter.off(`update-${fieldName}`, handleValueUpdated);
         };
     }, []);
