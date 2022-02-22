@@ -12,7 +12,9 @@
     "@types/react-dom": "^17.0.11",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0",
+    "react-scripts": "^5.0.0",
+    "react-tracked": "^1.7.6",
+    "scheduler": "^0.20.2",
     "styled-components": "^5.3.3",
     "typescript": "^4.5.5",
     "web-vitals": "^2.1.4"
