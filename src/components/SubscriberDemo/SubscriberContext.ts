@@ -6,7 +6,19 @@ export type NumberValueKey = `prop-num-${number}`;
 export type StringValueKey = `prop-str-${number}`;
 export type SubscriberKey = NumberValueKey | StringValueKey;
 
-const defaultState: { [key: NumberValueKey]: number; [key: StringValueKey]: string } = {};
+export const isNumberValueKey = (key: SubscriberKey): key is NumberValueKey => {
+    return key.includes("prop-num-");
+};
+
+export const isStringValueKey = (key: SubscriberKey): key is StringValueKey => {
+    return key.includes("prop-str-");
+};
+
+const defaultState: {
+    [key: NumberValueKey]: number;
+    [key: StringValueKey]: string;
+    email?: string;
+} = {};
 
 export const NUM_SUBSCRIBED_ITEMS = 10;
 

@@ -13,6 +13,10 @@ export const createSubscriberContext = <TState,>({
 }: CreateControlContextOptions<TState>) => {
     const defaultControl: ControlState<TState> = {
         emitter: new EventEmitter(),
+        getState: () => {
+            console.error("Did you forget to use your control provider?");
+            return defaultState;
+        },
         getValue: (fieldName) => {
             console.error("Did you forget to use your control provider?");
             return defaultState[fieldName];

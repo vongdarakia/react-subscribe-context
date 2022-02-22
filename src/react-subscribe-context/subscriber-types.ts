@@ -12,6 +12,7 @@ export type GetValue<TState> = <TKey extends Key<TState>>(key: TKey) => TState[T
 export interface ControlState<TState> {
     emitter: EventEmitter;
     getValue: GetValue<TState>;
+    getState: () => TState;
     setState: (newStateValues: Partial<TState>) => void;
     setValue: SetValue<TState>;
     state: TState;

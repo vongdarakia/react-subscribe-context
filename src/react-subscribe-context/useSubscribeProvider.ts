@@ -9,9 +9,11 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
 
     control.current.setState = (nextState: Partial<TState>) => {
         // console.log({ nextState });
+        console.log("setting state", { nextState });
         for (const key in nextState) {
             if (control.current.state[key] !== nextState[key]) {
                 control.current.emitter.emit(getUpdateEventName(key), nextState[key]);
+                console.log("emitted", getUpdateEventName(key));
             }
         }
 
@@ -29,6 +31,7 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
     };
 
     control.current.getValue = (fieldName) => control.current.state[fieldName];
+    control.current.getState = () => control.current.state;
 
     console.log("useSubscribeProvider", control);
 
