@@ -1,4 +1,4 @@
-import EventEmitter from "events";
+import { EventEmitter } from "events";
 import { createContext, ReactElement } from "react";
 import { createUseSubscribe } from "./createUseSubscribe";
 import { ControlState } from "./subscriber-types";
