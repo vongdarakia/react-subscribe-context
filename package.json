@@ -36,6 +36,7 @@
             "not op_mini all"
         ],
         "development": [
+            "ie 11",
             "last 1 chrome version",
             "last 1 firefox version",
             "last 1 safari version"
@@ -57,6 +58,7 @@
         "deep-proxy-polyfill": "^1.0.4",
         "parcel": "^2.3.2",
         "react": "^17.0.2",
+        "react-app-polyfill": "^3.0.0",
         "react-dom": "^17.0.2",
         "react-scripts": "^5.0.0",
         "react-tracked": "^1.7.6",

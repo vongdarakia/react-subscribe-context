@@ -1,5 +1,4 @@
 import { Context, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ControlState } from "./subscriber-types";
 
 interface StateSetter<TState> {
@@ -9,7 +8,7 @@ interface StateSetter<TState> {
 
 type UseSubscribeReturn<TState> = [TState, StateSetter<TState>];
 
-export const useSubscribeMany = <TState extends object, TKey extends keyof TState & string>(
+export const useSubscribeMany = <TState extends object>(
     Context: Context<ControlState<TState>>
 ): UseSubscribeReturn<TState> => {
     const { emitter, setState, getState } = useContext(Context);
@@ -18,21 +17,21 @@ export const useSubscribeMany = <TState extends object, TKey extends keyof TStat
     const rerender = useCallback(() => updateState({}), []);
     const subscribedEvents = useMemo(() => [] as `update-${string}`[], []);
 
-    const handler = useMemo(
-        (): ProxyHandler<TState> => ({
-            get: (obj, prop: TKey) => {
-                if (!subscribedEvents.includes(getUpdateEventName(prop))) {
-                    subscribedEvents.push(getUpdateEventName(prop));
-                    // console.log("subscribed to", prop);
-                    rerender();
-                }
+    // const handler = useMemo(
+    //     (): ProxyHandler<TState> => ({
+    //         get: (obj, prop: TKey) => {
+    //             if (!subscribedEvents.includes(getUpdateEventName(prop))) {
+    //                 subscribedEvents.push(getUpdateEventName(prop));
+    //                 // console.log("subscribed to", prop);
+    //                 rerender();
+    //             }
 
-                return obj[prop];
-            },
-        }),
-        [rerender, subscribedEvents]
-    );
-    const proxyState = new Proxy(state, handler);
+    //             return obj[prop];
+    //         },
+    //     }),
+    //     [rerender, subscribedEvents]
+    // );
+    // const proxyState = new Proxy(state, handler);
 
     useEffect(() => {
         const handleEvent = () => {
@@ -59,5 +58,5 @@ export const useSubscribeMany = <TState extends object, TKey extends keyof TStat
         setState(values);
     };
 
-    return [proxyState, setter];
+    return [state, setter];
 };
