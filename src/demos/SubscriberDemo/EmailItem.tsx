@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useSubscribeMany } from "../../../react-subscribe-context/useSubscribeMany";
+import { useSubscribeMany } from "../../react-subscribe-context/useSubscribeMany";
 import { SubscriberContext } from "./SubscriberContext";
 
 export const EmailItem = (): ReactElement => {

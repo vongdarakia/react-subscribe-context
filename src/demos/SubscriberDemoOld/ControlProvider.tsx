@@ -4,7 +4,7 @@ import {
     ControlState,
     defaultControl,
     IncomingState,
-} from "../../../contexts/ControlContext";
+} from "../../contexts/ControlContext";
 
 export const ControlProvider = ({ children }: { children: ReactElement }): ReactElement => {
     const control = useRef<ControlState>(defaultControl);

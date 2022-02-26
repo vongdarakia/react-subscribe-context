@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { logRender } from "utils/logRender";
-import { useSubscribeDeep } from "../../../react-subscribe-context/useSubscribeDeep";
+import { useSubscribeDeep } from "../../react-subscribe-context/useSubscribeDeep";
 import { DeepSubscriberContext } from "./DeepSubscriberContext";
 
 export const PreviewLastName = (): ReactElement => {

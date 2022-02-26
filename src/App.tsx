@@ -1,15 +1,15 @@
+import { AdvancedDemo } from "demos/AdvancedDemo/AdvancedDemo";
+import { ADVANCED_COLOR } from "demos/AdvancedDemo/colors";
+import { BasicDemo } from "demos/BasicDemo/BasicDemo";
+import { BASIC_COLOR } from "demos/BasicDemo/colors";
+import { DeepSubscriberDemo } from "demos/DeepSubscriberDemo/DeepSubscriberDemo";
+import { PerformanceOptionsProvider } from "demos/PerformanceOptions/PerformanceOptionsProvider";
+import { ReactTrackDemo } from "demos/ReactTrackDemo/ReactTrackDemo";
+import { SUBSCRIBER_COLOR } from "demos/SubscriberDemo/colors";
+import { SubscriberDemo } from "demos/SubscriberDemo/SubscriberDemo";
 import React, { useState } from "react";
 import styled from "styled-components";
 import "./App.css";
-import { AdvancedDemo } from "./components/demos/AdvancedDemo/AdvancedDemo";
-import { ADVANCED_COLOR } from "./components/demos/AdvancedDemo/colors";
-import { BasicDemo } from "./components/demos/BasicDemo/BasicDemo";
-import { BASIC_COLOR } from "./components/demos/BasicDemo/colors";
-import { DeepSubscriberDemo } from "./components/demos/DeepSubscriberDemo/DeepSubscriberDemo";
-import { PerformanceOptionsProvider } from "./components/demos/PerformanceOptions/PerformanceOptionsProvider";
-import { ReactTrackDemo } from "./components/demos/ReactTrackDemo/ReactTrackDemo";
-import { SUBSCRIBER_COLOR } from "./components/demos/SubscriberDemo/colors";
-import { SubscriberDemo } from "./components/demos/SubscriberDemo/SubscriberDemo";
 import { Style } from "./types/common-types";
 
 const appsStyle: Style = {

@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { BasicControlContext } from "../../../contexts/BasicControlContext";
+import { BasicControlContext } from "../../contexts/BasicControlContext";
 
 export const BasicControlComponent = (): ReactElement => {
     const [counter, setCounter] = BasicControlContext.useSubscribe("counter");

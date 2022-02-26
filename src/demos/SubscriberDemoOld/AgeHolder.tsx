@@ -1,6 +1,6 @@
 import { memo, ReactElement, useContext } from "react";
-import { ControlContext } from "../../../contexts/ControlContext";
-import { useWatch } from "../../../hooks/useWatch";
+import { ControlContext } from "../../contexts/ControlContext";
+import { useWatch } from "../../hooks/useWatch";
 
 export const AgeHolder = memo((): ReactElement => {
     const { setValue } = useContext(ControlContext);

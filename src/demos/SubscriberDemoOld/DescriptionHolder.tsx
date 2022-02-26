@@ -1,8 +1,8 @@
 import { Style } from "definitions/common-types";
 import { memo, ReactElement, useContext } from "react";
 import { getRandomName } from "utils/getRandomName";
-import { ControlContext } from "../../../contexts/ControlContext";
-import { useWatch } from "../../../hooks/useWatch";
+import { ControlContext } from "../../contexts/ControlContext";
+import { useWatch } from "../../hooks/useWatch";
 import { AgeHolder } from "./AgeHolder";
 
 const style: Style = {

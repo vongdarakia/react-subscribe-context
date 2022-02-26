@@ -5,7 +5,7 @@ import { getIncrementedCharValue } from "utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
 import { logColor } from "utils/logColor";
 import { logRender } from "utils/logRender";
-import { useSubscribeMany } from "../../../react-subscribe-context/useSubscribeMany";
+import { useSubscribeMany } from "../../react-subscribe-context/useSubscribeMany";
 import { SUBSCRIBER_COLOR, SUBSCRIBER_COLOR_LIGHT } from "./colors";
 import {
     isNumberValueKey,

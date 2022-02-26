@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
 import styled from "styled-components";
-import { Input } from "../../Input";
+import { Input } from "../../components/Input";
 
 const StyledInput = styled(Input)`
     margin-top: 0;

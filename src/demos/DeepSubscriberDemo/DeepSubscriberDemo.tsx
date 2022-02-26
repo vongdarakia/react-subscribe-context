@@ -1,4 +1,4 @@
-import { SUBSCRIBER_COLOR } from "components/demos/SubscriberDemo/colors";
+import { SUBSCRIBER_COLOR } from "demos/SubscriberDemo/colors";
 import { ReactElement } from "react";
 import styled from "styled-components";
 import { logColor } from "utils/logColor";
