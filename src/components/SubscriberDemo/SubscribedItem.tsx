@@ -10,7 +10,6 @@ import { SUBSCRIBER_COLOR, SUBSCRIBER_COLOR_LIGHT } from "./colors";
 import {
     isNumberValueKey,
     isStringValueKey,
-    NumberValueKey,
     SubscriberContext,
     SubscriberKey,
     SubscriberState,
@@ -23,28 +22,8 @@ const containerStyle: Style = {
     flex: 1,
 };
 
-const isNumProp = (itemKey: SubscriberKey): itemKey is NumberValueKey => {
-    return itemKey.indexOf("-num-") > 0;
-};
-
-// const getIncrementedValue = <TKey extends SubscriberKey, TValue extends SubscriberState[TKey]>(
-//     itemKey: TKey,
-//     value: TValue
-// ) => {
-//     if (isNumberValueKey(itemKey)) {
-//         return getIncrementedNumValue(value);
-//     }
-
-//     if (typeof value === "string") {
-//         return getIncrementedCharValue(value);
-//     }
-
-//     return value;
-// };
-
 export const SubscribedItem = ({ itemKey }: { itemKey: SubscriberKey }): ReactElement => {
-    const [state, setState] = useSubscribeMany(SubscriberContext.Context, itemKey);
-    // const [value, setValue] = useSubscribe(SubscriberContext.Context, itemKey);
+    const [state, setState] = useSubscribeMany(SubscriberContext.Context);
 
     const handleClick = () => {
         const nextState: Partial<SubscriberState> = {};

@@ -4,6 +4,7 @@ import { Style } from "../../types/common-types";
 import { getIncrementedCharValue } from "../../utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "../../utils/getIncrementedNumValue";
 import { PerformanceOptionsContext } from "../PerformanceOptions/PerformanceOptionsContext";
+import { EmailItem } from "./EmailItem";
 import { SubscribedItem } from "./SubscribedItem";
 import {
     NUM_SUBSCRIBED_ITEMS,
@@ -92,6 +93,7 @@ export const SubscriberList = (): ReactElement => {
                 <button onClick={handleClickUpdateStrings}>Update All Strings</button>
                 <button onClick={handleClickUpdateNumbers}>Update All Numbers</button>
             </StyledButtonContainer>
+            <EmailItem />
             <div style={style}>
                 {keys.map((key) =>
                     shouldUseMemo ? (

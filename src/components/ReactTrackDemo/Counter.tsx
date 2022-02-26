@@ -15,6 +15,7 @@ export const Counter = () => {
     return (
         <div style={{ margin: 12 }}>
             <div>Count: {state.count}</div>
+            <div>Hmmm: {state.text}</div>
             <button type="button" onClick={increment}>
                 +1
             </button>

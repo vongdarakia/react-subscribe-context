@@ -5,7 +5,7 @@ import { AdvancedDemo } from "./components/AdvancedDemo/AdvancedDemo";
 import { ADVANCED_COLOR } from "./components/AdvancedDemo/colors";
 import { BasicDemo } from "./components/BasicDemo/BasicDemo";
 import { BASIC_COLOR } from "./components/BasicDemo/colors";
-import { MemoDemo } from "./components/MemoDemo/MemoDemo";
+import { DeepSubscriberDemo } from "./components/DeepSubscriberDemo/DeepSubscriberDemo";
 import { PerformanceOptionsProvider } from "./components/PerformanceOptions/PerformanceOptionsProvider";
 import { ReactTrackDemo } from "./components/ReactTrackDemo/ReactTrackDemo";
 import { SUBSCRIBER_COLOR } from "./components/SubscriberDemo/colors";
@@ -49,12 +49,13 @@ const StyledButton = styled("button")`
 function App() {
     const apps = [
         "Basic Context",
-        "Memo Demo",
+        // "Memo Demo",
         "Advanced Context",
         "Subscriber Context",
+        "Deep Subscriber Demo",
         "Tracked Demo",
     ] as const;
-    const [selectedAppName, setApp] = useState<typeof apps[number]>("Basic Context");
+    const [selectedAppName, setApp] = useState<typeof apps[number]>("Deep Subscriber Demo");
 
     let app;
 
@@ -62,9 +63,9 @@ function App() {
         case "Basic Context":
             app = <BasicDemo />;
             break;
-        case "Memo Demo":
-            app = <MemoDemo />;
-            break;
+        // case "Memo Demo":
+        //     app = <MemoDemo />;
+        //     break;
         case "Subscriber Context":
             app = <SubscriberDemo />;
             break;
@@ -73,6 +74,9 @@ function App() {
             break;
         case "Tracked Demo":
             app = <ReactTrackDemo />;
+            break;
+        case "Deep Subscriber Demo":
+            app = <DeepSubscriberDemo />;
             break;
         default:
             app = <SubscriberDemo />;

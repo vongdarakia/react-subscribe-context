@@ -6,14 +6,6 @@ type UseSubscribeReturn<TState, TKey extends keyof TState & string> = [
     TState[TKey],
     (value: TState[TKey]) => void
 ];
-type UseSubscribeReturnMulti<TState, TKey extends keyof TState & string> = [
-    [TState[TKey], (value: TState[TKey]) => void]
-];
-
-// type UseSubscribe = <TState, TKey extends keyof TState & string>(
-//     Context: Context<ControlState<TState>>,
-//     key: TKey
-// ) => UseSubscribeReturn<TState, TKey>;
 
 export const useSubscribe = <TState, TKey extends keyof TState & string>(
     Context: Context<ControlState<TState>>,
@@ -27,7 +19,7 @@ export const useSubscribe = <TState, TKey extends keyof TState & string>(
         const handleValueUpdated = () => {
             rerender();
         };
-        console.log("useSubscribe", key);
+
         const eventName = getUpdateEventName(key);
 
         emitter.on(eventName, handleValueUpdated);
