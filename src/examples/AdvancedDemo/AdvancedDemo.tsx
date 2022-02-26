@@ -1,4 +1,4 @@
-import { PerformanceOptions } from "demos/PerformanceOptions/PerformanceOptions";
+import { PerformanceOptions } from "examples/PerformanceOptions/PerformanceOptions";
 import { ReactElement, useRef, useState } from "react";
 import { logColor } from "utils/logColor";
 import { logRender } from "utils/logRender";

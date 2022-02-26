@@ -19,7 +19,7 @@
         "paths": {
             "components/*": ["components/*"],
             "constants/*": ["constants/*"],
-            "demos/*": ["demos/*"],
+            "examples/*": ["examples/*"],
             "definitions/*": ["types/*"],
             "utils/*": ["utils/*"]
         }
