@@ -19,8 +19,9 @@
         "paths": {
             "components/*": ["components/*"],
             "constants/*": ["constants/*"],
-            "examples/*": ["examples/*"],
             "definitions/*": ["types/*"],
+            "examples/*": ["examples/*"],
+            "react-subscribe-context/*": ["react-subscribe-context/*"],
             "utils/*": ["utils/*"]
         }
     },
