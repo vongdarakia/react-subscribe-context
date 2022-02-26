@@ -1,11 +1,11 @@
 import { Button } from "components/Button";
 import { Style } from "definitions/common-types";
 import React, { ReactElement, useEffect } from "react";
+import { useSubscribeMany } from "react-subscribe-context/useSubscribeMany";
 import { getIncrementedCharValue } from "utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
 import { logColor } from "utils/logColor";
 import { logRender } from "utils/logRender";
-import { useSubscribeMany } from "../../react-subscribe-context/useSubscribeMany";
 import { SUBSCRIBER_COLOR, SUBSCRIBER_COLOR_LIGHT } from "./colors";
 import {
     isNumberValueKey,

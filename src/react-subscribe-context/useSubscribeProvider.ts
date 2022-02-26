@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { getUpdateEventName } from "../utils/getUpdateEventName";
+import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ControlState } from "./subscriber-types";
 
 interface ObjectDiff {

@@ -1,8 +1,8 @@
+import { Input } from "components/Input";
 import { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
 import { logColor } from "utils/logColor";
 import { logRender } from "utils/logRender";
-import { Input } from "../../components/Input";
 import { NumElementsInput } from "../SubscriberDemo/NumElementsInput";
 import { PERFORMANCE_OPTIONS_COLOR } from "./colors";
 import { PerformanceOptionsContext } from "./PerformanceOptionsContext";

@@ -1,4 +1,4 @@
-import { RENDER_COLOR } from "../constants/colors";
+import { RENDER_COLOR } from "constants/colors";
 import { logColor } from "./logColor";
 
 export const logRender = (message: string, ...args: any[]) => {

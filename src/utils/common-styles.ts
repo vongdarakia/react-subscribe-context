@@ -1,4 +1,4 @@
-import { Style } from "../types/common-types";
+import { Style } from "definitions/common-types";
 
 export const commonStyle: Style = {
     padding: 24,

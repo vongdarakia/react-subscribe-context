@@ -1,7 +1,7 @@
+import { Input } from "components/Input";
 import { ChangeEventHandler, ReactElement } from "react";
-import { Input } from "../../../components/Input";
-import { useSubscribeDeep } from "../../../react-subscribe-context/useSubscribeDeep";
-import { logRender } from "../../../utils/logRender";
+import { useSubscribeDeep } from "react-subscribe-context/useSubscribeDeep";
+import { logRender } from "utils/logRender";
 import { DeepSubscriberContext } from "../DeepSubscriberContext";
 
 export const LastNameInput = (): ReactElement => {

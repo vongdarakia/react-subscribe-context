@@ -1,4 +1,4 @@
-import { createSubscriberContext } from "../../react-subscribe-context/createSubscriberContext";
+import { createSubscriberContext } from "react-subscribe-context/createSubscriberContext";
 
 type Email = `${string}@${string}.${string}`;
 

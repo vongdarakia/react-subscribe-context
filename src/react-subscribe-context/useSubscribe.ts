@@ -1,5 +1,5 @@
 import { Context, useCallback, useContext, useEffect, useState } from "react";
-import { getUpdateEventName } from "../utils/getUpdateEventName";
+import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ControlState } from "./subscriber-types";
 
 type UseSubscribeReturn<TState, TKey extends keyof TState & string> = [
