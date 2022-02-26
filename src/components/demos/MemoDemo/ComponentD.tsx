@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { commonStyle } from "../../../utils/common-styles";
+import { commonStyle } from "utils/common-styles";
 
 export const ComponentD = ({ showRendered }: { showRendered: boolean }): ReactElement => {
     return (

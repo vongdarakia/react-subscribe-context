@@ -1,5 +1,5 @@
-import { getIncrementedCharValue } from "../../../utils/getIncrementedCharValue";
-import { logRender } from "../../../utils/logRender";
+import { getIncrementedCharValue } from "utils/getIncrementedCharValue";
+import { logRender } from "utils/logRender";
 import { useTracked } from "./ReactTrackContext";
 
 export const TextBox = () => {

@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
-import { logColor } from "../../../utils/logColor";
-import { logRender } from "../../../utils/logRender";
+import { logColor } from "utils/logColor";
+import { logRender } from "utils/logRender";
 import { PerformanceOptions } from "../PerformanceOptions/PerformanceOptions";
 import { BasicContext, basicContextState } from "./BasicContext";
 import { BasicList } from "./BasicList";

@@ -1,6 +1,6 @@
+import { getIncrementedCharValue } from "utils/getIncrementedCharValue";
+import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
 import { createSubscriberContext } from "../../../react-subscribe-context/createSubscriberContext";
-import { getIncrementedCharValue } from "../../../utils/getIncrementedCharValue";
-import { getIncrementedNumValue } from "../../../utils/getIncrementedNumValue";
 
 export type NumberValueKey = `prop-num-${number}`;
 export type StringValueKey = `prop-str-${number}`;

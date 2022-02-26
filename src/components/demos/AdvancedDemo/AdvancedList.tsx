@@ -1,7 +1,7 @@
+import { PerformanceOptionsContext } from "components/demos/PerformanceOptions/PerformanceOptionsContext";
+import { Style } from "definitions/common-types";
 import { memo, MouseEvent, ReactElement, useContext, useEffect } from "react";
-import { Style } from "../../../types/common-types";
-import { getIncrementedNumValue } from "../../../utils/getIncrementedNumValue";
-import { PerformanceOptionsContext } from "../../demos/PerformanceOptions/PerformanceOptionsContext";
+import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
 import { AdvancedContext } from "./AdvancedContext";
 import { AdvancedItem } from "./AdvancedItem";
 

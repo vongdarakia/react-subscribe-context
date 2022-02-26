@@ -1,5 +1,5 @@
 import { memo, ReactElement } from "react";
-import { commonStyle } from "../../../utils/common-styles";
+import { commonStyle } from "utils/common-styles";
 import { ComponentB } from "./ComponentB";
 
 export const ComponentA = memo((): ReactElement => {

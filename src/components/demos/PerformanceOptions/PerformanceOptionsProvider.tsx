@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
-import { logColor } from "../../../utils/logColor";
-import { logRender } from "../../../utils/logRender";
+import { logColor } from "utils/logColor";
+import { logRender } from "utils/logRender";
 import { PERFORMANCE_OPTIONS_COLOR } from "./colors";
 import {
     defaultPerformanceContextState,

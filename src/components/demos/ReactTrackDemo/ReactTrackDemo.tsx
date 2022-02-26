@@ -1,5 +1,5 @@
 import { ReactElement, useContext } from "react";
-import { logRender } from "../../../utils/logRender";
+import { logRender } from "utils/logRender";
 import { PerformanceOptions } from "../PerformanceOptions/PerformanceOptions";
 import { PerformanceOptionsContext } from "../PerformanceOptions/PerformanceOptionsContext";
 import { Counter } from "./Counter";

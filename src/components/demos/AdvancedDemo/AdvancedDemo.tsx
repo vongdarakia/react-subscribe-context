@@ -1,7 +1,7 @@
+import { PerformanceOptions } from "components/demos/PerformanceOptions/PerformanceOptions";
 import { ReactElement, useRef, useState } from "react";
-import { logColor } from "../../../utils/logColor";
-import { logRender } from "../../../utils/logRender";
-import { PerformanceOptions } from "../../demos/PerformanceOptions/PerformanceOptions";
+import { logColor } from "utils/logColor";
+import { logRender } from "utils/logRender";
 import { AdvancedContext, AdvancedContextState, advancedContextState } from "./AdvancedContext";
 import { AdvancedList } from "./AdvancedList";
 import { ADVANCED_COLOR } from "./colors";

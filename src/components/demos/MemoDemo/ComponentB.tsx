@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { commonStyle } from "../../../utils/common-styles";
+import { commonStyle } from "utils/common-styles";
 import { ComponentC } from "./ComponentC";
 
 export const ComponentB = (): ReactElement => {

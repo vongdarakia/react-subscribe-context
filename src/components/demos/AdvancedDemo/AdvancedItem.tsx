@@ -1,8 +1,8 @@
+import { Button } from "components/Button";
+import { Style } from "definitions/common-types";
 import React, { ReactElement, useContext, useEffect } from "react";
-import { Style } from "../../../types/common-types";
-import { logColor } from "../../../utils/logColor";
-import { logRender } from "../../../utils/logRender";
-import { Button } from "../../Button";
+import { logColor } from "utils/logColor";
+import { logRender } from "utils/logRender";
 import { AdvancedContext } from "./AdvancedContext";
 import { ADVANCED_COLOR, ADVANCED_COLOR_LIGHT } from "./colors";
 

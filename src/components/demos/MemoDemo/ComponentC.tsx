@@ -1,5 +1,5 @@
 import { ReactElement, useContext } from "react";
-import { commonStyle } from "../../../utils/common-styles";
+import { commonStyle } from "utils/common-styles";
 import { ComponentD } from "./ComponentD";
 import { MemoContext } from "./MemoContext";
 

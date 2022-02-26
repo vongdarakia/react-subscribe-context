@@ -1,6 +1,6 @@
+import { Style } from "definitions/common-types";
 import { memo, ReactElement, useContext, useEffect } from "react";
-import { Style } from "../../../types/common-types";
-import { getIncrementedNumValue } from "../../../utils/getIncrementedNumValue";
+import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
 import { PerformanceOptionsContext } from "../PerformanceOptions/PerformanceOptionsContext";
 import { BasicContext } from "./BasicContext";
 import { BasicItem } from "./BasicItem";

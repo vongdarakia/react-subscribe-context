@@ -1,8 +1,8 @@
+import { SUBSCRIBER_COLOR } from "components/demos/SubscriberDemo/colors";
 import { ReactElement } from "react";
 import styled from "styled-components";
-import { logColor } from "../../../utils/logColor";
-import { logRender } from "../../../utils/logRender";
-import { SUBSCRIBER_COLOR } from "../../demos/SubscriberDemo/colors";
+import { logColor } from "utils/logColor";
+import { logRender } from "utils/logRender";
 import { DeepSubscriberProvider } from "./DeepSubscriberContext";
 import { NameInput } from "./UserForm/NameInput";
 import { UserPreview } from "./UserPreview";

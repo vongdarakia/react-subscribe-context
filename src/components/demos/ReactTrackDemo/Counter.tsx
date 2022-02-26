@@ -1,4 +1,4 @@
-import { logRender } from "../../../utils/logRender";
+import { logRender } from "utils/logRender";
 import { useTracked } from "./ReactTrackContext";
 
 export const Counter = () => {

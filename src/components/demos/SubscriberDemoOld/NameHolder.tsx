@@ -1,8 +1,8 @@
+import { Style } from "definitions/common-types";
 import { memo, ReactElement, useContext } from "react";
+import { getRandomName } from "utils/getRandomName";
 import { ControlContext } from "../../../contexts/ControlContext";
 import { useWatch } from "../../../hooks/useWatch";
-import { Style } from "../../../types/common-types";
-import { getRandomName } from "../../../utils/getRandomName";
 
 const style: Style = {
     padding: 12,
