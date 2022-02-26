@@ -23,7 +23,7 @@ export const useSubscribeMany = <TState extends object, TKey extends keyof TStat
             get: (obj, prop: TKey) => {
                 if (!subscribedEvents.includes(getUpdateEventName(prop))) {
                     subscribedEvents.push(getUpdateEventName(prop));
-                    console.log("subscribed to", prop);
+                    // console.log("subscribed to", prop);
                     rerender();
                 }
 
@@ -41,13 +41,13 @@ export const useSubscribeMany = <TState extends object, TKey extends keyof TStat
 
         subscribedEvents.forEach((event) => {
             emitter.on(event, handleEvent);
-            console.log("mount emitter for", event);
+            // console.log("mount emitter for", event);
         });
 
         return () => {
             subscribedEvents.forEach((event) => {
                 emitter.off(event, handleEvent);
-                console.log("unmounting emitter for", event);
+                // console.log("unmounting emitter for", event);
             });
         };
     }, [subscribedEvents.length, subscribedEvents, rerender, emitter]);

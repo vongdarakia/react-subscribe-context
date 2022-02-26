@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ControlState } from "./subscriber-types";
 
@@ -68,13 +68,13 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
     control.current.getValue = (fieldName) => control.current.state[fieldName];
     control.current.getState = () => control.current.state;
 
-    console.log("useSubscribeProvider", control);
+    // console.log("useSubscribeProvider", control);
 
-    useEffect(() => {
-        return () => {
-            console.log("unmounting useSubscribeProvider");
-        };
-    }, []);
+    // useEffect(() => {
+    //     return () => {
+    //         console.log("unmounting useSubscribeProvider");
+    //     };
+    // }, []);
 
     return control;
 };

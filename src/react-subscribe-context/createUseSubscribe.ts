@@ -19,13 +19,13 @@ export const createUseSubscribe = <TState>(Context: Context<ControlState<TState>
             const handleValueUpdated = () => {
                 rerender();
             };
-            console.log("useSubscribe", key);
+            // console.log("useSubscribe", key);
             const eventName = getUpdateEventName(key);
 
             emitter.on(eventName, handleValueUpdated);
 
             return () => {
-                console.log("unmounting emitter for", eventName);
+                // console.log("unmounting emitter for", eventName);
                 emitter.off(eventName, handleValueUpdated);
             };
         }, [emitter, rerender, key]);

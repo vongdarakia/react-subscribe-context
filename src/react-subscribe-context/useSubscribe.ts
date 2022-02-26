@@ -25,7 +25,7 @@ export const useSubscribe = <TState, TKey extends keyof TState & string>(
         emitter.on(eventName, handleValueUpdated);
 
         return () => {
-            console.log("unmounting emitter for", eventName);
+            // console.log("unmounting emitter for", eventName);
             emitter.off(eventName, handleValueUpdated);
         };
     }, [emitter, rerender, key]);

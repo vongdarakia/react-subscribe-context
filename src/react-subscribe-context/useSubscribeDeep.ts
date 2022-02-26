@@ -67,13 +67,13 @@ export const useSubscribeDeep = <TState extends object>(
 
         events.forEach((event) => {
             emitter.on(event, handleEvent);
-            console.log("mount emitter for", event);
+            // console.log("mount emitter for", event);
         });
 
         return () => {
             events.forEach((event) => {
                 emitter.off(event, handleEvent);
-                console.log("unmounting emitter for", event);
+                // console.log("unmounting emitter for", event);
             });
         };
     }, [rerender, emitter, subscribedCache]);
