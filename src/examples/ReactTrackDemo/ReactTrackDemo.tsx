@@ -1,7 +1,7 @@
+import { PerformanceOptions } from "components/PerformanceOptions/PerformanceOptions";
+import { PerformanceOptionsContext } from "components/PerformanceOptions/PerformanceOptionsContext";
 import { ReactElement, useContext } from "react";
 import { logRender } from "utils/logRender";
-import { PerformanceOptions } from "../PerformanceOptions/PerformanceOptions";
-import { PerformanceOptionsContext } from "../PerformanceOptions/PerformanceOptionsContext";
 import { Counter } from "./Counter";
 import { Provider } from "./ReactTrackContext";
 import { TextBox } from "./TextBox";

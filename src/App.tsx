@@ -1,9 +1,9 @@
+import { PerformanceOptionsProvider } from "components/PerformanceOptions/PerformanceOptionsProvider";
 import { AdvancedDemo } from "examples/AdvancedDemo/AdvancedDemo";
 import { ADVANCED_COLOR } from "examples/AdvancedDemo/colors";
 import { BasicDemo } from "examples/BasicDemo/BasicDemo";
 import { BASIC_COLOR } from "examples/BasicDemo/colors";
 import { DeepSubscriberDemo } from "examples/DeepSubscriberDemo/DeepSubscriberDemo";
-import { PerformanceOptionsProvider } from "examples/PerformanceOptions/PerformanceOptionsProvider";
 import { ReactTrackDemo } from "examples/ReactTrackDemo/ReactTrackDemo";
 import { SUBSCRIBER_COLOR } from "examples/SubscriberDemo/colors";
 import { SubscriberDemo } from "examples/SubscriberDemo/SubscriberDemo";

@@ -1,7 +1,7 @@
+import { PerformanceOptionsContext } from "components/PerformanceOptions/PerformanceOptionsContext";
 import { Style } from "definitions/common-types";
 import { memo, ReactElement, useContext, useEffect } from "react";
 import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
-import { PerformanceOptionsContext } from "../PerformanceOptions/PerformanceOptionsContext";
 import { BasicContext } from "./BasicContext";
 import { BasicItem } from "./BasicItem";
 

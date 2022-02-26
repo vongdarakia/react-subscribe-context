@@ -1,9 +1,9 @@
+import { PerformanceOptionsContext } from "components/PerformanceOptions/PerformanceOptionsContext";
 import { Style } from "definitions/common-types";
 import { memo, ReactElement, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { getIncrementedCharValue } from "utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
-import { PerformanceOptionsContext } from "../PerformanceOptions/PerformanceOptionsContext";
 import { EmailItem } from "./EmailItem";
 import { SubscribedItem } from "./SubscribedItem";
 import {
