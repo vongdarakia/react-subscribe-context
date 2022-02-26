@@ -1,14 +1,21 @@
 {
     "name": "react-subscribe-context",
     "version": "0.1.0",
-    "private": true,
-    "source": "src/react-subscribe-context/index.ts",
+    "private": false,
     "author": "Akia Vongdara",
     "description": "Simple state management hooks that works like React Context but optmized to render in components only where the data it's subscribed to changes.",
     "license": "MIT",
+    "source": "src/react-subscribe-context/index.ts",
     "main": "dist/index.js",
     "module": "dist/module.js",
     "types": "dist/types.d.ts",
+    "files": [
+        "dist/*"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vongdarakia/react-subscribe-context"
+    },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
