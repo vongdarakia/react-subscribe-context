@@ -1,8 +1,11 @@
 {
-    "name": "test-subscriber-context",
+    "name": "react-subscribe-context",
     "version": "0.1.0",
     "private": true,
     "source": "src/react-subscribe-context/index.ts",
+    "author": "Akia Vongdara",
+    "description": "Simple state management hooks that works like React Context but optmized to render in components only where the data it's subscribed to changes.",
+    "license": "MIT",
     "main": "dist/index.js",
     "module": "dist/module.js",
     "types": "dist/types.d.ts",
