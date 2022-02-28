@@ -41,29 +41,28 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
     control.current.setState = (nextState: Partial<TState>) => {
         const objectDiff = getObjectDiff(control.current.state, nextState);
 
-        Object.keys(objectDiff).forEach((key) => {
-            console.log("state emitted", getUpdateEventName(key));
-            control.current.emitter.emit(getUpdateEventName(key), nextState);
-        });
-
         control.current.state = { ...control.current.state, ...nextState };
         control.current.emitter.emit("update-state", control.current.state);
+
+        Object.keys(objectDiff).forEach((key) => {
+            console.log("state emitted", getUpdateEventName(key), nextState);
+            control.current.emitter.emit(getUpdateEventName(key), nextState);
+        });
     };
 
     control.current.setValue = (key, value) => {
-        const nextState = { [key]: value } as unknown as Partial<TState>;
-        console.log({ nextState, state: control.current.state });
-        const objectDiff = getObjectDiff(control.current.state, nextState);
-
-        Object.keys(objectDiff).forEach((key) => {
-            // console.log("state emitted", getUpdateEventName(key));
-            control.current.emitter.emit(getUpdateEventName(key), nextState);
-        });
-
+        const partialUpdatedState = { [key]: value } as unknown as Partial<TState>;
+        // console.log({ nextState, state: control.current.state });
+        const objectDiff = getObjectDiff(control.current.state, partialUpdatedState);
         const newState = { ...control.current.state, [key]: value };
 
         control.current.state = newState;
         control.current.emitter.emit(getUpdateEventName(key), value);
+
+        Object.keys(objectDiff).forEach((key) => {
+            // console.log("state emitted", getUpdateEventName(key));
+            control.current.emitter.emit(getUpdateEventName(key), partialUpdatedState);
+        });
     };
 
     control.current.getValue = (fieldName) => control.current.state[fieldName];
