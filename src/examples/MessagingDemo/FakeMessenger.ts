@@ -31,7 +31,7 @@ export interface Conversation {
 
 let quotes: Quote[] = [];
 // let numAuthors = 0;
-const quotesByName: { [name: string]: Quote[] } = {};
+let quotesByName: { [name: string]: Quote[] } = {};
 const conversationByReceiver: ConversationByReceiver = {};
 const usedQuotesCache: { [key: string]: { [index: number]: true } } = {};
 const emitter = new EventEmitter();
@@ -91,6 +91,7 @@ export class FakeMessenger {
                         quotes = response.data;
 
                         console.log(quotes);
+
                         quotes.forEach((quote) => {
                             if (quotesByName[quote.author]) {
                                 quotesByName[quote.author].push(quote);
@@ -99,7 +100,28 @@ export class FakeMessenger {
                             }
                         });
 
+                        quotes.sort((a, b) => {
+                            const [aLength, bLength] = [
+                                quotesByName[a.author] ? quotesByName[a.author].length : 0,
+                                quotesByName[b.author] ? quotesByName[b.author].length : 0,
+                            ];
+
+                            if (aLength === bLength) {
+                                return 0;
+                            }
+
+                            return aLength > bLength ? -1 : 1;
+                        });
+
+                        quotesByName = quotes.reduce((acc, quote) => {
+                            acc[quote.author] = quotesByName[quote.author];
+
+                            return acc;
+                        }, {} as typeof quotesByName);
+
                         delete quotesByName["null"];
+
+                        // conversations
                         // numAuthors = Object.keys(quotesByName).length;
                         // resolve(response.data);
                     } catch (err) {
@@ -108,24 +130,38 @@ export class FakeMessenger {
                 }
 
                 const contactNames = Object.keys(quotesByName);
-
-                console.log(conversationByReceiver[contactNames[0]]);
-                resolve(
-                    contactNames.map(
-                        (name): Conversation => ({
-                            name,
-                            recentMessage:
-                                conversationByReceiver[name] &&
-                                conversationByReceiver[name][
-                                    conversationByReceiver[name].length - 1
-                                ]
-                                    ? conversationByReceiver[name][
-                                          conversationByReceiver[name].length - 1
-                                      ]
-                                    : undefined,
-                        })
-                    )
+                const conversations = contactNames.map(
+                    (name): Conversation => ({
+                        name,
+                        recentMessage:
+                            conversationByReceiver[name] &&
+                            conversationByReceiver[name][conversationByReceiver[name].length - 1]
+                                ? conversationByReceiver[name][
+                                      conversationByReceiver[name].length - 1
+                                  ]
+                                : undefined,
+                    })
                 );
+
+                conversations.sort((a, b) => {
+                    if (a.recentMessage === b.recentMessage) {
+                        return 0;
+                    }
+
+                    if (a.recentMessage && b.recentMessage) {
+                        if (a.recentMessage?.dateSent > b.recentMessage?.dateSent) {
+                            return -1;
+                        }
+                        if (a.recentMessage?.dateSent < b.recentMessage?.dateSent) {
+                            return 1;
+                        }
+                    }
+
+                    return a.recentMessage ? -1 : 1;
+                });
+
+                // console.log(conversationByReceiver[contactNames[0]]);
+                resolve(conversations);
             }, Math.floor(Math.random() * 1000));
         });
     }

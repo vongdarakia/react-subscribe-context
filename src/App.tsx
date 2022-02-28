@@ -13,11 +13,6 @@ import styled from "styled-components";
 import "./App.css";
 import { Style } from "./types/common-types";
 
-const appsStyle: Style = {
-    padding: 32,
-    border: "1px solid white",
-};
-
 const buttonContainerStyle: Style = {
     marginTop: 12,
 };
