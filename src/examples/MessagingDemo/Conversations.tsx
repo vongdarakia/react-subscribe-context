@@ -5,8 +5,6 @@ import { useSubscribe } from "react-subscribe-context/useSubscribe";
 import { useSubscribeDeep } from "react-subscribe-context/useSubscribeDeep";
 import styled from "styled-components";
 
-let old: any;
-
 export const Conversations = (): ReactElement => {
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [selectedReceiverName] = useSubscribe(MessagingSubscriberContext, "selectedReceiverName");
@@ -18,10 +16,6 @@ export const Conversations = (): ReactElement => {
         setState({ selectedReceiverName: target.dataset["contactname"] });
     }, []);
 
-    console.log(old, old === handleClickContact);
-
-    old = handleClickContact;
-
     useEffect(() => {
         const fetchConversations = async () => {
             const data = await FakeMessenger.getConversations();
@@ -32,7 +26,7 @@ export const Conversations = (): ReactElement => {
         fetchConversations();
     }, []);
 
-    console.log("here, conversations", selectedReceiverName);
+    // console.log("here, conversations", selectedReceiverName);
 
     return (
         <StyledContainer>

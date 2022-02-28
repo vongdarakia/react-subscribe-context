@@ -106,10 +106,7 @@ function App() {
                 </div>
                 <h2 style={{ color: "whitesmoke" }}>{selectedAppName}</h2>
                 <PerformanceOptionsProvider>
-                    <AppContainer
-                        style={appsStyle}
-                        className={selectedAppName.replaceAll(" ", "_")}
-                    >
+                    <AppContainer className={selectedAppName.replaceAll(" ", "_")}>
                         {app}
                     </AppContainer>
                 </PerformanceOptionsProvider>
@@ -123,11 +120,13 @@ const AppContainer = styled.div<{ appName?: string }>`
     border: 1px solid white;
 
     &.Messenger_Demo {
-        border-radius: 12px;
-        background: white;
-        height: 450px;
+        /* border-radius: 12px; */
+        border: none;
+        padding: 0;
+        /* background: white; */
+        /* height: 450px;
         max-width: 720px;
-        margin: auto;
+        margin: auto; */
     }
 `;
 

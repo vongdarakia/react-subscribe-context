@@ -53,6 +53,8 @@ export const useSubscribeDeep = <TState extends object>(
         [rerender]
     );
 
+    // console.log("subscribeDeep", state);
+
     // How can I cache this? Is it even expensive to worry about caching?
     const proxyState = deepProxy(state, proxyHandler);
 

@@ -1,34 +1,32 @@
 import { FakeMessenger } from "examples/MessagingDemo/FakeMessenger";
 import { MessagingSubscriberContext } from "examples/MessagingDemo/MessagingSubscriberContext";
-import {
-    ChangeEventHandler,
-    KeyboardEventHandler,
-    ReactElement,
-    useContext,
-    useState,
-} from "react";
+import { createRef, KeyboardEventHandler, ReactElement, useContext } from "react";
 import styled from "styled-components";
 
 export const MessageInput = (): ReactElement => {
-    const [text, setMessage] = useState("");
+    // const [text, setMessage] = useState("");
+    const inputRef = createRef<HTMLInputElement>();
     const { getValue, setValue } = useContext(MessagingSubscriberContext);
 
     const handleClickSend = async () => {
-        if (text) {
+        if (inputRef.current && inputRef.current.value) {
             const messageInfo = await FakeMessenger.sendMessage({
                 senderId: getValue("currentUser").id,
                 receiverId: getValue("selectedReceiverName"),
-                text,
+                text: inputRef.current.value,
             });
 
             setValue("currentMessages", [...getValue("currentMessages"), messageInfo]);
-            setMessage("");
+            // setMessage("");
+            inputRef.current.value = "";
         }
     };
 
-    const handleChangeMessage: ChangeEventHandler<HTMLInputElement> = (e) => {
-        setMessage(e.target.value);
-    };
+    // const handleChangeMessage: ChangeEventHandler<HTMLInputElement> = (e) => {
+    //     if (inputRef.current) {
+    //         setMessage(e.target.value);
+    //     }
+    // };
 
     const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === "Enter") {
@@ -39,9 +37,9 @@ export const MessageInput = (): ReactElement => {
     return (
         <StyledMessageInput>
             <StyledInput
-                value={text}
+                ref={inputRef}
                 placeholder="Enter your message here"
-                onChange={handleChangeMessage}
+                // onChange={handleChangeMessage}
                 onKeyPress={handleKeyPress}
             />
             <StyledButton onClick={handleClickSend}>Send</StyledButton>

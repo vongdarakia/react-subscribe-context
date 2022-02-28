@@ -10,7 +10,7 @@ export const MessageHeader = (): ReactElement => {
 };
 
 const StyledHeader = styled.div`
-    padding: 12px;
+    margin-bottom: 12px;
     text-align: left;
     font-weight: bold;
     font-size: 24px;
