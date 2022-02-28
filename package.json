@@ -65,7 +65,6 @@
         "react-scripts": "^5.0.0",
         "react-tracked": "^1.7.6",
         "scheduler": "^0.20.2",
-        "spinners-react": "^1.0.6",
         "styled-components": "^5.3.3",
         "typescript": "^4.5.5",
         "web-vitals": "^2.1.4"
