@@ -8,7 +8,8 @@ import { createSubscriberContext } from "react-subscribe-context/createSubscribe
 const defaultMessages: MessageInfo[] = [
     {
         id: "some-id",
-        senderId: "Thomas Edison",
+        senderName: "Thomas Edison",
+        receiverName: "Akia Vongdara",
         content: "Hey there!",
         status: "delivered",
         dateSent: new Date().toISOString(),

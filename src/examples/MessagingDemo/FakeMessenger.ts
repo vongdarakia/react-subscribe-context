@@ -1,15 +1,22 @@
 import axios from "axios";
+import { EVT_MESSAGE_FROM_FRIEND } from "constants/event-names";
 import { EventEmitter } from "events";
 import { MessageInfo } from "examples/MessagingDemo/types";
 
 interface SendMessageArgs {
     text: string;
-    senderId: string;
-    receiverId: string;
+    senderName: string;
+    receiverName: string;
 }
 
-interface MessageCache {
-    [receiverId: string]: MessageInfo[];
+interface SendFakeMessageToUserArgs {
+    authorName: string;
+    text?: string;
+    userName: string;
+}
+
+interface ConversationByReceiver {
+    [receiverName: string]: MessageInfo[];
 }
 
 export interface Quote {
@@ -19,44 +26,54 @@ export interface Quote {
 
 export interface Conversation {
     name: string;
-    firstMessage?: string;
+    recentMessage?: MessageInfo;
 }
 
 let quotes: Quote[] = [];
+// let numAuthors = 0;
 const quotesByName: { [name: string]: Quote[] } = {};
-const messageCache: MessageCache = {};
+const conversationByReceiver: ConversationByReceiver = {};
+const usedQuotesCache: { [key: string]: { [index: number]: true } } = {};
 const emitter = new EventEmitter();
 
 export class FakeMessenger {
     // sendMessage
     static async sendMessage({
-        receiverId,
-        senderId,
+        receiverName,
+        senderName,
         text,
     }: SendMessageArgs): Promise<MessageInfo> {
         const dateSent = new Date().toISOString();
         const messageInfo: MessageInfo = {
             content: text,
             dateSent,
-            id: `${senderId}${dateSent}`,
-            senderId: senderId,
+            id: `${senderName}${dateSent}`,
+            senderName,
+            receiverName,
             status: "sent",
         };
 
-        if (messageCache[receiverId]) {
-            messageCache[receiverId].push(messageInfo);
+        if (conversationByReceiver[receiverName]) {
+            conversationByReceiver[receiverName].push(messageInfo);
         } else {
-            messageCache[receiverId] = [messageInfo];
+            conversationByReceiver[receiverName] = [messageInfo];
         }
-        // this.emitter
+
+        console.log("huh!?");
+        FakeMessenger.sendFakeMessageToUser({ authorName: receiverName, userName: senderName });
 
         return messageInfo;
     }
 
-    static async getMessages(contactId: string): Promise<MessageInfo[]> {
+    static async getMessages(contactName: string): Promise<MessageInfo[]> {
+        console.log("grabbing messages");
         return new Promise((resolve) => {
             setTimeout(() => {
-                resolve(messageCache[contactId] || []);
+                resolve(
+                    conversationByReceiver[contactName]
+                        ? conversationByReceiver[contactName].slice(0)
+                        : []
+                );
             }, Math.floor(Math.random() * 1000));
         });
     }
@@ -83,7 +100,7 @@ export class FakeMessenger {
                         });
 
                         delete quotesByName["null"];
-
+                        // numAuthors = Object.keys(quotesByName).length;
                         // resolve(response.data);
                     } catch (err) {
                         reject(err);
@@ -92,19 +109,83 @@ export class FakeMessenger {
 
                 const contactNames = Object.keys(quotesByName);
 
+                console.log(conversationByReceiver[contactNames[0]]);
                 resolve(
                     contactNames.map(
                         (name): Conversation => ({
                             name,
-                            firstMessage:
-                                messageCache[name] && messageCache[name][0]
-                                    ? messageCache[name][0].content
+                            recentMessage:
+                                conversationByReceiver[name] &&
+                                conversationByReceiver[name][
+                                    conversationByReceiver[name].length - 1
+                                ]
+                                    ? conversationByReceiver[name][
+                                          conversationByReceiver[name].length - 1
+                                      ]
                                     : undefined,
                         })
                     )
                 );
             }, Math.floor(Math.random() * 1000));
         });
+    }
+
+    static getRandomQuote(authorName: string): string {
+        console.log("quote from", authorName);
+        let randomQuoteIndex = Math.floor(Math.random() * quotesByName[authorName].length);
+        let randomQuote = quotesByName[authorName][randomQuoteIndex].text;
+        const usedUpAllQuotes =
+            usedQuotesCache[authorName] &&
+            Object.keys(usedQuotesCache[authorName]).length >= quotesByName[authorName].length;
+
+        if (usedUpAllQuotes) {
+            console.log("used up quotes", quotesByName[authorName].length);
+            delete usedQuotesCache[authorName];
+        }
+
+        while (usedQuotesCache[authorName] && usedQuotesCache[authorName][randomQuoteIndex]) {
+            randomQuoteIndex = Math.floor(Math.random() * quotesByName[authorName].length);
+            randomQuote = quotesByName[authorName][randomQuoteIndex].text;
+        }
+
+        usedQuotesCache[authorName] = { ...usedQuotesCache[authorName], [randomQuoteIndex]: true };
+
+        return randomQuote;
+    }
+
+    static async sendFakeMessageToUser({
+        authorName,
+        text,
+        userName,
+    }: SendFakeMessageToUserArgs): Promise<void> {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const randomQuote = !!text ? text : FakeMessenger.getRandomQuote(authorName);
+                const dateSent = new Date().toISOString();
+                const messageInfo: MessageInfo = {
+                    content: randomQuote,
+                    dateSent,
+                    id: `${authorName}${dateSent}`,
+                    senderName: authorName,
+                    receiverName: userName,
+                    status: "sent",
+                };
+
+                console.log("message generated", messageInfo);
+
+                if (conversationByReceiver[authorName]) {
+                    conversationByReceiver[authorName].push(messageInfo);
+                } else {
+                    conversationByReceiver[authorName] = [messageInfo];
+                }
+                emitter.emit(EVT_MESSAGE_FROM_FRIEND, messageInfo);
+                resolve();
+            }, Math.floor(1000 + Math.random() * 2000));
+        });
+    }
+
+    static getEmitter() {
+        return emitter;
     }
     // broadcastMessage
 }

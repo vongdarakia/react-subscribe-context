@@ -1,3 +1,4 @@
+import { EVT_MESSAGE_TO_FRIEND } from "constants/event-names";
 import { FakeMessenger } from "examples/MessagingDemo/FakeMessenger";
 import { MessagingSubscriberContext } from "examples/MessagingDemo/MessagingSubscriberContext";
 import { createRef, KeyboardEventHandler, ReactElement, useContext } from "react";
@@ -10,13 +11,23 @@ export const MessageInput = (): ReactElement => {
 
     const handleClickSend = async () => {
         if (inputRef.current && inputRef.current.value) {
+            console.log("sending message", inputRef.current.value);
             const messageInfo = await FakeMessenger.sendMessage({
-                senderId: getValue("currentUser").id,
-                receiverId: getValue("selectedReceiverName"),
+                senderName: getValue("currentUser").name,
+                receiverName: getValue("selectedReceiverName"),
                 text: inputRef.current.value,
             });
 
-            setValue("currentMessages", [...getValue("currentMessages"), messageInfo]);
+            console.log("currval", getValue("currentMessages"));
+
+            const nextVal = [...getValue("currentMessages"), messageInfo];
+
+            console.log("nextval", nextVal);
+            console.log("message sent", { messageInfo });
+
+            setValue("currentMessages", nextVal);
+
+            FakeMessenger.getEmitter().emit(EVT_MESSAGE_TO_FRIEND, messageInfo);
             // setMessage("");
             inputRef.current.value = "";
         }

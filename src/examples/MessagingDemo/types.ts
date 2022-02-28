@@ -9,6 +9,7 @@ export interface MessageInfo {
     dateSent: string;
     dateDelivered?: string;
     id: string;
-    senderId: string;
+    senderName: string;
+    receiverName: string;
     status: "sent" | "delivered" | "seen";
 }

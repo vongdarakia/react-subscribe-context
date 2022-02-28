@@ -4,7 +4,7 @@ import { useSubscribe } from "react-subscribe-context/useSubscribe";
 import styled from "styled-components";
 
 export const MessageHeader = (): ReactElement => {
-    const receiverName = useSubscribe(MessagingSubscriberContext, "selectedReceiverName");
+    const [receiverName] = useSubscribe(MessagingSubscriberContext, "selectedReceiverName");
 
     return <StyledHeader>{receiverName}</StyledHeader>;
 };

@@ -80,12 +80,15 @@ export const useSubscribeDeep = <TState extends object>(
         };
     }, [rerender, emitter, subscribedCache]);
 
-    const stateSetter: StateSetter<TState> = (values) => {
-        if (values instanceof Function) {
-            return setState(values(getState()));
-        }
-        setState(values);
-    };
+    const stateSetter: StateSetter<TState> = useCallback(
+        (values) => {
+            if (values instanceof Function) {
+                return setState(values(getState()));
+            }
+            setState(values);
+        },
+        [getState, setState]
+    );
 
     // console.log({ subscribedEvents });
 
