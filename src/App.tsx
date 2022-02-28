@@ -4,6 +4,7 @@ import { ADVANCED_COLOR } from "examples/AdvancedDemo/colors";
 import { BasicDemo } from "examples/BasicDemo/BasicDemo";
 import { BASIC_COLOR } from "examples/BasicDemo/colors";
 import { DeepSubscriberDemo } from "examples/DeepSubscriberDemo/DeepSubscriberDemo";
+import { MessagingDemo } from "examples/MessagingDemo/MessagingDemo";
 import { ReactTrackDemo } from "examples/ReactTrackDemo/ReactTrackDemo";
 import { SUBSCRIBER_COLOR } from "examples/SubscriberDemo/colors";
 import { SubscriberDemo } from "examples/SubscriberDemo/SubscriberDemo";
@@ -54,8 +55,9 @@ function App() {
         "Subscriber Context",
         "Deep Subscriber Demo",
         "Tracked Demo",
+        "Messenger Demo",
     ] as const;
-    const [selectedAppName, setApp] = useState<typeof apps[number]>("Deep Subscriber Demo");
+    const [selectedAppName, setApp] = useState<typeof apps[number]>("Messenger Demo");
 
     let app;
 
@@ -66,6 +68,9 @@ function App() {
         // case "Memo Demo":
         //     app = <MemoDemo />;
         //     break;
+        case "Messenger Demo":
+            app = <MessagingDemo />;
+            break;
         case "Subscriber Context":
             app = <SubscriberDemo />;
             break;
@@ -101,11 +106,29 @@ function App() {
                 </div>
                 <h2 style={{ color: "whitesmoke" }}>{selectedAppName}</h2>
                 <PerformanceOptionsProvider>
-                    <div style={appsStyle}>{app}</div>
+                    <AppContainer
+                        style={appsStyle}
+                        className={selectedAppName.replaceAll(" ", "_")}
+                    >
+                        {app}
+                    </AppContainer>
                 </PerformanceOptionsProvider>
             </main>
         </div>
     );
 }
+
+const AppContainer = styled.div<{ appName?: string }>`
+    padding: 32px;
+    border: 1px solid white;
+
+    &.Messenger_Demo {
+        border-radius: 12px;
+        background: white;
+        height: 450px;
+        max-width: 720px;
+        margin: auto;
+    }
+`;
 
 export default App;

@@ -16,16 +16,16 @@ const getObjectDiff = <TObject extends Object>(
 
     keys.forEach((key) => {
         if (newObj[key] !== oldObj[key]) {
-            const nextPath = path.length > 0 ? `${path}.${key}` : key;
+            const currentPath = path.length > 0 ? `${path}.${key}` : key;
 
-            if (typeof newObj[key] === "object") {
-                const keyDiffs = getObjectDiff(oldObj[key], newObj[key], nextPath);
+            if (typeof newObj[key] === "object" && !Array.isArray(newObj[key])) {
+                const keyDiffs = getObjectDiff(oldObj[key], newObj[key], currentPath);
 
                 Object.keys(keyDiffs).forEach((diffKey: string) => {
                     results[diffKey] = keyDiffs[diffKey];
                 });
             } else {
-                results[nextPath] = true;
+                results[currentPath] = true;
             }
         }
     });
@@ -42,7 +42,7 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
         const objectDiff = getObjectDiff(control.current.state, nextState);
 
         Object.keys(objectDiff).forEach((key) => {
-            // console.log("state emitted", getUpdateEventName(key));
+            console.log("state emitted", getUpdateEventName(key));
             control.current.emitter.emit(getUpdateEventName(key), nextState);
         });
 
@@ -52,6 +52,7 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
 
     control.current.setValue = (key, value) => {
         const nextState = { [key]: value } as unknown as Partial<TState>;
+        console.log({ nextState, state: control.current.state });
         const objectDiff = getObjectDiff(control.current.state, nextState);
 
         Object.keys(objectDiff).forEach((key) => {

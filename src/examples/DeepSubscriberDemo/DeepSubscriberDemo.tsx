@@ -1,8 +1,5 @@
-import { SUBSCRIBER_COLOR } from "examples/SubscriberDemo/colors";
 import { ReactElement } from "react";
 import styled from "styled-components";
-import { logColor } from "utils/logColor";
-import { logRender } from "utils/logRender";
 import { DeepSubscriberProvider } from "./DeepSubscriberContext";
 import { NameInput } from "./UserForm/NameInput";
 import { UserPreview } from "./UserPreview";
@@ -13,8 +10,6 @@ const StyledContainer = styled.div`
 `;
 
 export const DeepSubscriberDemo = (): ReactElement => {
-    logRender("%cDeepSubscriberProvider", logColor(SUBSCRIBER_COLOR));
-
     return (
         <DeepSubscriberProvider>
             <StyledContainer>

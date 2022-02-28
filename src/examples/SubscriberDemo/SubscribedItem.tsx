@@ -1,19 +1,13 @@
 import { Button } from "components/Button";
 import { Style } from "definitions/common-types";
 import React, { ReactElement, useEffect } from "react";
-import { useSubscribeMany } from "react-subscribe-context/useSubscribeMany";
+import { useSubscribe } from "react-subscribe-context/useSubscribe";
 import { getIncrementedCharValue } from "utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
 import { logColor } from "utils/logColor";
 import { logRender } from "utils/logRender";
 import { SUBSCRIBER_COLOR, SUBSCRIBER_COLOR_LIGHT } from "./colors";
-import {
-    isNumberValueKey,
-    isStringValueKey,
-    SubscriberContext,
-    SubscriberKey,
-    SubscriberState,
-} from "./SubscriberContext";
+import { SubscriberContext, SubscriberKey } from "./SubscriberContext";
 
 const containerStyle: Style = {
     padding: 2,
@@ -22,19 +16,38 @@ const containerStyle: Style = {
     flex: 1,
 };
 
+// const defaultState = {
+//     key: "",
+// };
+
+// const OtherContext = createContext<ControlState<typeof defaultState>>({
+//     emitter: new EventEmitter(),
+//     getState: () => {
+//         console.error("Did you forget to use your control provider?");
+//         return defaultState;
+//     },
+//     getValue: (fieldName: keyof typeof defaultState) => {
+//         console.error("Did you forget to use your control provider?");
+//         return defaultState[fieldName];
+//     },
+//     setState: () => {
+//         console.error("Did you forget to use your control provider?");
+//     },
+//     setValue: () => {
+//         console.error("Did you forget to use your control provider?");
+//     },
+//     state: defaultState,
+// });
+
 export const SubscribedItem = ({ itemKey }: { itemKey: SubscriberKey }): ReactElement => {
-    const [state, setState] = useSubscribeMany(SubscriberContext.Context);
+    const [value, setValue] = useSubscribe(SubscriberContext.Context, itemKey);
 
     const handleClick = () => {
-        const nextState: Partial<SubscriberState> = {};
-
-        if (isNumberValueKey(itemKey)) {
-            nextState[itemKey] = getIncrementedNumValue(state[itemKey]);
-        } else if (isStringValueKey(itemKey)) {
-            nextState[itemKey] = getIncrementedCharValue(state[itemKey]);
+        if (typeof value === "number") {
+            setValue(getIncrementedNumValue(value));
+        } else {
+            setValue(getIncrementedCharValue(value));
         }
-
-        setState(nextState);
     };
 
     useEffect(() => {
@@ -50,7 +63,7 @@ export const SubscribedItem = ({ itemKey }: { itemKey: SubscriberKey }): ReactEl
                 backgroundColor={SUBSCRIBER_COLOR}
                 hoverColor={SUBSCRIBER_COLOR_LIGHT}
             >
-                {state[itemKey]}
+                {value}
             </Button>
         </div>
     );
