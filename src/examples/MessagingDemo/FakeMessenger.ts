@@ -1,5 +1,5 @@
 import axios from "axios";
-import { EVT_MESSAGE_FROM_FRIEND } from "constants/event-names";
+import { EVT_MESSAGE_FROM_FRIEND, EVT_MESSAGE_READ_BY_FRIEND } from "constants/event-names";
 import { EventEmitter } from "events";
 import { MessageInfo } from "examples/MessagingDemo/types";
 
@@ -13,6 +13,7 @@ interface SendFakeMessageToUserArgs {
     authorName: string;
     text?: string;
     userName: string;
+    messageToRead?: MessageInfo;
 }
 
 interface ConversationByReceiver {
@@ -26,12 +27,14 @@ export interface Quote {
 
 export interface Conversation {
     name: string;
+    numUnreadMessages: number;
     recentMessage?: MessageInfo;
 }
 
 let quotes: Quote[] = [];
 // let numAuthors = 0;
 let quotesByName: { [name: string]: Quote[] } = {};
+let isPopularModeOn = false;
 const conversationByReceiver: ConversationByReceiver = {};
 const usedQuotesCache: { [key: string]: { [index: number]: true } } = {};
 const emitter = new EventEmitter();
@@ -59,8 +62,11 @@ export class FakeMessenger {
             conversationByReceiver[receiverName] = [messageInfo];
         }
 
-        console.log("huh!?");
-        FakeMessenger.sendFakeMessageToUser({ authorName: receiverName, userName: senderName });
+        FakeMessenger.sendFakeMessageToUser({
+            authorName: receiverName,
+            userName: senderName,
+            messageToRead: messageInfo,
+        });
 
         return messageInfo;
     }
@@ -78,19 +84,14 @@ export class FakeMessenger {
         });
     }
 
-    static async getConversations(): Promise<Conversation[]> {
+    static async getConversations(senderName: string): Promise<Conversation[]> {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 if (quotes.length === 0) {
-                    // contactNames = Object.keys(quotesByName);
-                    // return resolve(quotesByName);
-
                     try {
                         const response = await axios.get("https://type.fit/api/quotes");
 
                         quotes = response.data;
-
-                        console.log(quotes);
 
                         quotes.forEach((quote) => {
                             if (quotesByName[quote.author]) {
@@ -120,10 +121,6 @@ export class FakeMessenger {
                         }, {} as typeof quotesByName);
 
                         delete quotesByName["null"];
-
-                        // conversations
-                        // numAuthors = Object.keys(quotesByName).length;
-                        // resolve(response.data);
                     } catch (err) {
                         reject(err);
                     }
@@ -133,6 +130,15 @@ export class FakeMessenger {
                 const conversations = contactNames.map(
                     (name): Conversation => ({
                         name,
+                        numUnreadMessages: conversationByReceiver[name]
+                            ? conversationByReceiver[name].reduce(
+                                  (acc, c) =>
+                                      c.status !== "seen" && c.senderName !== senderName
+                                          ? acc + 1
+                                          : acc,
+                                  0
+                              )
+                            : 0,
                         recentMessage:
                             conversationByReceiver[name] &&
                             conversationByReceiver[name][conversationByReceiver[name].length - 1]
@@ -189,11 +195,49 @@ export class FakeMessenger {
         return randomQuote;
     }
 
+    static async simulateReceiverReadMessage(messageToRead: MessageInfo): Promise<void> {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const readMessage: MessageInfo = { ...messageToRead, status: "seen" };
+
+                const dbMessageInfo = conversationByReceiver[messageToRead.receiverName].find(
+                    (messageInfo) => {
+                        return messageInfo.id === messageToRead.id;
+                    }
+                );
+
+                if (dbMessageInfo) {
+                    dbMessageInfo.status = "seen";
+                    emitter.emit(EVT_MESSAGE_READ_BY_FRIEND, readMessage);
+                } else {
+                    console.error("Couldn't read message", messageToRead);
+                }
+                resolve();
+            }, Math.floor(Math.random() * 500 + 500));
+        });
+    }
+
+    static async userReadMessages(friendName: string) {
+        conversationByReceiver[friendName] = conversationByReceiver[friendName].map(
+            (messageInfo) => {
+                if (messageInfo.status !== "seen" && messageInfo.senderName === friendName) {
+                    return { ...messageInfo, status: "seen" };
+                }
+                return messageInfo;
+            }
+        );
+    }
+
     static async sendFakeMessageToUser({
         authorName,
         text,
         userName,
+        messageToRead,
     }: SendFakeMessageToUserArgs): Promise<void> {
+        if (messageToRead) {
+            await FakeMessenger.simulateReceiverReadMessage(messageToRead);
+        }
+
         return new Promise((resolve) => {
             setTimeout(() => {
                 const randomQuote = !!text ? text : FakeMessenger.getRandomQuote(authorName);
@@ -216,9 +260,30 @@ export class FakeMessenger {
                 }
                 emitter.emit(EVT_MESSAGE_FROM_FRIEND, messageInfo);
                 resolve();
-            }, Math.floor(1000 + Math.random() * 2000));
+            }, Math.floor(1000 + Math.random() * 1000));
         });
     }
+
+    static async simulatePopularMode(userName: string, numMessagesToSend = 25) {
+        if (!isPopularModeOn) {
+            const authors = Object.keys(quotesByName);
+            let counter = 0;
+
+            let intervalId = setInterval(() => {
+                const authorName = authors[Math.floor(Math.random() * authors.length)];
+                FakeMessenger.sendFakeMessageToUser({ authorName, userName });
+
+                if (counter++ === numMessagesToSend) {
+                    clearInterval(intervalId);
+                    isPopularModeOn = false;
+                }
+            }, 500);
+
+            isPopularModeOn = true;
+        }
+    }
+
+    static createMessage() {}
 
     static getEmitter() {
         return emitter;

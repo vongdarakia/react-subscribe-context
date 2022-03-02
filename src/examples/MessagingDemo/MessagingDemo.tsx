@@ -1,4 +1,5 @@
 import { Conversations } from "examples/MessagingDemo/Conversations";
+import { FakeMessenger } from "examples/MessagingDemo/FakeMessenger";
 import { MessageHeader } from "examples/MessagingDemo/MessageHeader";
 import { MessageInput } from "examples/MessagingDemo/MessageInput";
 import { MessageList } from "examples/MessagingDemo/MessageList";
@@ -7,8 +8,13 @@ import { ReactElement } from "react";
 import styled from "styled-components";
 
 export const MessagingDemo = (): ReactElement => {
+    const startPopularMode = () => {
+        FakeMessenger.simulatePopularMode("Akia Vongdara");
+    };
+
     return (
         <StyledAppContainer>
+            <button onClick={startPopularMode}>PopularMode</button>
             <MessagingSubscriberProvider>
                 <StyledContainer>
                     <StyledConversationsSection>

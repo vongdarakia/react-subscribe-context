@@ -20,11 +20,13 @@ export const MessageList = (): ReactElement => {
     const handleIncomingMessage = useCallback(
         (messageInfo: MessageInfo) => {
             console.log({ messageInfo });
-            setState((prevState) => {
-                return { currentMessages: [...prevState.currentMessages, messageInfo] };
-            });
+            if (messageInfo.senderName === selectedReceiverName) {
+                setState((prevState) => {
+                    return { currentMessages: [...prevState.currentMessages, messageInfo] };
+                });
+            }
         },
-        [setState]
+        [setState, selectedReceiverName]
     );
 
     useSubscribeMessageSocket("message-from-friend", handleIncomingMessage);
@@ -76,6 +78,6 @@ const StyledMessages = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
-    overflow: scroll;
+    overflow-y: scroll;
     flex: 1;
 `;

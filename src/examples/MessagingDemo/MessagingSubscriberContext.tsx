@@ -18,7 +18,7 @@ const defaultMessages: MessageInfo[] = [
 
 const defaultState = {
     currentMessages: defaultMessages,
-    selectedReceiverName: "Thomas Edison",
+    selectedReceiverName: "Buddha",
     selectedLineId: "Some Id",
     currentUser: {
         id: "my-user-id",

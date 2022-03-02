@@ -8,6 +8,7 @@ import {
     MouseEventHandler,
     ReactElement,
     useCallback,
+    useContext,
     useEffect,
     useState,
 } from "react";
@@ -19,6 +20,7 @@ export const Conversations = (): ReactElement => {
     const [search, setSearch] = useState("");
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [selectedReceiverName] = useSubscribe(MessagingSubscriberContext, "selectedReceiverName");
+    const { getValue } = useContext(MessagingSubscriberContext);
     const [, setState] = useSubscribeDeep(MessagingSubscriberContext);
     const lowercasedSearch = search.toLowerCase();
     const filteredConversations = search
@@ -29,20 +31,28 @@ export const Conversations = (): ReactElement => {
 
     const handleIncomingMessage = useCallback((messageInfo: MessageInfo) => {
         // console.log("received?", messageInfo);
+
         setConversations((prevConversations) => {
-            const copyPrevConversation = prevConversations.slice();
+            const copyPrevConversations = prevConversations.slice();
             const recentConversationIndex = prevConversations.findIndex(
                 (c) => c.name === messageInfo.senderName
             );
 
             if (recentConversationIndex >= 0) {
-                const [recentConversation] = copyPrevConversation.splice(
+                const isTalkingToSender =
+                    getValue("selectedReceiverName") === messageInfo.senderName;
+                const [recentConversation] = copyPrevConversations.splice(
                     recentConversationIndex,
                     1
                 );
                 const nextConversations: Conversation[] = [
-                    { ...recentConversation, recentMessage: messageInfo },
-                    ...copyPrevConversation,
+                    {
+                        ...recentConversation,
+                        recentMessage: messageInfo,
+                        numUnreadMessages:
+                            recentConversation.numUnreadMessages + (isTalkingToSender ? 0 : 1),
+                    },
+                    ...copyPrevConversations,
                 ];
 
                 // console.log("return next conversation", messageInfo);
@@ -80,14 +90,36 @@ export const Conversations = (): ReactElement => {
         });
     }, []);
 
+    const handleMessageRead = useCallback((messageRead: MessageInfo) => {
+        // messageRead.receiverName
+    }, []);
+
     useSubscribeMessageSocket("message-from-friend", handleIncomingMessage);
     useSubscribeMessageSocket("message-to-friend", handleOutgoingMessage);
+    useSubscribeMessageSocket("message-read-by-friend", handleMessageRead);
 
     const handleClickContact: React.MouseEventHandler<HTMLDivElement> = useCallback(
         (e) => {
             const target = e.currentTarget as HTMLDivElement;
+            const contactName = target.dataset["contactname"];
 
-            setState({ selectedReceiverName: target.dataset["contactname"] });
+            if (!contactName) {
+                throw new Error("Somehow conversation data-contactname doesn't exist on list item");
+            }
+
+            setState({ selectedReceiverName: contactName });
+
+            (function readCurrentMessages() {
+                setConversations((prevConversations) =>
+                    prevConversations.map((conversation) => {
+                        if (conversation.name === contactName) {
+                            return { ...conversation, numUnreadMessages: 0 };
+                        }
+                        return conversation;
+                    })
+                );
+                FakeMessenger.userReadMessages(contactName);
+            })();
         },
         [setState]
     );
@@ -98,7 +130,7 @@ export const Conversations = (): ReactElement => {
 
     useEffect(() => {
         const fetchConversations = async () => {
-            const data = await FakeMessenger.getConversations();
+            const data = await FakeMessenger.getConversations(getValue("currentUser").name);
 
             setConversations(data);
         };
@@ -119,7 +151,7 @@ export const Conversations = (): ReactElement => {
             />
             <StyledHeader>Active Conversations ({filteredConversations.length})</StyledHeader>
             <StyledConversations>
-                {filteredConversations.map(({ name, recentMessage }) => {
+                {filteredConversations.map(({ name, recentMessage, numUnreadMessages }) => {
                     return (
                         <SomeComponent
                             key={name}
@@ -128,6 +160,7 @@ export const Conversations = (): ReactElement => {
                             handleClickContact={handleClickContact}
                             recentText={recentMessage?.content}
                             isRecentMessageFromUser={recentMessage?.receiverName === name}
+                            numUnreadMessages={numUnreadMessages}
                             // selectedReceiverName={selectedReceiverName}
                         />
                     );
@@ -144,6 +177,7 @@ const SomeComponent = memo(
         className,
         recentText,
         isRecentMessageFromUser,
+        numUnreadMessages = 0,
     }: {
         name: string;
         // selectedReceiverName: string;
@@ -151,6 +185,7 @@ const SomeComponent = memo(
         handleClickContact: MouseEventHandler<HTMLDivElement>;
         recentText?: string;
         isRecentMessageFromUser: boolean;
+        numUnreadMessages?: number;
     }) => {
         return (
             <StyledContact
@@ -159,16 +194,50 @@ const SomeComponent = memo(
                 data-contactname={name}
                 onClick={handleClickContact}
             >
-                <StyledContactName>{name}</StyledContactName>
-                {recentText && (
-                    <StyledRecentName>{`${
-                        isRecentMessageFromUser ? "You: " : ""
-                    }${recentText}`}</StyledRecentName>
+                <StyledContentContainer>
+                    <StyledContactName>{name}</StyledContactName>
+                    {recentText && (
+                        <StyledRecentName>{`${
+                            isRecentMessageFromUser ? "You: " : ""
+                        }${recentText}`}</StyledRecentName>
+                    )}
+                </StyledContentContainer>
+                {numUnreadMessages > 0 && (
+                    <StyledBadgeContainer>
+                        <StyledBadge>{numUnreadMessages}</StyledBadge>
+                    </StyledBadgeContainer>
                 )}
             </StyledContact>
         );
     }
 );
+
+const StyledBadgeContainer = styled.div`
+    align-items: center;
+    justify-content: flex-end;
+    display: flex;
+`;
+
+const StyledBadge = styled.div`
+    background-color: #ff5757;
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    /* text-align: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+`;
+
+const StyledContentContainer = styled.div`
+    flex: 1;
+    flex-direction: column;
+    display: flex;
+    width: 1%;
+`;
 
 const StyledInput = styled.input`
     border-radius: 4px;
@@ -196,6 +265,7 @@ const StyledContact = styled.div`
     border-radius: 12px;
     text-align: left;
     cursor: pointer;
+    display: flex;
 
     &:hover {
         background-color: #f3f6fb;
@@ -222,7 +292,7 @@ const StyledConversations = styled.div`
     flex-direction: column;
     gap: 1px;
     flex: 1;
-    overflow: scroll;
+    overflow-y: scroll;
 `;
 
 const StyledHeader = styled.div`
