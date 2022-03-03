@@ -218,14 +218,17 @@ export class FakeMessenger {
     }
 
     static async userReadMessages(friendName: string) {
-        conversationByReceiver[friendName] = conversationByReceiver[friendName].map(
-            (messageInfo) => {
-                if (messageInfo.status !== "seen" && messageInfo.senderName === friendName) {
-                    return { ...messageInfo, status: "seen" };
+        if (conversationByReceiver[friendName]) {
+            console.log("reading", friendName);
+            conversationByReceiver[friendName] = conversationByReceiver[friendName].map(
+                (messageInfo) => {
+                    if (messageInfo.status !== "seen" && messageInfo.senderName === friendName) {
+                        return { ...messageInfo, status: "seen" };
+                    }
+                    return messageInfo;
                 }
-                return messageInfo;
-            }
-        );
+            );
+        }
     }
 
     static async sendFakeMessageToUser({
