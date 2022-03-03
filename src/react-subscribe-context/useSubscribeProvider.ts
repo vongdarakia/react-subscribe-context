@@ -60,7 +60,7 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
         control.current.emitter.emit(getUpdateEventName(key), value);
 
         Object.keys(objectDiff).forEach((key) => {
-            // console.log("state emitted", getUpdateEventName(key));
+            console.log("value emitted", getUpdateEventName(key));
             control.current.emitter.emit(getUpdateEventName(key), partialUpdatedState);
         });
     };

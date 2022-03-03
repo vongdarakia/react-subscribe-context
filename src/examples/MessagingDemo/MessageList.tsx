@@ -4,7 +4,16 @@ import { MessageLine } from "examples/MessagingDemo/MessageLine";
 import { MessagingSubscriberContext } from "examples/MessagingDemo/MessagingSubscriberContext";
 import { MessageInfo } from "examples/MessagingDemo/types";
 import { useSubscribeMessageSocket } from "examples/MessagingDemo/useSubscribeMessageSocket";
-import { createRef, memo, ReactElement, useCallback, useEffect, useState } from "react";
+import {
+    createRef,
+    memo,
+    ReactElement,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 import { useSubscribeDeep } from "react-subscribe-context/useSubscribeDeep";
 import styled from "styled-components";
 
@@ -13,8 +22,10 @@ const MemoizedMessageLine = memo(MessageLine);
 export const MessageList = (): ReactElement => {
     const bottomElement = createRef<HTMLDivElement>();
     const [state, setState] = useSubscribeDeep(MessagingSubscriberContext);
-    const [isLoading, setIsLoading] = useState(false);
-    const { selectedReceiverName, currentMessages } = state;
+    const { getValue } = useContext(MessagingSubscriberContext);
+    const [isLoading, setIsLoading] = useState(true);
+    const { currentMessages, selectedReceiverName } = state;
+    const conversationsLength = getValue("conversations").length;
     const senderName = state.currentUser.name;
 
     const handleIncomingMessage = useCallback(
@@ -35,14 +46,16 @@ export const MessageList = (): ReactElement => {
         const fetchMessages = async () => {
             setIsLoading(true);
 
-            const messages = await FakeMessenger.getMessages(selectedReceiverName);
+            const messages = await FakeMessenger.getMessages(getValue("selectedReceiverName"));
 
             setState({ currentMessages: messages });
             setIsLoading(false);
         };
 
-        fetchMessages();
-    }, [selectedReceiverName, setState]);
+        if (getValue("conversations").length > 0) {
+            fetchMessages();
+        }
+    }, [conversationsLength, selectedReceiverName, setState, getValue]);
 
     useEffect(() => {
         bottomElement.current?.scrollIntoView({ behavior: "smooth" });
@@ -53,31 +66,34 @@ export const MessageList = (): ReactElement => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoading]);
 
-    console.log("rendered message list", currentMessages);
+    console.log("rendered message list", { currentMessages, isLoading, senderName });
 
-    const messageElements = currentMessages.map((messageInfo) => {
-        return (
-            <MemoizedMessageLine
-                key={messageInfo.id}
-                messageInfo={messageInfo}
-                isSender={senderName === messageInfo.senderName}
-            />
-        );
-    });
+    const messageElements = useMemo(
+        () =>
+            currentMessages.map((messageInfo) => {
+                return (
+                    <MemoizedMessageLine
+                        key={messageInfo.id}
+                        messageInfo={messageInfo}
+                        isSender={senderName === messageInfo.senderName}
+                    />
+                );
+            }),
+        [senderName, currentMessages]
+    );
 
     return (
-        <StyledMessages>
-            {/* <LoadingSpinner /> */}
-            {isLoading ? <LoadingSpinner /> : messageElements}
+        <StyledMessages isLoading={isLoading}>
+            {isLoading || conversationsLength === 0 ? <LoadingSpinner /> : messageElements}
             <div ref={bottomElement} />
         </StyledMessages>
     );
 };
 
-const StyledMessages = styled.div`
+const StyledMessages = styled.div<{ isLoading: boolean }>`
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: ${({ isLoading }) => (isLoading ? "0px" : "8px")};
     overflow-y: scroll;
     flex: 1;
 `;

@@ -7,8 +7,11 @@ import { useSubscribe } from "react-subscribe-context/useSubscribe";
 
 export const useConversations = () => {
     const [search, setSearch] = useState("");
-    const [conversations, setConversations] = useState<Conversation[]>([]);
     const [selectedReceiverName] = useSubscribe(MessagingSubscriberContext, "selectedReceiverName");
+    const [conversations, setConversations] = useSubscribe(
+        MessagingSubscriberContext,
+        "conversations"
+    );
     const { getValue, setState } = useContext(MessagingSubscriberContext);
     const lowercasedSearch = search.toLowerCase();
     const filteredConversations = search
@@ -17,9 +20,9 @@ export const useConversations = () => {
           )
         : conversations;
 
-    const handleIncomingMessage = useCallback((messageInfo: MessageInfo) => {
-        setConversations((prevConversations) => {
-            const copyPrevConversations = prevConversations.slice();
+    const handleIncomingMessage = useCallback(
+        (messageInfo: MessageInfo) => {
+            const prevConversations = getValue("conversations").slice();
             const recentConversationIndex = prevConversations.findIndex(
                 (c) => c.name === messageInfo.senderName
             );
@@ -27,10 +30,7 @@ export const useConversations = () => {
             if (recentConversationIndex >= 0) {
                 const isTalkingToSender =
                     getValue("selectedReceiverName") === messageInfo.senderName;
-                const [recentConversation] = copyPrevConversations.splice(
-                    recentConversationIndex,
-                    1
-                );
+                const [recentConversation] = prevConversations.splice(recentConversationIndex, 1);
                 const nextConversations: Conversation[] = [
                     {
                         ...recentConversation,
@@ -38,39 +38,34 @@ export const useConversations = () => {
                         numUnreadMessages:
                             recentConversation.numUnreadMessages + (isTalkingToSender ? 0 : 1),
                     },
-                    ...copyPrevConversations,
+                    ...prevConversations,
                 ];
 
-                return nextConversations;
+                setConversations(nextConversations);
             }
+        },
+        [getValue, setConversations]
+    );
 
-            return prevConversations;
-        });
-    }, []);
-
-    const handleOutgoingMessage = useCallback((messageInfo: MessageInfo) => {
-        setConversations((prevConversations) => {
-            const copyPrevConversation = prevConversations.slice();
+    const handleOutgoingMessage = useCallback(
+        (messageInfo: MessageInfo) => {
+            const prevConversations = getValue("conversations").slice();
             const recentConversationIndex = prevConversations.findIndex(
                 (c) => c.name === messageInfo.receiverName
             );
 
             if (recentConversationIndex >= 0) {
-                const [recentConversation] = copyPrevConversation.splice(
-                    recentConversationIndex,
-                    1
-                );
+                const [recentConversation] = prevConversations.splice(recentConversationIndex, 1);
                 const nextConversations: Conversation[] = [
                     { ...recentConversation, recentMessage: messageInfo },
-                    ...copyPrevConversation,
+                    ...prevConversations,
                 ];
 
-                return nextConversations;
+                setConversations(nextConversations);
             }
-
-            return prevConversations;
-        });
-    }, []);
+        },
+        [getValue, setConversations]
+    );
 
     const handleMessageRead = useCallback((messageRead: MessageInfo) => {
         // messageRead.receiverName
@@ -89,9 +84,9 @@ export const useConversations = () => {
         };
 
         fetchConversations();
-    }, []);
+    }, [setState, getValue, setConversations]);
 
-    const handleClickContact: React.MouseEventHandler<HTMLDivElement> = useCallback(
+    const handleClickConversation: React.MouseEventHandler<HTMLDivElement> = useCallback(
         (e) => {
             const target = e.currentTarget as HTMLDivElement;
             const contactName = target.dataset["contactname"];
@@ -114,7 +109,7 @@ export const useConversations = () => {
                 FakeMessenger.userReadMessages(contactName);
             })();
         },
-        [setState]
+        [setState, setConversations]
     );
 
     const handleChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +119,7 @@ export const useConversations = () => {
     return {
         conversations: filteredConversations,
         onChangeSearch: handleChangeSearch,
-        onClickContact: handleClickContact,
+        onClickConversation: handleClickConversation,
         search,
         selectedReceiverName,
     };

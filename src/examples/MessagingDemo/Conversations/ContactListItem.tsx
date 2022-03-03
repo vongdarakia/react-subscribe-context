@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface Props {
     className?: string;
-    handleClickContact: MouseEventHandler<HTMLDivElement>;
+    handleClickConversation: MouseEventHandler<HTMLDivElement>;
     isRecentMessageFromUser: boolean;
     name: string;
     numUnreadMessages?: number;
@@ -12,7 +12,7 @@ interface Props {
 
 export const ContactListItem = ({
     className,
-    handleClickContact,
+    handleClickConversation,
     isRecentMessageFromUser,
     name,
     numUnreadMessages = 0,
@@ -25,7 +25,7 @@ export const ContactListItem = ({
             key={name}
             className={className}
             data-contactname={name}
-            onClick={handleClickContact}
+            onClick={handleClickConversation}
         >
             <StyledContentContainer>
                 <StyledContactName>{name}</StyledContactName>

@@ -6,7 +6,7 @@ import styled from "styled-components";
 const MemoizedContactListItem = memo(ContactListItem);
 
 export const Conversations = (): ReactElement => {
-    const { conversations, onChangeSearch, onClickContact, search, selectedReceiverName } =
+    const { conversations, onChangeSearch, onClickConversation, search, selectedReceiverName } =
         useConversations();
 
     return (
@@ -20,7 +20,7 @@ export const Conversations = (): ReactElement => {
                             key={name}
                             name={name}
                             className={selectedReceiverName === name ? "selected" : ""}
-                            handleClickContact={onClickContact}
+                            handleClickConversation={onClickConversation}
                             recentText={recentMessage?.content}
                             isRecentMessageFromUser={recentMessage?.receiverName === name}
                             numUnreadMessages={numUnreadMessages}

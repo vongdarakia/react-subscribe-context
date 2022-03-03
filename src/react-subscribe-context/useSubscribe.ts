@@ -2,9 +2,14 @@ import { Context, useCallback, useContext, useEffect, useState } from "react";
 import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ControlState } from "./subscriber-types";
 
+interface UpdateValue<TState, TKey extends keyof TState & string> {
+    (value: TState[TKey]): void;
+    (getValue: (value: TState[TKey]) => TState[TKey]): void;
+}
+
 type UseSubscribeReturn<TState, TKey extends keyof TState & string> = [
     TState[TKey],
-    (value: TState[TKey]) => void
+    UpdateValue<TState, TKey>
 ];
 
 export const useSubscribe = <TState, TKey extends keyof TState & string>(
@@ -32,9 +37,16 @@ export const useSubscribe = <TState, TKey extends keyof TState & string>(
 
     const value = getValue(key);
 
-    const updateValue: UseSubscribeReturn<TState, TKey>["1"] = (value) => {
-        setValue(key, value);
-    };
+    const updateValue: UseSubscribeReturn<TState, TKey>["1"] = useCallback(
+        (value) => {
+            if (value instanceof Function) {
+                setValue(key, value(getValue(key)));
+            } else {
+                setValue(key, value);
+            }
+        },
+        [key, setValue, getValue]
+    );
 
     return [value, updateValue];
 };

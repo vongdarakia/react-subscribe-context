@@ -1,3 +1,4 @@
+import { Conversation } from "examples/MessagingDemo/FakeMessenger";
 import { MessageInfo, User } from "examples/MessagingDemo/types";
 import { createSubscriberContext } from "react-subscribe-context/createSubscriberContext";
 
@@ -5,28 +6,17 @@ import { createSubscriberContext } from "react-subscribe-context/createSubscribe
 //     name: "Something something",
 // };
 
-const defaultMessages: MessageInfo[] = [
-    {
-        id: "some-id",
-        senderName: "Thomas Edison",
-        receiverName: "Akia Vongdara",
-        content: "Hey there!",
-        status: "delivered",
-        dateSent: new Date().toISOString(),
-    },
-];
+const defaultMessages: MessageInfo[] = [];
 
 const defaultState = {
+    conversations: [] as Conversation[],
     currentMessages: defaultMessages,
-    selectedReceiverName: "Buddha",
-    selectedLineId: "Some Id",
     currentUser: {
         id: "my-user-id",
         name: "Akia Vongdara",
     } as User,
+    selectedReceiverName: "",
 };
-
-// https://type.fit/api/quotes
 
 export const { Context: MessagingSubscriberContext, Provider: MessagingSubscriberProvider } =
     createSubscriberContext({ defaultState });
