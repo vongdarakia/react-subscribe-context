@@ -1,4 +1,4 @@
-import { MessageBubble } from "examples/MessagingDemo/MessageBubble";
+import { MessageBubble } from "examples/MessagingDemo/MessageHistory/MessageBubble";
 import { MessageInfo } from "examples/MessagingDemo/types";
 import { ReactElement } from "react";
 import styled from "styled-components";

@@ -1,8 +1,8 @@
 import { Conversations } from "examples/MessagingDemo/Conversations";
 import { FakeMessenger } from "examples/MessagingDemo/FakeMessenger";
 import { MessageHeader } from "examples/MessagingDemo/MessageHeader";
+import { MessageHistory } from "examples/MessagingDemo/MessageHistory";
 import { MessageInput } from "examples/MessagingDemo/MessageInput";
-import { MessageList } from "examples/MessagingDemo/MessageList";
 import { MessagingSubscriberProvider } from "examples/MessagingDemo/MessagingSubscriberContext";
 import { ReactElement } from "react";
 import styled from "styled-components";
@@ -23,7 +23,7 @@ export const MessagingDemo = (): ReactElement => {
                     <StyledMessengerBody>
                         <MessageHeader />
                         <StyledMessengerWindow>
-                            <MessageList />
+                            <MessageHistory />
                             <MessageInput />
                         </StyledMessengerWindow>
                     </StyledMessengerBody>
