@@ -5,39 +5,25 @@ import { createRef, KeyboardEventHandler, ReactElement, useContext } from "react
 import styled from "styled-components";
 
 export const MessageInput = (): ReactElement => {
-    // const [text, setMessage] = useState("");
     const inputRef = createRef<HTMLInputElement>();
     const { getValue, setValue } = useContext(MessagingSubscriberContext);
 
     const handleClickSend = async () => {
         if (inputRef.current && inputRef.current.value) {
-            console.log("sending message", inputRef.current.value);
             const messageInfo = await FakeMessenger.sendMessage({
                 senderName: getValue("currentUser").name,
                 receiverName: getValue("selectedReceiverName"),
                 text: inputRef.current.value,
             });
 
-            console.log("currval", getValue("currentMessages"));
-
             const nextVal = [...getValue("currentMessages"), messageInfo];
-
-            console.log("nextval", nextVal);
-            console.log("message sent", { messageInfo });
 
             setValue("currentMessages", nextVal);
 
             FakeMessenger.getEmitter().emit(EVT_MESSAGE_TO_FRIEND, messageInfo);
-            // setMessage("");
             inputRef.current.value = "";
         }
     };
-
-    // const handleChangeMessage: ChangeEventHandler<HTMLInputElement> = (e) => {
-    //     if (inputRef.current) {
-    //         setMessage(e.target.value);
-    //     }
-    // };
 
     const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === "Enter") {
@@ -50,7 +36,6 @@ export const MessageInput = (): ReactElement => {
             <StyledInput
                 ref={inputRef}
                 placeholder="Enter your message here"
-                // onChange={handleChangeMessage}
                 onKeyPress={handleKeyPress}
             />
             <StyledButton onClick={handleClickSend}>Send</StyledButton>

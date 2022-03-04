@@ -15,7 +15,6 @@ export const useMessageHistory = () => {
 
     const handleIncomingMessage = useCallback(
         (messageInfo: MessageInfo) => {
-            console.log({ messageInfo });
             if (messageInfo.senderName === selectedReceiverName) {
                 setState((prevState) => {
                     return { currentMessages: [...prevState.currentMessages, messageInfo] };

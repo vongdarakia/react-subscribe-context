@@ -45,14 +45,13 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
         control.current.emitter.emit("update-state", control.current.state);
 
         Object.keys(objectDiff).forEach((key) => {
-            console.log("state emitted", getUpdateEventName(key), nextState);
+            console.log("updated state", getUpdateEventName(key), nextState);
             control.current.emitter.emit(getUpdateEventName(key), nextState);
         });
     };
 
     control.current.setValue = (key, value) => {
         const partialUpdatedState = { [key]: value } as unknown as Partial<TState>;
-        // console.log({ nextState, state: control.current.state });
         const objectDiff = getObjectDiff(control.current.state, partialUpdatedState);
         const newState = { ...control.current.state, [key]: value };
 
@@ -60,21 +59,13 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
         control.current.emitter.emit(getUpdateEventName(key), value);
 
         Object.keys(objectDiff).forEach((key) => {
-            console.log("value emitted", getUpdateEventName(key));
+            console.log("updated value", getUpdateEventName(key));
             control.current.emitter.emit(getUpdateEventName(key), partialUpdatedState);
         });
     };
 
     control.current.getValue = (fieldName) => control.current.state[fieldName];
     control.current.getState = () => control.current.state;
-
-    // console.log("useSubscribeProvider", control);
-
-    // useEffect(() => {
-    //     return () => {
-    //         console.log("unmounting useSubscribeProvider");
-    //     };
-    // }, []);
 
     return control;
 };

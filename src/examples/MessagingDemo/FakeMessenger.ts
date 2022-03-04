@@ -32,7 +32,6 @@ export interface Conversation {
 }
 
 let quotes: Quote[] = [];
-// let numAuthors = 0;
 let quotesByName: { [name: string]: Quote[] } = {};
 let isPopularModeOn = false;
 const conversationByReceiver: ConversationByReceiver = {};
@@ -40,7 +39,6 @@ const usedQuotesCache: { [key: string]: { [index: number]: true } } = {};
 const emitter = new EventEmitter();
 
 export class FakeMessenger {
-    // sendMessage
     static async sendMessage({
         receiverName,
         senderName,
@@ -72,7 +70,6 @@ export class FakeMessenger {
     }
 
     static async getMessages(contactName: string): Promise<MessageInfo[]> {
-        console.log("grabbing messages");
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve(
@@ -166,14 +163,12 @@ export class FakeMessenger {
                     return a.recentMessage ? -1 : 1;
                 });
 
-                // console.log(conversationByReceiver[contactNames[0]]);
                 resolve(conversations);
             }, Math.floor(Math.random() * 1000));
         });
     }
 
     static getRandomQuote(authorName: string): string {
-        console.log("quote from", authorName);
         let randomQuoteIndex = Math.floor(Math.random() * quotesByName[authorName].length);
         let randomQuote = quotesByName[authorName][randomQuoteIndex].text;
         const usedUpAllQuotes =
@@ -181,7 +176,6 @@ export class FakeMessenger {
             Object.keys(usedQuotesCache[authorName]).length >= quotesByName[authorName].length;
 
         if (usedUpAllQuotes) {
-            console.log("used up quotes", quotesByName[authorName].length);
             delete usedQuotesCache[authorName];
         }
 
@@ -219,7 +213,6 @@ export class FakeMessenger {
 
     static async userReadMessages(friendName: string) {
         if (conversationByReceiver[friendName]) {
-            console.log("reading", friendName);
             conversationByReceiver[friendName] = conversationByReceiver[friendName].map(
                 (messageInfo) => {
                     if (messageInfo.status !== "seen" && messageInfo.senderName === friendName) {
@@ -253,8 +246,6 @@ export class FakeMessenger {
                     receiverName: userName,
                     status: "sent",
                 };
-
-                console.log("message generated", messageInfo);
 
                 if (conversationByReceiver[authorName]) {
                     conversationByReceiver[authorName].push(messageInfo);
@@ -291,5 +282,4 @@ export class FakeMessenger {
     static getEmitter() {
         return emitter;
     }
-    // broadcastMessage
 }

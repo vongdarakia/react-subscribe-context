@@ -83,17 +83,12 @@ const StyledMessengerWindow = styled.div`
     padding: 24px;
     border-radius: 12px;
     flex: 1;
-    /* height: fit-content; */
     display: flex;
     flex-direction: column;
     overflow: auto;
 `;
 
 const StyledConversationsSection = styled.div`
-    /* gap: 24px; */
-    /* background-color: #f3f6fb; */
-    /* padding: 24px;
-    border-radius: 12px; */
     width: 33%;
     max-width: 280px;
     min-width: 200px;
