@@ -8,7 +8,7 @@ import { createSubscriberContext } from "react-subscribe-context/createSubscribe
 
 const defaultMessages: MessageInfo[] = [];
 
-const defaultState = {
+const initialState = {
     conversations: [] as Conversation[],
     currentMessages: defaultMessages,
     currentUser: {
@@ -19,4 +19,4 @@ const defaultState = {
 };
 
 export const { Context: MessagingSubscriberContext, Provider: MessagingSubscriberProvider } =
-    createSubscriberContext({ defaultState });
+    createSubscriberContext({ initialState });

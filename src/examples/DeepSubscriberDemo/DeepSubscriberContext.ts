@@ -13,7 +13,7 @@ interface User {
     age: number;
 }
 
-const defaultState: {
+const initialState: {
     user: User;
 } = {
     user: {
@@ -23,7 +23,7 @@ const defaultState: {
     },
 };
 
-export type DeepSubscriberState = typeof defaultState;
+export type DeepSubscriberState = typeof initialState;
 
 export const { Context: DeepSubscriberContext, Provider: DeepSubscriberProvider } =
-    createSubscriberContext({ defaultState });
+    createSubscriberContext({ initialState });

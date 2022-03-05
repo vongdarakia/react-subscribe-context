@@ -5,21 +5,21 @@ import { ControlState } from "./subscriber-types";
 import { useSubscribeProvider } from "./useSubscribeProvider";
 
 interface CreateControlContextOptions<TState> {
-    defaultState: TState;
+    initialState: TState;
 }
 
 export const createSubscriberContext = <TState,>({
-    defaultState,
+    initialState,
 }: CreateControlContextOptions<TState>) => {
     const defaultControl: ControlState<TState> = {
         emitter: new EventEmitter(),
         getState: () => {
             console.error("Did you forget to use your control provider?");
-            return defaultState;
+            return initialState;
         },
         getValue: (fieldName) => {
             console.error("Did you forget to use your control provider?");
-            return defaultState[fieldName];
+            return initialState[fieldName];
         },
         setState: () => {
             console.error("Did you forget to use your control provider?");
@@ -27,7 +27,7 @@ export const createSubscriberContext = <TState,>({
         setValue: () => {
             console.error("Did you forget to use your control provider?");
         },
-        state: defaultState,
+        state: initialState,
     };
 
     const Context = createContext<ControlState<TState>>(defaultControl);

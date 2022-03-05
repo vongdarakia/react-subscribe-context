@@ -16,29 +16,6 @@ const containerStyle: Style = {
     flex: 1,
 };
 
-// const defaultState = {
-//     key: "",
-// };
-
-// const OtherContext = createContext<ControlState<typeof defaultState>>({
-//     emitter: new EventEmitter(),
-//     getState: () => {
-//         console.error("Did you forget to use your control provider?");
-//         return defaultState;
-//     },
-//     getValue: (fieldName: keyof typeof defaultState) => {
-//         console.error("Did you forget to use your control provider?");
-//         return defaultState[fieldName];
-//     },
-//     setState: () => {
-//         console.error("Did you forget to use your control provider?");
-//     },
-//     setValue: () => {
-//         console.error("Did you forget to use your control provider?");
-//     },
-//     state: defaultState,
-// });
-
 export const SubscribedItem = ({ itemKey }: { itemKey: SubscriberKey }): ReactElement => {
     const [value, setValue] = useSubscribe(SubscriberContext.Context, itemKey);
 

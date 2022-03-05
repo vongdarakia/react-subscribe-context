@@ -14,7 +14,7 @@ export const isStringValueKey = (key: SubscriberKey): key is StringValueKey => {
     return key.includes("prop-str-");
 };
 
-const defaultState: {
+const initialState: {
     [key: NumberValueKey]: number;
     [key: StringValueKey]: string;
     email?: string;
@@ -27,14 +27,14 @@ let char = "A";
 
 for (let i = 0; i < NUM_SUBSCRIBED_ITEMS; i++) {
     if (i % 2 === 0) {
-        defaultState[`prop-num-${i}`] = num;
+        initialState[`prop-num-${i}`] = num;
         num = getIncrementedNumValue(num);
     } else {
-        defaultState[`prop-str-${i}`] = char;
+        initialState[`prop-str-${i}`] = char;
         char = getIncrementedCharValue(char);
     }
 }
 
-export type SubscriberState = typeof defaultState;
+export type SubscriberState = typeof initialState;
 
-export const SubscriberContext = createSubscriberContext({ defaultState });
+export const SubscriberContext = createSubscriberContext({ initialState });
