@@ -258,22 +258,25 @@ export class FakeMessenger {
         });
     }
 
-    static async simulatePopularMode(userName: string, numMessagesToSend = 25) {
+    static async simulatePopularMode(userName: string, numMessagesToSend = 25): Promise<void> {
         if (!isPopularModeOn) {
-            const authors = Object.keys(quotesByName);
-            let counter = 0;
+            return new Promise((resolve) => {
+                const authors = Object.keys(quotesByName);
+                let counter = 0;
 
-            let intervalId = setInterval(() => {
-                const authorName = authors[Math.floor(Math.random() * authors.length)];
-                FakeMessenger.sendFakeMessageToUser({ authorName, userName });
+                let intervalId = setInterval(() => {
+                    const authorName = authors[Math.floor(Math.random() * authors.length)];
+                    FakeMessenger.sendFakeMessageToUser({ authorName, userName });
 
-                if (counter++ === numMessagesToSend) {
-                    clearInterval(intervalId);
-                    isPopularModeOn = false;
-                }
-            }, 500);
+                    if (counter++ === numMessagesToSend) {
+                        clearInterval(intervalId);
+                        isPopularModeOn = false;
+                        resolve();
+                    }
+                }, 500);
 
-            isPopularModeOn = true;
+                isPopularModeOn = true;
+            });
         }
     }
 
