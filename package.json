@@ -1,6 +1,6 @@
 {
     "name": "react-subscribe-context",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "private": false,
     "author": "Akia Vongdara",
     "description": "Simple state management hooks that works like React Context but optmized to render in components only where the data it's subscribed to changes.",
