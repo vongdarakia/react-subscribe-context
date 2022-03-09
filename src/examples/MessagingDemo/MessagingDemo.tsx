@@ -1,30 +1,57 @@
-import { Conversations } from "examples/MessagingDemo/Conversations";
+import { Conversations as MessageConversations } from "examples/MessagingDemo/Conversations";
+import { VanillaConversations } from "examples/MessagingDemo/Conversations/VanillaConversations";
 import { MessageHeader } from "examples/MessagingDemo/MessageHeader";
 import { MessageHistory } from "examples/MessagingDemo/MessageHistory";
+import { VanillaMessageHistory } from "examples/MessagingDemo/MessageHistory/VanillaMessageHistory";
 import { MessageInput } from "examples/MessagingDemo/MessageInput";
 import { MessagingSubscriberProvider } from "examples/MessagingDemo/MessagingSubscriberContext";
 import { PopularModeButton } from "examples/MessagingDemo/PopularModeButton";
-import { ReactElement } from "react";
+import { VanillaMessageHeader } from "examples/MessagingDemo/VanillaMessageHeader";
+import { VanillaMessageInput } from "examples/MessagingDemo/VanillaMessageInput";
+import { VanillaMessagingProvider } from "examples/MessagingDemo/VanillaMessagingContext";
+import { ReactElement, useState } from "react";
 import styled from "styled-components";
 
 export const MessagingDemo = (): ReactElement => {
+    const [isVanilla, setIsVanilla] = useState(false);
+    let Provider = MessagingSubscriberProvider;
+    let Header = MessageHeader;
+    let History = MessageHistory;
+    let Input = MessageInput;
+    let Conversations = MessageConversations;
+
+    if (isVanilla) {
+        Provider = VanillaMessagingProvider;
+        Header = VanillaMessageHeader;
+        History = VanillaMessageHistory;
+        Input = VanillaMessageInput;
+        Conversations = VanillaConversations;
+    }
+
     return (
         <StyledAppContainer>
             <PopularModeButton />
-            <MessagingSubscriberProvider>
+            <StyledButton
+                onClick={() => {
+                    setIsVanilla((val) => !val);
+                }}
+            >
+                Vanilla Mode ({isVanilla ? "On" : "Off"})
+            </StyledButton>
+            <Provider>
                 <StyledContainer>
                     <StyledConversationsSection>
                         <Conversations />
                     </StyledConversationsSection>
                     <StyledMessengerBody>
-                        <MessageHeader />
+                        <Header />
                         <StyledMessengerWindow>
-                            <MessageHistory />
-                            <MessageInput />
+                            <History />
+                            <Input />
                         </StyledMessengerWindow>
                     </StyledMessengerBody>
                 </StyledContainer>
-            </MessagingSubscriberProvider>
+            </Provider>
             <StyledFooter>
                 Designed inspired by{" "}
                 <a
@@ -38,6 +65,10 @@ export const MessagingDemo = (): ReactElement => {
         </StyledAppContainer>
     );
 };
+
+const StyledButton = styled.button`
+    padding: 12px;
+`;
 
 const StyledFooter = styled.div`
     color: whitesmoke;
