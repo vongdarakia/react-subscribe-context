@@ -39,7 +39,7 @@ const createProxyHandler = <TState extends object>(
     };
 };
 
-export const useSubscribeDeep = <TState extends object>(
+export const useSubscribeAll = <TState extends object>(
     Context: Context<ControlState<TState>>
 ): UseSubscribeReturn<TState> => {
     const { emitter, setState, getState } = useContext(Context);

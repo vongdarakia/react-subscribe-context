@@ -1,11 +1,11 @@
 import { Button } from "components/Button";
 import { PERFORMANCE_OPTIONS_COLOR } from "components/PerformanceOptions/colors";
 import { ReactElement } from "react";
-import { useSubscribeDeep } from "react-subscribe-context/useSubscribeDeep";
+import { useSubscribeAll } from "react-subscribe-context/useSubscribeAll";
 import { SubscriberContext } from "./SubscriberContext";
 
 export const EmailItem = (): ReactElement => {
-    const [state] = useSubscribeDeep(SubscriberContext.Context);
+    const [state] = useSubscribeAll(SubscriberContext.Context);
 
     return (
         <div>

@@ -1,6 +1,5 @@
 export * from "./createSubscriberContext";
 export * from "./createUseSubscribe";
 export * from "./subscriber-types";
-export * from "./useSubscribe";
-export * from "./useSubscribeDeep";
+export * from "./useSubscribeAll";
 // export * from "./useSubscribeMany";

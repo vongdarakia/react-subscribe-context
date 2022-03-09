@@ -1,10 +1,10 @@
 import { MessagingSubscriberContext } from "examples/MessagingDemo/MessagingSubscriberContext";
 import { ReactElement } from "react";
-import { useSubscribe } from "react-subscribe-context/useSubscribe";
+import { useSubscribeAll } from "react-subscribe-context/useSubscribeAll";
 import styled from "styled-components";
 
 export const MessageHeader = (): ReactElement => {
-    const [receiverName] = useSubscribe(MessagingSubscriberContext, "selectedReceiverName");
+    const [receiverName] = useSubscribeAll(MessagingSubscriberContext, "selectedReceiverName");
 
     return <StyledHeader>{receiverName}</StyledHeader>;
 };

@@ -3,12 +3,15 @@ import { MessagingSubscriberContext } from "examples/MessagingDemo/MessagingSubs
 import { MessageInfo } from "examples/MessagingDemo/types";
 import { useSubscribeMessageSocket } from "examples/MessagingDemo/useSubscribeMessageSocket";
 import { ChangeEvent, useCallback, useContext, useEffect, useState } from "react";
-import { useSubscribe } from "react-subscribe-context/useSubscribe";
+import { useSubscribeAll } from "react-subscribe-context/useSubscribeAll";
 
 export const useConversations = () => {
     const [search, setSearch] = useState("");
-    const [selectedReceiverName] = useSubscribe(MessagingSubscriberContext, "selectedReceiverName");
-    const [conversations, setConversations] = useSubscribe(
+    const [selectedReceiverName] = useSubscribeAll(
+        MessagingSubscriberContext,
+        "selectedReceiverName"
+    );
+    const [conversations, setConversations] = useSubscribeAll(
         MessagingSubscriberContext,
         "conversations"
     );

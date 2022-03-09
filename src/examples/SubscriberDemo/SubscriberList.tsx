@@ -85,8 +85,6 @@ export const SubscriberList = (): ReactElement => {
         setState(nextState);
     }, [numElements, setState, getValue]);
 
-    // console.log("render subscriber list");
-
     return (
         <div>
             <StyledButtonContainer>

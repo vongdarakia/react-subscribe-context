@@ -1,16 +1,12 @@
 import { ReactElement } from "react";
-import { useSubscribeDeep } from "react-subscribe-context/useSubscribeDeep";
+import { useSubscribeAll } from "react-subscribe-context/useSubscribeAll";
 import { logRender } from "utils/logRender";
 import { DeepSubscriberContext } from "./DeepSubscriberContext";
 
 export const PreviewFirstName = (): ReactElement => {
-    const [state] = useSubscribeDeep(DeepSubscriberContext);
+    const [state] = useSubscribeAll(DeepSubscriberContext);
 
     logRender("firstName Preview");
 
-    return (
-        <span>
-            {state.user.name.first} {state.user.name.last}
-        </span>
-    );
+    return <span>{state.user.name.first}</span>;
 };

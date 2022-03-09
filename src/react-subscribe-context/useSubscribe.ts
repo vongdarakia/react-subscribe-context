@@ -12,7 +12,7 @@ type UseSubscribeReturn<TState, TKey extends keyof TState & string> = [
     UpdateValue<TState, TKey>
 ];
 
-export const useSubscribe = <TState, TKey extends keyof TState & string>(
+export const useSubscribeAll = <TState, TKey extends keyof TState & string>(
     Context: Context<ControlState<TState>>,
     key: TKey
 ): UseSubscribeReturn<TState, TKey> => {

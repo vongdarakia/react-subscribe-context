@@ -8,7 +8,7 @@ export const createUseSubscribe = <TState>(Context: Context<ControlState<TState>
         (value: TState[TKey]) => void
     ];
 
-    const useSubscribe = <TKey extends keyof TState & string>(
+    const useSubscribeAll = <TKey extends keyof TState & string>(
         key: TKey
     ): UseSubscribeReturn<TKey> => {
         const { emitter, getValue, setValue } = useContext(Context);
@@ -19,13 +19,12 @@ export const createUseSubscribe = <TState>(Context: Context<ControlState<TState>
             const handleValueUpdated = () => {
                 rerender();
             };
-            // console.log("useSubscribe", key);
+
             const eventName = getUpdateEventName(key);
 
             emitter.on(eventName, handleValueUpdated);
 
             return () => {
-                // console.log("unmounting emitter for", eventName);
                 emitter.off(eventName, handleValueUpdated);
             };
         }, [emitter, rerender, key]);
@@ -39,5 +38,5 @@ export const createUseSubscribe = <TState>(Context: Context<ControlState<TState>
         return [value, updateValue];
     };
 
-    return useSubscribe;
+    return useSubscribeAll;
 };

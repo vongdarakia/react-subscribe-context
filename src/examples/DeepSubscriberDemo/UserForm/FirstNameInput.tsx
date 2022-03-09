@@ -1,6 +1,6 @@
 import { Input } from "components/Input";
 import { ChangeEventHandler, ReactElement } from "react";
-import { useSubscribeDeep } from "react-subscribe-context/useSubscribeDeep";
+import { useSubscribeAll } from "react-subscribe-context/useSubscribeAll";
 import { logRender } from "utils/logRender";
 import { DeepSubscriberContext } from "../DeepSubscriberContext";
 
@@ -10,10 +10,12 @@ export const FirstNameInput = (): ReactElement => {
             user: { name },
         },
         setState,
-    ] = useSubscribeDeep(DeepSubscriberContext);
+    ] = useSubscribeAll(DeepSubscriberContext);
 
     const handleChangeFirstName: ChangeEventHandler<HTMLInputElement> = (e) => {
         const first = e.target.value;
+
+        console.log({ first });
 
         setState(({ user }) => ({
             user: { ...user, name: { ...user.name, first } },
