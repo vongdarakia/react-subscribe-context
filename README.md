@@ -6,7 +6,12 @@ _And it's **IE11** compatible!_
 
 ## Introduction
 
-Some introduction
+React Context is an amazing tool to help avoid prop drilling, but it comes with a price. It's not a pleasant dev experience to create setters for every value you want in your context, and each time those values changes, it'll rerender **every** child it holds/consumes, unless they're memoized, but who wants to put in that extra work to memoize everything?
+
+I was inspired by [react-hook-form](https://github.com/react-hook-form/react-hook-form) and their [useWatch](https://react-hook-form.com/api/usewatch/), which subscribed to only changes to a specific value of a form. I loved that feature and thought it'd be great if React Context could do that too. Then I learned about [react-tracked](https://github.com/dai-shi/react-tracked).
+It did exactly what I was looking for, except that it wasn't IE11 compatible, so I decided to create react-subscribe-context.
+
+Using Proxy and EventEmitter, I created a tool where you can subscribe to a value just by accessing it, and it works for nested objects as well. It's simple to set up and works similar to the React hook, `useState`!
 
 ## Installation
 
@@ -77,7 +82,7 @@ export const MovieCounterComponent = (): ReactElement => {
 
 ### Subscribing to nested object values
 
-This will subscribe to both `first` and `last` value changes. Even if the `name` object itself changes, this component will not rerender.
+These components will subscribe to `first` and `last` value changes. Even if the `name` object itself changes, this component will not rerender unless that `first` or `last` values are different. The examples below shows two different ways of subscribing to a nested value.
 
 ```typescript
 // FirstNameComponent.tsx
@@ -119,7 +124,7 @@ import { SpiderManContext } from "path/to/SpiderManContext";
 export const NameComponent = (): ReactElement => {
   const [, setContextState] = useSubscribe(SpiderManContext);
 
-  const handleToggleName = () => {
+  const handleClickToggleName = () => {
     const oddEven = Math.floor(Math.random() * 2);
 
     setContextState((prevState) => {
@@ -142,7 +147,7 @@ export const NameComponent = (): ReactElement => {
     <div>
       <FirstNameComponent />
       <LastNameComponent />
-      <button onClick={handleToggleName}>Toggle name</button>
+      <button onClick={handleClickToggleName}>Toggle name</button>
     </div>
   );
 };
