@@ -1,13 +1,14 @@
 import { createContext } from "react";
 
 export interface AdvancedContextState {
-    items: { id: `advanced-prop-${number}`; value: number }[];
-    setState: (nextState: Partial<typeof advancedContextState>) => void;
+    setState: (nextState: { [key: `advanced-prop-${number}`]: number }) => void;
+    setValue: (key: `advanced-prop-${number}`, value: number) => void;
+    [key: `advanced-prop-${number}`]: number;
 }
 
 export const advancedContextState: AdvancedContextState = {
-    items: [],
     setState: () => {},
+    setValue: () => {},
 };
 
 export const AdvancedContext = createContext(advancedContextState);

@@ -13,9 +13,15 @@ const containerStyle: Style = {
     flex: 1,
 };
 
-export const AdvancedItem = ({ itemKey }: { itemKey: string; value?: number }): ReactElement => {
-    const { items } = useContext(AdvancedContext);
-    const item = items.find((item) => item.id === itemKey);
+export const AdvancedItem = ({
+    itemKey,
+}: {
+    itemKey: `advanced-prop-${number}`;
+    value?: number;
+}): ReactElement => {
+    const { setValue, ...props } = useContext(AdvancedContext);
+
+    const propVal = props[itemKey];
 
     useEffect(() => {
         console.log("mounted", itemKey);
@@ -29,8 +35,9 @@ export const AdvancedItem = ({ itemKey }: { itemKey: string; value?: number }): 
                 data-key={itemKey}
                 backgroundColor={ADVANCED_COLOR}
                 hoverColor={ADVANCED_COLOR_LIGHT}
+                onClick={() => {}}
             >
-                {item ? item.value : "None"}
+                {propVal !== undefined ? propVal : "None"}
             </Button>
         </div>
     );

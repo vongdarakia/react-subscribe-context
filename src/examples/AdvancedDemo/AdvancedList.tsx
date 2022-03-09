@@ -1,6 +1,6 @@
 import { PerformanceOptionsContext } from "components/PerformanceOptions/PerformanceOptionsContext";
 import { Style } from "definitions/common-types";
-import { memo, MouseEvent, ReactElement, useContext, useEffect } from "react";
+import { memo, ReactElement, useContext, useEffect } from "react";
 import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
 import { AdvancedContext } from "./AdvancedContext";
 import { AdvancedItem } from "./AdvancedItem";
@@ -13,55 +13,46 @@ const style: Style = {
 const MemoizedAdvancedItem = memo(AdvancedItem);
 
 export const AdvancedList = (): ReactElement => {
-    const { items, setState } = useContext(AdvancedContext);
+    const { setState, setValue, ...state } = useContext(AdvancedContext);
     const {
         state: { numElements, shouldUseMemo },
     } = useContext(PerformanceOptionsContext);
+    const keys: (keyof typeof state)[] = [];
 
-    const handleItemClick = (e: MouseEvent<HTMLDivElement>) => {
-        if (e.target instanceof HTMLButtonElement) {
-            const key = e.target.dataset["key"];
+    for (let i = 0; i < numElements; i++) {
+        keys.push(`advanced-prop-${i}`);
+    }
+
+    const handleClickButton: React.MouseEventHandler<HTMLDivElement> = (e) => {
+        const target = e.target as unknown as HTMLButtonElement;
+
+        if (target.dataset["key"]) {
+            const key = target.dataset["key"] as keyof typeof state;
 
             setState({
-                items: items.map((item) => {
-                    if (item.id === key) {
-                        const nextValue = getIncrementedNumValue(item.value);
-
-                        console.log("setState advanced", {
-                            key,
-                            currentValue: item.value,
-                            nextValue,
-                        });
-
-                        return { ...item, value: nextValue };
-                    }
-                    return item;
-                }),
+                [key]: getIncrementedNumValue(state[key]),
             });
         }
     };
 
     useEffect(() => {
-        const nextState = { items: [] as typeof items };
+        const newState: typeof state = {};
 
         for (let i = 0; i < numElements; i++) {
-            nextState.items.push({
-                id: `advanced-prop-${i}`,
-                value: getIncrementedNumValue(i - 1),
-            });
+            newState[`advanced-prop-${i}`] = getIncrementedNumValue(i - 1);
         }
 
-        setState(nextState);
+        setState(newState);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [numElements]);
 
     return (
-        <div style={style} onClick={handleItemClick}>
-            {items.map(({ id, value }) =>
+        <div style={style} onClick={handleClickButton}>
+            {keys.map((key) =>
                 shouldUseMemo ? (
-                    <MemoizedAdvancedItem key={id} itemKey={id} value={value} />
+                    <MemoizedAdvancedItem key={key} itemKey={key} value={state[key]} />
                 ) : (
-                    <AdvancedItem key={id} itemKey={id} />
+                    <AdvancedItem key={key} itemKey={key} />
                 )
             )}
         </div>
