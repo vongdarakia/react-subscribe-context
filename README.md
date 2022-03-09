@@ -27,18 +27,18 @@ Some introduction
 import { createSubscriberContext } from "react-subscribe-context";
 
 const initialState = {
-    user: {
-        name: {
-            first: "Peter",
-            last: "Parker",
-        },
+  user: {
+    name: {
+      first: "Peter",
+      last: "Parker",
     },
-    movieCounter: 9,
+  },
+  movieCounter: 9,
 };
 
 export const {
-    Context: SpiderManContext,
-    Provider: SpiderManProvider, // Note: This is not the same as what Context.Provider returns
+  Context: SpiderManContext,
+  Provider: SpiderManProvider, // Note: This is not the same as what Context.Provider returns
 } = createSubscriberContext({ initialState });
 ```
 
@@ -48,12 +48,12 @@ import { NameComponent } from "path/to/NameComponent";
 import { MovieCounterComponent } from "path/to/MovieCounterComponent";
 
 const App = (): ReactElement => {
-    return (
-        <div>
-            <NameComponent />
-            <MovieCounterComponent />
-        </div>
-    );
+  return (
+    <div>
+      <NameComponent />
+      <MovieCounterComponent />
+    </div>
+  );
 };
 ```
 
@@ -65,13 +65,13 @@ import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const MovieCounterComponent = (): ReactElement => {
-    const [movieCounter, setMovieCounter] = useSubscribe(SpiderManContext, "movieCounter");
+  const [movieCounter, setMovieCounter] = useSubscribe(SpiderManContext, "movieCounter");
 
-    const handleClickCounter = () => {
-        setMovieCounter(movieCounter + 1);
-    };
+  const handleClickCounter = () => {
+    setMovieCounter(movieCounter + 1);
+  };
 
-    return <button onClick={handleClickCounter}>{movieCounter}</button>;
+  return <button onClick={handleClickCounter}>{movieCounter}</button>;
 };
 ```
 
@@ -85,12 +85,12 @@ import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const FirstNameComponent = (): ReactElement => {
-    const [user] = useSubscribe(SpiderManContext, "user");
-    const {
-        name: { first },
-    } = user;
+  const [user] = useSubscribe(SpiderManContext, "user");
+  const {
+    name: { first },
+  } = user;
 
-    return <div>{first}</div>;
+  return <div>{first}</div>;
 };
 ```
 
@@ -100,38 +100,49 @@ import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const LastNameComponent = (): ReactElement => {
-    const [state] = useSubscribe(SpiderManContext);
-    const {
-        user: {
-            name: { last },
-        },
-    } = state;
+  const [state] = useSubscribe(SpiderManContext);
+  const {
+    user: {
+      name: { last },
+    },
+  } = state;
 
-    return <div>{last}</div>;
+  return <div>{last}</div>;
 };
 ```
 
 ```typescript
 // NameComponent.tsx
-import { useSubscribe } from 'react-subscribe-context';
-import { SpiderManContext } from 'path/to/SpiderManContext';
+import { useSubscribe } from "react-subscribe-context";
+import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const NameComponent = (): ReactElement => {
   const [, setContextState] = useSubscribe(SpiderManContext);
 
-  const handleClickSwapName = () => {
-    if ()
-    setContextState((prevState) => ({
-      ...prevState,
-      name: { first: last, last: first }
-    }));
-  }
+  const handleToggleName = () => {
+    const oddEven = Math.floor(Math.random() * 2);
+
+    setContextState((prevState) => {
+      let { first, last } = prevState.name;
+
+      if (oddEven === 0) {
+        first = first === first ? last : first;
+      } else {
+        last = last === last ? first : last;
+      }
+
+      return ({
+        ...prevState,
+        name: { first, last },
+      });
+    );
+  };
 
   return (
     <div>
       <FirstNameComponent />
       <LastNameComponent />
-      <button onClick={handleClickSwapName}>Swap name</button>
+      <button onClick={handleToggleName}>Toggle name</button>
     </div>
   );
 };
