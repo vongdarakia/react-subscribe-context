@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { getUpdateEventName } from "utils/getUpdateEventName";
-import { ControlState } from "./subscriber-types";
+import { ContextControl } from "./subscriber-types";
 
 interface ObjectDiff {
     [key: string]: boolean;
@@ -33,16 +33,18 @@ const getObjectDiff = <TObject extends Object>(
     return results;
 };
 
-export const useSubscribeProvider = <TState, TControlState extends ControlState<TState>>(
-    defaultControl: TControlState
+export const useSubscribeProvider = <TState, TControlState extends ContextControl<TState>>(
+    initialControl: TControlState,
+    initialState: TState
 ) => {
-    const control = useRef<TControlState>({ ...defaultControl });
+    const control = useRef<TControlState>({ ...initialControl });
+    const contextState = useRef<TState>({ ...initialState });
 
     control.current.setState = (nextState: Partial<TState>) => {
-        const objectDiff = getObjectDiff(control.current.state, nextState);
+        const objectDiff = getObjectDiff(contextState.current, nextState);
 
-        control.current.state = { ...control.current.state, ...nextState };
-        control.current.emitter.emit("update-state", control.current.state);
+        contextState.current = { ...contextState.current, ...nextState };
+        control.current.emitter.emit("update-state", contextState.current);
 
         Object.keys(objectDiff).forEach((key) => {
             console.log("updated state", getUpdateEventName(key), nextState);
@@ -52,10 +54,10 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
 
     control.current.setValue = (key, value) => {
         const partialUpdatedState = { [key]: value } as unknown as Partial<TState>;
-        const objectDiff = getObjectDiff(control.current.state, partialUpdatedState);
-        const newState = { ...control.current.state, [key]: value };
+        const objectDiff = getObjectDiff(contextState.current, partialUpdatedState);
+        const newState = { ...contextState.current, [key]: value };
 
-        control.current.state = newState;
+        contextState.current = newState;
         control.current.emitter.emit(getUpdateEventName(key), value);
 
         Object.keys(objectDiff).forEach((key) => {
@@ -64,8 +66,8 @@ export const useSubscribeProvider = <TState, TControlState extends ControlState<
         });
     };
 
-    control.current.getValue = (fieldName) => control.current.state[fieldName];
-    control.current.getState = () => control.current.state;
+    control.current.getValue = (fieldName) => contextState.current[fieldName];
+    control.current.getState = () => contextState.current;
 
     return control;
 };

@@ -2,7 +2,7 @@ import deepProxy from "deep-proxy-polyfill";
 import { Context, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createProxyHandler, SubscribedCache } from "react-subscribe-context/createProxyHandler";
 import { getUpdateEventName } from "utils/getUpdateEventName";
-import { ControlState } from "./subscriber-types";
+import { ContextControl } from "./subscriber-types";
 
 interface UpdateValue<TState, TKey extends keyof TState & string> {
     (value: TState[TKey]): void;
@@ -17,23 +17,23 @@ interface UpdateState<TState> {
 type UseSubscribeValueReturn<TState, TKey extends keyof TState & string> = [
     TState[TKey],
     UpdateValue<TState, TKey>,
-    ControlState<TState>
+    ContextControl<TState>
 ];
 
-type UseSubscribeStateReturn<TState> = [TState, UpdateState<TState>, ControlState<TState>];
+type UseSubscribeStateReturn<TState> = [TState, UpdateState<TState>, ContextControl<TState>];
 
 export function useSubscribe<TState, TKey extends keyof TState & string>(
-    Context: Context<ControlState<TState>>,
+    Context: Context<ContextControl<TState>>,
     key: TKey
 ): UseSubscribeValueReturn<TState, TKey>;
 
 export function useSubscribe<TState>(
-    Context: Context<ControlState<TState>>,
+    Context: Context<ContextControl<TState>>,
     key?: undefined | null
 ): UseSubscribeStateReturn<TState>;
 
 export function useSubscribe<TState extends object, TKey extends keyof TState & string>(
-    Context: Context<ControlState<TState>>,
+    Context: Context<ContextControl<TState>>,
     key: TKey | undefined | null
 ): UseSubscribeValueReturn<TState, TKey> | UseSubscribeStateReturn<TState> {
     const contextState = useContext(Context);

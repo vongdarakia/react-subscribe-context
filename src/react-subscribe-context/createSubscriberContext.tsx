@@ -1,7 +1,6 @@
 import { EventEmitter } from "events";
 import { createContext, ReactElement } from "react";
-import { createUseSubscribe } from "./createUseSubscribe";
-import { ControlState } from "./subscriber-types";
+import { ContextControl } from "./subscriber-types";
 import { useSubscribeProvider } from "./useSubscribeProvider";
 
 interface CreateControlContextOptions<TState> {
@@ -11,7 +10,7 @@ interface CreateControlContextOptions<TState> {
 export const createSubscriberContext = <TState,>({
     initialState,
 }: CreateControlContextOptions<TState>) => {
-    const defaultControl: ControlState<TState> = {
+    const initialControl: ContextControl<TState> = {
         emitter: new EventEmitter(),
         getState: () => {
             console.error("Did you forget to use your control provider?");
@@ -27,18 +26,18 @@ export const createSubscriberContext = <TState,>({
         setValue: () => {
             console.error("Did you forget to use your control provider?");
         },
-        state: initialState,
     };
 
-    const Context = createContext<ControlState<TState>>(defaultControl);
+    const Context = createContext<ContextControl<TState>>(initialControl);
 
     const Provider = ({ children }: { children: ReactElement | ReactElement[] }) => {
-        const control = useSubscribeProvider<TState, ControlState<TState>>(defaultControl);
+        const control = useSubscribeProvider<TState, ContextControl<TState>>(
+            initialControl,
+            initialState
+        );
 
-        return <Context.Provider value={{ ...control.current }}>{children}</Context.Provider>;
+        return <Context.Provider value={control.current}>{children}</Context.Provider>;
     };
 
-    const useSubscribe = createUseSubscribe<TState>(Context);
-
-    return { Context, Provider, useSubscribe };
+    return { Context, Provider };
 };

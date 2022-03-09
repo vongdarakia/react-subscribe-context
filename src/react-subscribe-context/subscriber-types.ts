@@ -9,11 +9,10 @@ export type SetValue<TState> = <TKey extends Key<TState>, TValue extends TState[
 
 export type GetValue<TState> = <TKey extends Key<TState>>(key: TKey) => TState[TKey];
 
-export interface ControlState<TState> {
+export interface ContextControl<TState> {
     emitter: EventEmitter;
     getValue: GetValue<TState>;
     getState: () => TState;
     setState: (newStateValues: Partial<TState>) => void;
     setValue: SetValue<TState>;
-    state: TState;
 }
