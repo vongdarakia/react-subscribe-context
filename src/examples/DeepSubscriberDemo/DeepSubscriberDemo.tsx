@@ -13,7 +13,7 @@ export const DeepSubscriberDemo = (): ReactElement => {
     return (
         <DeepSubscriberProvider>
             <StyledContainer>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
                     <NameInput />
                 </div>
                 <div style={{ flex: 1 }}>

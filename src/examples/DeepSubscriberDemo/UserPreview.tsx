@@ -4,11 +4,14 @@ import { PreviewFirstName } from "./PreviewFirstName";
 import { PreviewLastName } from "./PreviewLastName";
 
 const StyledContainer = styled.div`
-    padding: 24px;
+    margin: 0 24px;
     color: whitesmoke;
+    text-align: left;
 
     span {
-        font-size: 16px;
+        font-size: 24px;
+        letter-spacing: 2px;
+        margin-right: 8px;
     }
 `;
 

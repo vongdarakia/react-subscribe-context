@@ -17,7 +17,7 @@ const initialState: {
     user: User;
 } = {
     user: {
-        name: { first: "Liu", last: "Kang" },
+        name: { first: "Jim", last: "Halpert" },
         email: "lkang@gmail.com",
         age: 24,
     },
