@@ -8,7 +8,7 @@ export const createUseSubscribe = <TState>(Context: Context<ControlState<TState>
         (value: TState[TKey]) => void
     ];
 
-    const useSubscribeAll = <TKey extends keyof TState & string>(
+    const useSubscribe = <TKey extends keyof TState & string>(
         key: TKey
     ): UseSubscribeReturn<TKey> => {
         const { emitter, getValue, setValue } = useContext(Context);
@@ -38,5 +38,5 @@ export const createUseSubscribe = <TState>(Context: Context<ControlState<TState>
         return [value, updateValue];
     };
 
-    return useSubscribeAll;
+    return useSubscribe;
 };

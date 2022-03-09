@@ -1,6 +1,6 @@
 import { Input } from "components/Input";
 import { ChangeEventHandler, ReactElement } from "react";
-import { useSubscribeAll } from "react-subscribe-context/useSubscribeAll";
+import { useSubscribe } from "react-subscribe-context/useSubscribe";
 import { logRender } from "utils/logRender";
 import { DeepSubscriberContext } from "../DeepSubscriberContext";
 
@@ -10,7 +10,7 @@ export const LastNameInput = (): ReactElement => {
             user: { name },
         },
         setState,
-    ] = useSubscribeAll(DeepSubscriberContext);
+    ] = useSubscribe(DeepSubscriberContext);
 
     const handleChangeLastName: ChangeEventHandler<HTMLInputElement> = (e) => {
         const last = e.target.value;

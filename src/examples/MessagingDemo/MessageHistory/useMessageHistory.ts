@@ -3,10 +3,10 @@ import { MessagingSubscriberContext } from "examples/MessagingDemo/MessagingSubs
 import { MessageInfo } from "examples/MessagingDemo/types";
 import { useSubscribeMessageSocket } from "examples/MessagingDemo/useSubscribeMessageSocket";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { useSubscribeAll } from "react-subscribe-context/useSubscribeAll";
+import { useSubscribe } from "react-subscribe-context/useSubscribe";
 
 export const useMessageHistory = () => {
-    const [state, setState] = useSubscribeAll(MessagingSubscriberContext);
+    const [state, setState] = useSubscribe(MessagingSubscriberContext);
     const [isLoading, setIsLoading] = useState(true);
     const { getValue } = useContext(MessagingSubscriberContext);
     const { currentMessages, selectedReceiverName } = state;

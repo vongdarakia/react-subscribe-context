@@ -1,4 +1,6 @@
-import { Context, useCallback, useContext, useEffect, useState } from "react";
+import deepProxy from "deep-proxy-polyfill";
+import { Context, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createProxyHandler, SubscribedCache } from "react-subscribe-context/createProxyHandler";
 import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ControlState } from "./subscriber-types";
 
@@ -7,46 +9,107 @@ interface UpdateValue<TState, TKey extends keyof TState & string> {
     (getValue: (value: TState[TKey]) => TState[TKey]): void;
 }
 
-type UseSubscribeReturn<TState, TKey extends keyof TState & string> = [
+interface UpdateState<TState> {
+    (stateValues: Partial<TState>): void;
+    (getState: (state: TState) => Partial<TState>): void;
+}
+
+type UseSubscribeValueReturn<TState, TKey extends keyof TState & string> = [
     TState[TKey],
-    UpdateValue<TState, TKey>
+    UpdateValue<TState, TKey>,
+    ControlState<TState>
 ];
 
-export const useSubscribeAll = <TState, TKey extends keyof TState & string>(
+type UseSubscribeStateReturn<TState> = [TState, UpdateState<TState>, ControlState<TState>];
+
+export function useSubscribe<TState, TKey extends keyof TState & string>(
     Context: Context<ControlState<TState>>,
     key: TKey
-): UseSubscribeReturn<TState, TKey> => {
-    const { emitter, getValue, setValue } = useContext(Context);
-    const [, updateState] = useState({});
-    const rerender = useCallback(() => updateState({}), []);
+): UseSubscribeValueReturn<TState, TKey>;
+
+export function useSubscribe<TState>(
+    Context: Context<ControlState<TState>>,
+    key?: undefined | null
+): UseSubscribeStateReturn<TState>;
+
+export function useSubscribe<TState extends object, TKey extends keyof TState & string>(
+    Context: Context<ControlState<TState>>,
+    key: TKey | undefined | null
+): UseSubscribeValueReturn<TState, TKey> | UseSubscribeStateReturn<TState> {
+    const contextState = useContext(Context);
+    const { emitter, getState, getValue, setValue, setState } = contextState;
+    const [, setFakeValue] = useState({});
+    const rerender = useCallback(() => setFakeValue({}), []);
+    const subscribedCache = useRef<SubscribedCache>({});
+
+    const updateState: UpdateState<TState> = useCallback(
+        (values) => {
+            if (values instanceof Function) {
+                return setState(values(getState()));
+            }
+            setState(values);
+        },
+        [getState, setState]
+    );
+
+    const updateValue: UpdateValue<TState, TKey> = useCallback(
+        (value) => {
+            if (value instanceof Function) {
+                setValue(key as TKey, value(getValue(key as TKey)));
+            } else {
+                setValue(key as TKey, value);
+            }
+        },
+        [key, setValue, getValue]
+    );
+
+    const stateProxyHandler = useMemo(
+        () => createProxyHandler<any>(subscribedCache, rerender),
+        [rerender]
+    );
+
+    const valueProxyHandler = useMemo(
+        () => createProxyHandler<any>(subscribedCache, rerender, key as string),
+        [rerender, key]
+    );
 
     useEffect(() => {
         const handleValueUpdated = () => {
             rerender();
         };
 
-        const eventName = getUpdateEventName(key);
+        if (key) {
+            const value = getValue(key);
 
-        emitter.on(eventName, handleValueUpdated);
+            if (typeof value !== "object" || Array.isArray(value)) {
+                subscribedCache.current[getUpdateEventName(key)] = true;
+            }
+        }
+
+        const events = (Object.keys(subscribedCache.current) as `update-${string}`[]).filter(
+            (path) => subscribedCache.current[path]
+        );
+
+        events.forEach((event) => {
+            emitter.on(event, handleValueUpdated);
+        });
 
         return () => {
-            // console.log("unmounting emitter for", eventName);
-            emitter.off(eventName, handleValueUpdated);
+            events.forEach((event) => {
+                emitter.off(event, handleValueUpdated);
+            });
         };
-    }, [emitter, rerender, key]);
+    }, [emitter, rerender, key, getValue]);
 
-    const value = getValue(key);
+    if (key) {
+        const value = getValue(key);
 
-    const updateValue: UseSubscribeReturn<TState, TKey>["1"] = useCallback(
-        (value) => {
-            if (value instanceof Function) {
-                setValue(key, value(getValue(key)));
-            } else {
-                setValue(key, value);
-            }
-        },
-        [key, setValue, getValue]
-    );
+        if (typeof value === "object" && !Array.isArray(value)) {
+            return [deepProxy(value, valueProxyHandler), updateValue, contextState];
+        }
 
-    return [value, updateValue];
-};
+        return [value, updateValue, contextState];
+    }
+
+    return [deepProxy(getState(), stateProxyHandler), updateState, contextState];
+}

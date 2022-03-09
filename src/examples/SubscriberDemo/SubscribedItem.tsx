@@ -1,7 +1,7 @@
 import { Button } from "components/Button";
 import { Style } from "definitions/common-types";
 import React, { ReactElement } from "react";
-import { useSubscribeAll } from "react-subscribe-context/useSubscribeAll";
+import { useSubscribe } from "react-subscribe-context/useSubscribe";
 import { getIncrementedCharValue } from "utils/getIncrementedCharValue";
 import { getIncrementedNumValue } from "utils/getIncrementedNumValue";
 import { logColor } from "utils/logColor";
@@ -17,7 +17,7 @@ const containerStyle: Style = {
 };
 
 export const SubscribedItem = ({ itemKey }: { itemKey: SubscriberKey }): ReactElement => {
-    const [value, setValue] = useSubscribeAll(SubscriberContext.Context, itemKey);
+    const [value, setValue] = useSubscribe(SubscriberContext.Context, itemKey);
 
     const handleClick = () => {
         if (typeof value === "number") {

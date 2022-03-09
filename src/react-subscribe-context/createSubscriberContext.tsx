@@ -38,7 +38,7 @@ export const createSubscriberContext = <TState,>({
         return <Context.Provider value={{ ...control.current }}>{children}</Context.Provider>;
     };
 
-    const useSubscribeAll = createUseSubscribe<TState>(Context);
+    const useSubscribe = createUseSubscribe<TState>(Context);
 
-    return { Context, Provider, useSubscribeAll };
+    return { Context, Provider, useSubscribe };
 };
