@@ -244,11 +244,11 @@ Returns the state of your context
 
 Sets a value in your state for the given field key.
 
-| Parameter | Type                                          | Description                                        |
-| :-------- | :-------------------------------------------- | :------------------------------------------------- |
-| `key`     | `string`                                      | **Required**. Field key of your state              |
-| `value`   | `typeof keyof state`                          | **Required**. New value for `state[key]`           |
-| `value`   | `(state: typeof state) => typeof keyof state` | **Required**. Function that returns the next value |
+| Parameter | Type                                         | Description                                        |
+| :-------- | :------------------------------------------- | :------------------------------------------------- |
+| `key`     | `string`                                     | **Required**. Field key of your state              |
+| `value`   | `typeof state[key]`                          | **Required**. New value for `state[key]`           |
+| `value`   | `(state: typeof state) => typeof state[key]` | **Required**. Function that returns the next value |
 
 #### setState(nextState)
 
