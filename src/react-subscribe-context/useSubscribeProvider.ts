@@ -54,10 +54,8 @@ export const useSubscribeProvider = <TState, TControlState extends ContextContro
     control.current.setValue = (key, value) => {
         const partialUpdatedState = { [key]: value } as unknown as Partial<TState>;
         const objectDiff = getObjectDiff(contextState.current, partialUpdatedState);
-        const newState = { ...contextState.current, [key]: value };
 
-        contextState.current = newState;
-        control.current.emitter.emit(getUpdateEventName(key), value);
+        contextState.current = { ...contextState.current, [key]: value };
 
         Object.keys(objectDiff).forEach((key) => {
             control.current.emitter.emit(getUpdateEventName(key), partialUpdatedState);
