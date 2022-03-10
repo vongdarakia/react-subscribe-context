@@ -209,6 +209,56 @@ export const NameComponent = (): ReactElement => {
 };
 ```
 
+## ContextControl Reference
+
+The ContextControl object holds functions that allows you to get and set values of your state. This is a great way to manage your state without subscribing to a value.
+
+#### Access via useContext
+
+```typescript
+const contextControl = useContext(MyControlContext);
+```
+
+#### Access via useSubscribe
+
+```typescript
+const [state, setState, contextControl] = useSubscribe(MyControlContext);
+const [value, setValue, contextControl] = useSubscribe(MyControlContext, "key");
+```
+
+### ContextControl functions
+
+#### getValue(key)
+
+Returns a value from your state based on the given key.
+
+| Parameter | Type     | Description                           |
+| :-------- | :------- | :------------------------------------ |
+| `key`     | `string` | **Required**. Field key of your state |
+
+#### getState()
+
+Returns the state of your context
+
+#### setValue(key, value)
+
+Sets a value in your state for the given field key.
+
+| Parameter | Type                                          | Description                                        |
+| :-------- | :-------------------------------------------- | :------------------------------------------------- |
+| `key`     | `string`                                      | **Required**. Field key of your state              |
+| `value`   | `typeof keyof state`                          | **Required**. New value for `state[key]`           |
+| `value`   | `(state: typeof state) => typeof keyof state` | **Required**. Function that returns the next value |
+
+#### setState(nextState)
+
+Sets values of your state
+
+| Parameter   | Type                                             | Description                                        |
+| :---------- | :----------------------------------------------- | :------------------------------------------------- |
+| `nextState` | `Partial<typeof state>`                          | **Required**. Next state                           |
+| `nextState` | `(state: typeof state) => Partial<typeof state>` | **Required**. Function that returns the next state |
+
 ## Demo
 
 Here's a [demo](https://stoic-kirch-0be43f.netlify.app/).
