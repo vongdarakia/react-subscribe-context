@@ -36,8 +36,8 @@ export function useSubscribe<TState extends object, TKey extends keyof TState & 
     Context: Context<ContextControl<TState>>,
     key: TKey | undefined | null
 ): UseSubscribeValueReturn<TState, TKey> | UseSubscribeStateReturn<TState> {
-    const contextState = useContext(Context);
-    const { emitter, getState, getValue, setValue, setState } = contextState;
+    const contextControl = useContext(Context);
+    const { emitter, getState, getValue, setValue, setState } = contextControl;
     const [, setFakeValue] = useState({});
     const rerender = useCallback(() => setFakeValue({}), []);
     const subscribedCache = useRef<SubscribedCache>({});
@@ -54,10 +54,14 @@ export function useSubscribe<TState extends object, TKey extends keyof TState & 
 
     const updateValue: UpdateValue<TState, TKey> = useCallback(
         (value) => {
+            if (!key) {
+                throw new Error("Somehow updating a value when should be updating state");
+            }
+
             if (value instanceof Function) {
-                setValue(key as TKey, value(getValue(key as TKey)));
+                setValue(key, value(getValue(key)));
             } else {
-                setValue(key as TKey, value);
+                setValue(key, value);
             }
         },
         [key, setValue, getValue]
@@ -105,11 +109,11 @@ export function useSubscribe<TState extends object, TKey extends keyof TState & 
         const value = getValue(key);
 
         if (typeof value === "object" && !Array.isArray(value)) {
-            return [deepProxy(value, valueProxyHandler), updateValue, contextState];
+            return [deepProxy(value, valueProxyHandler), updateValue, contextControl];
         }
 
-        return [value, updateValue, contextState];
+        return [value, updateValue, contextControl];
     }
 
-    return [deepProxy(getState(), stateProxyHandler), updateState, contextState];
+    return [deepProxy(getState(), stateProxyHandler), updateState, contextControl];
 }
