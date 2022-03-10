@@ -6,7 +6,7 @@ _And it's **IE11** compatible!_
 
 ## Introduction
 
-React Context is an amazing tool to help avoid prop drilling, but it comes with a price. It's not a pleasant dev experience to create setters for every value you want in your context, and each time those values changes, it'll rerender **every** child it holds, unless they're memoized, but who wants to put in that extra work to memoize everything? And even if they're memoized, if they're consumers, they'll **always** get rerendered.
+React Context is an amazing tool to help avoid prop drilling, but it comes with a price. It's not a pleasant dev experience to create setters for every value you want in your context, and each time those values change, it'll rerender **every** child it holds, unless they're memoized, but who wants to put in that extra work to memoize everything? And even if they're memoized, if they're consumers, they'll **always** get rerendered.
 
 I was inspired by [react-hook-form](https://github.com/react-hook-form/react-hook-form) and their [useWatch](https://react-hook-form.com/api/usewatch/), which subscribed to only changes to a specific value of a form. I loved that feature and thought it'd be great if React Context could do that too. Then I learned about [react-tracked](https://github.com/dai-shi/react-tracked).
 It did exactly what I was looking for, except that it wasn't IE11 compatible, so I decided to create react-subscribe-context.
@@ -49,15 +49,18 @@ export const {
 
 ```typescript
 // App.tsx
-import { NameComponent } from "path/to/NameComponent";
 import { MovieCounterComponent } from "path/to/MovieCounterComponent";
+import { NameComponent } from "path/to/NameComponent";
+import { SpiderManProvider } from "path/to/SpiderManContext";
 
 const App = (): ReactElement => {
   return (
-    <div>
-      <NameComponent />
-      <MovieCounterComponent />
-    </div>
+    <SpiderManProvider>
+      <div>
+        <NameComponent />
+        <MovieCounterComponent />
+      </div>
+    </SpiderManProvider>
   );
 };
 ```
