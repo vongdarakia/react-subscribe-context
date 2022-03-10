@@ -7,17 +7,15 @@ import { DeepSubscriberContext } from "../DeepSubscriberContext";
 export const LastNameInput = (): ReactElement => {
     const [
         {
-            user: { name },
+            name: { last },
         },
-        setState,
-    ] = useSubscribe(DeepSubscriberContext);
+        setValue,
+    ] = useSubscribe(DeepSubscriberContext, "user");
 
     const handleChangeLastName: ChangeEventHandler<HTMLInputElement> = (e) => {
         const last = e.target.value;
 
-        setState(({ user }) => ({
-            user: { ...user, name: { ...user.name, last } },
-        }));
+        setValue(({ user }) => ({ ...user, name: { ...user.name, last } }));
     };
 
     logRender("lastName Input");
@@ -25,7 +23,7 @@ export const LastNameInput = (): ReactElement => {
     return (
         <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <label>Last name</label>
-            <Input onChange={handleChangeLastName} value={name.last} />
+            <Input onChange={handleChangeLastName} value={last} />
         </div>
     );
 };
