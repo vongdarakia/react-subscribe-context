@@ -40,7 +40,13 @@ export const useSubscribeProvider = <TState, TControlState extends ContextContro
     const control = useRef<TControlState>({ ...initialControl });
     const contextState = useRef<TState>({ ...initialState });
 
-    control.current.setState = (nextState: Partial<TState>) => {
+    control.current.setState = (getNextState) => {
+        let nextState = getNextState;
+
+        if (nextState instanceof Function) {
+            nextState = nextState(control.current.getState());
+        }
+
         const objectDiff = getObjectDiff(contextState.current, nextState);
 
         contextState.current = { ...contextState.current, ...nextState };
@@ -51,7 +57,13 @@ export const useSubscribeProvider = <TState, TControlState extends ContextContro
         });
     };
 
-    control.current.setValue = (key, value) => {
+    control.current.setValue = (key, getValue) => {
+        let value = getValue;
+
+        if (value instanceof Function) {
+            value = value(control.current.getState());
+        }
+
         const partialUpdatedState = { [key]: value } as unknown as Partial<TState>;
         const objectDiff = getObjectDiff(contextState.current, partialUpdatedState);
 
