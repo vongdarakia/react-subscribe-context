@@ -23,7 +23,7 @@ export const LastNameInput = (): ReactElement => {
     logRender("lastName Input");
 
     return (
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <label>Last name</label>
             <Input onChange={handleChangeLastName} value={name.last} />
         </div>

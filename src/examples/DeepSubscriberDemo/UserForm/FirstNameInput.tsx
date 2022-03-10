@@ -25,7 +25,7 @@ export const FirstNameInput = (): ReactElement => {
     logRender("firstName Input");
 
     return (
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <label>First name</label>
             <Input onChange={handleChangeFirstName} value={name.first} />
         </div>
