@@ -21,7 +21,7 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "build-lib": "parcel build --reporter @parcel/reporter-bundle-buddy"
+        "build-lib": "rm -rf dist && parcel build"
     },
     "eslintConfig": {
         "extends": [
