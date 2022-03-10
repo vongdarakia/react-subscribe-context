@@ -3,7 +3,7 @@
     "version": "0.2.3",
     "private": false,
     "author": "Akia Vongdara",
-    "description": "Simple state management hooks that works like React Context but optmized to render in components only where the data it's subscribed to changes.",
+    "description": "A simple and consistent way of state management to avoid prop drilling, and is optimized for component rerenders.",
     "license": "MIT",
     "source": "src/react-subscribe-context/index.ts",
     "main": "dist/index.js",

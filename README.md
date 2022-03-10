@@ -6,7 +6,7 @@ _And it's **IE11** compatible!_
 
 ## Introduction
 
-React Context is an amazing tool to help avoid prop drilling, but it comes with a price. It's not a pleasant dev experience to create setters for every value you want in your context, and each time those values changes, it'll rerender **every** child it holds/consumes, unless they're memoized, but who wants to put in that extra work to memoize everything?
+React Context is an amazing tool to help avoid prop drilling, but it comes with a price. It's not a pleasant dev experience to create setters for every value you want in your context, and each time those values changes, it'll rerender **every** child it holds, unless they're memoized, but who wants to put in that extra work to memoize everything? And even if they're memoized, if they're consumers, they'll **always** get rerendered.
 
 I was inspired by [react-hook-form](https://github.com/react-hook-form/react-hook-form) and their [useWatch](https://react-hook-form.com/api/usewatch/), which subscribed to only changes to a specific value of a form. I loved that feature and thought it'd be great if React Context could do that too. Then I learned about [react-tracked](https://github.com/dai-shi/react-tracked).
 It did exactly what I was looking for, except that it wasn't IE11 compatible, so I decided to create react-subscribe-context.
@@ -82,7 +82,7 @@ export const MovieCounterComponent = (): ReactElement => {
 
 ### Subscribing to nested object values
 
-These components will subscribe to `first` and `last` value changes. Even if the `name` object itself changes, this component will not rerender unless that `first` or `last` values are different. The examples below shows two different ways of subscribing to a nested value.
+These components will subscribe to `first` and `last` value changes. Even if the `name` object itself changes, the components will not rerender unless the `first` or `last` values are different. The examples below show two different ways of subscribing to a nested value.
 
 ```typescript
 // FirstNameComponent.tsx
@@ -128,7 +128,8 @@ export const NameComponent = (): ReactElement => {
     const oddEven = Math.floor(Math.random() * 2);
 
     setContextState((prevState) => {
-      let { first, last } = prevState.name;
+      const { user } = prevState;
+      let { first, last } = user.name;
 
       if (oddEven === 0) {
         first = first === first ? last : first;
@@ -138,7 +139,10 @@ export const NameComponent = (): ReactElement => {
 
       return ({
         ...prevState,
-        name: { first, last },
+        user: {
+          ...user,
+          name: { first, last },
+        }
       });
     );
   };
