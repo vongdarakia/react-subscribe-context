@@ -27,7 +27,7 @@ Using Proxy and EventEmitter, I created a tool where you can subscribe to a valu
 
 ### Setup
 
-```typescript
+```tsx
 // SpiderManContext.ts
 import { createSubscriberContext } from "react-subscribe-context";
 
@@ -47,7 +47,7 @@ export const {
 } = createSubscriberContext({ initialState });
 ```
 
-```typescript
+```tsx
 // App.tsx
 import { MovieCounterComponent } from "path/to/MovieCounterComponent";
 import { NameComponent } from "path/to/NameComponent";
@@ -67,7 +67,7 @@ const App = (): ReactElement => {
 
 ### Basic usage
 
-```typescript
+```tsx
 // MovieCounterComponent.tsx
 import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
@@ -87,7 +87,7 @@ export const MovieCounterComponent = (): ReactElement => {
 
 These components will subscribe to `first` and `last` value changes. Even if the `name` object itself changes, the components will not rerender unless the `first` or `last` values are different. The examples below show two different ways of subscribing to a nested value.
 
-```typescript
+```tsx
 // FirstNameComponent.tsx
 import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
@@ -102,7 +102,7 @@ export const FirstNameComponent = (): ReactElement => {
 };
 ```
 
-```typescript
+```tsx
 // LastNameComponent.tsx
 import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
@@ -119,7 +119,7 @@ export const LastNameComponent = (): ReactElement => {
 };
 ```
 
-```typescript
+```tsx
 // NameComponent.tsx
 import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
@@ -165,7 +165,7 @@ export const NameComponent = (): ReactElement => {
 
 ### Accessing state without subscribing to a value
 
-```typescript
+```tsx
 // NameComponent.tsx
 import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
@@ -218,13 +218,13 @@ The ContextControl object holds functions that allows you to get and set values 
 
 #### Access via useContext
 
-```typescript
+```tsx
 const contextControl = useContext(MyControlContext);
 ```
 
 #### Access via useSubscribe
 
-```typescript
+```tsx
 const [state, setState, contextControl] = useSubscribe(MyControlContext);
 const [value, setValue, contextControl] = useSubscribe(MyControlContext, "key");
 ```
