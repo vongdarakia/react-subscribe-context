@@ -6,7 +6,7 @@ import { ContextControl } from "./subscriber-types";
 
 interface UpdateValue<TState, TKey extends keyof TState & string> {
     (value: TState[TKey]): void;
-    (getValue: (value: TState[TKey]) => TState[TKey]): void;
+    (getState: (state: TState) => TState[TKey]): void;
 }
 
 interface UpdateState<TState> {
@@ -59,12 +59,12 @@ export function useSubscribe<TState extends object, TKey extends keyof TState & 
             }
 
             if (value instanceof Function) {
-                setValue(key, value(getValue(key)));
+                setValue(key, value(getState()));
             } else {
                 setValue(key, value);
             }
         },
-        [key, setValue, getValue]
+        [key, setValue, getState]
     );
 
     const stateProxyHandler = useMemo(
