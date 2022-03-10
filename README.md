@@ -128,8 +128,11 @@ export const NameComponent = (): ReactElement => {
     const oddEven = Math.floor(Math.random() * 2);
 
     setContextState((prevState) => {
-      const { user } = prevState;
-      let { first, last } = user.name;
+      let {
+        user: {
+          name: { first, last },
+        },
+      } = prevState;
 
       if (oddEven === 0) {
         first = first === first ? last : first;
@@ -140,11 +143,60 @@ export const NameComponent = (): ReactElement => {
       return ({
         ...prevState,
         user: {
-          ...user,
+          ...prevState.user,
           name: { first, last },
         }
       });
     );
+  };
+
+  return (
+    <div>
+      <FirstNameComponent />
+      <LastNameComponent />
+      <button onClick={handleClickToggleName}>Toggle name</button>
+    </div>
+  );
+};
+```
+
+### Accessing state without subscribing to a value
+
+```typescript
+// NameComponent.tsx
+import { useSubscribe } from "react-subscribe-context";
+import { SpiderManContext } from "path/to/SpiderManContext";
+
+export const NameComponent = (): ReactElement => {
+  const [, , contextControl] = useSubscribe(SpiderManContext);
+  // Or this way
+  // const contextControl = React.useContext(SpiderManContext);
+  const { getState, setState } = contextControl;
+
+  const handleClickToggleName = () => {
+    const oddEven = Math.floor(Math.random() * 2);
+    const prevState = getState();
+    let {
+      user: {
+        name: { first, last },
+      },
+    } = prevState;
+
+    if (oddEven === 0) {
+      first = first === first ? last : first;
+    } else {
+      last = last === last ? first : last;
+    }
+
+    const nextState = {
+      ...prevState,
+      user: {
+        ...prevState.user,
+        name: { first, last },
+      },
+    };
+
+    setState(nextState);
   };
 
   return (
