@@ -47,7 +47,6 @@ export const useSubscribeProvider = <TState, TControlState extends ContextContro
         control.current.emitter.emit("update-state", contextState.current);
 
         Object.keys(objectDiff).forEach((key) => {
-            console.log("updated state", getUpdateEventName(key), nextState);
             control.current.emitter.emit(getUpdateEventName(key), nextState);
         });
     };
@@ -61,7 +60,6 @@ export const useSubscribeProvider = <TState, TControlState extends ContextContro
         control.current.emitter.emit(getUpdateEventName(key), value);
 
         Object.keys(objectDiff).forEach((key) => {
-            console.log("updated value", getUpdateEventName(key));
             control.current.emitter.emit(getUpdateEventName(key), partialUpdatedState);
         });
     };
