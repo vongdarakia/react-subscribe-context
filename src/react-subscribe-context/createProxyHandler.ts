@@ -11,13 +11,12 @@ export const createProxyHandler = <TState extends object>(
 ) => {
     return {
         get: (obj: TState, key: keyof TState, root: Object, keys: (keyof TState)[]) => {
-            const path = `${baseKey ? `${baseKey}.` : ""}${keys.join(".")}${
-                keys.length > 0 ? `.${key}` : key
-            }`;
+            const parentPath = `${baseKey ? `${baseKey}.` : ""}${keys.join(".")}`;
+            const path = `${parentPath}${keys.length > 0 ? `.${key}` : key}`;
             const event: `update-${string}` = `update-${path}`;
 
             if (subscribedCache.current[event] === undefined) {
-                const parentEventToRemove: `update-${string}` = `update-${keys.join(".")}`;
+                const parentEventToRemove: `update-${string}` = `update-${parentPath}`;
 
                 subscribedCache.current[event] = true;
 
