@@ -19,14 +19,13 @@ const getObjectDiff = <TObject extends Object>(
             const currentPath = path.length > 0 ? `${path}.${key}` : key;
 
             if (typeof newObj[key] === "object" && !Array.isArray(newObj[key])) {
-                const keyDiffs = getObjectDiff(oldObj[key], newObj[key], currentPath);
+                const objDiffs = getObjectDiff(oldObj[key], newObj[key], currentPath);
 
-                Object.keys(keyDiffs).forEach((diffKey: string) => {
-                    results[diffKey] = keyDiffs[diffKey];
+                Object.keys(objDiffs).forEach((diffKey: string) => {
+                    results[diffKey] = objDiffs[diffKey];
                 });
-            } else {
-                results[currentPath] = true;
             }
+            results[currentPath] = true;
         }
     });
 
