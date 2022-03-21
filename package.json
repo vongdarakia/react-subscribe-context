@@ -1,6 +1,6 @@
 {
     "name": "react-subscribe-context",
-    "version": "0.4.5",
+    "version": "0.4.6",
     "private": false,
     "author": "Akia Vongdara",
     "description": "A simple and consistent way of state management to avoid prop drilling, and is optimized for component rerenders.",
