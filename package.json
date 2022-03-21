@@ -7,8 +7,8 @@
     "license": "MIT",
     "source": "src/react-subscribe-context/index.ts",
     "main": "dist/index.js",
-    "module": "dist/module.js",
-    "types": "dist/types.d.ts",
+    "module": "dist/index.js",
+    "types": "dist/index.js.map",
     "files": [
         "dist/*"
     ],
