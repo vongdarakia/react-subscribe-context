@@ -121,43 +121,57 @@ export const LastNameComponent = (): ReactElement => {
 
 ```tsx
 // NameComponent.tsx
+import { ReactElement } from "react";
 import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
+import { FirstNameComponent } from "path/to/FirstNameComponent";
+import { LastNameComponent } from "path/to/LastNameComponent";
+
+type Name = { first: string; last: string };
+
+const spiderManNames: Name[] = [
+  { first: "Peter", last: "Parker" },
+  { first: "Peter", last: "Porker" },
+  { first: "Peni", last: "Parker" },
+  { first: "Miles", last: "Morales" },
+];
+
+const getRandomSpiderManName = (currentName: Name) => {
+  let randomName: Name = spiderManNames[0];
+
+  do {
+    randomName = spiderManNames[Math.floor(Math.random() * spiderManNames.length)];
+  } while (currentName.first === randomName.first && currentName.last === randomName.last);
+
+  return randomName;
+};
 
 export const NameComponent = (): ReactElement => {
   const [, setContextState] = useSubscribe(SpiderManContext);
 
-  const handleClickToggleName = () => {
-    const oddEven = Math.floor(Math.random() * 2);
-
+  const handleClickRandomizeName = () => {
     setContextState((prevState) => {
       let {
-        user: {
-          name: { first, last },
-        },
+        user: { name },
       } = prevState;
 
-      if (oddEven === 0) {
-        first = first === first ? last : first;
-      } else {
-        last = last === last ? first : last;
-      }
+      const randomSpiderManName = getRandomSpiderManName(name);
 
-      return ({
+      return {
         ...prevState,
         user: {
           ...prevState.user,
-          name: { first, last },
-        }
-      });
-    );
+          name: randomSpiderManName,
+        },
+      };
+    });
   };
 
   return (
     <div>
+      <button onClick={handleClickRandomizeName}>Randomize name</button>
       <FirstNameComponent />
       <LastNameComponent />
-      <button onClick={handleClickToggleName}>Toggle name</button>
     </div>
   );
 };
@@ -169,6 +183,8 @@ export const NameComponent = (): ReactElement => {
 // NameComponent.tsx
 import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
+import { FirstNameComponent } from "path/to/FirstNameComponent";
+import { LastNameComponent } from "path/to/LastNameComponent";
 
 export const NameComponent = (): ReactElement => {
   const [, , contextControl] = useSubscribe(SpiderManContext);
@@ -176,7 +192,7 @@ export const NameComponent = (): ReactElement => {
   // const contextControl = React.useContext(SpiderManContext);
   const { getState, setState } = contextControl;
 
-  const handleClickToggleName = () => {
+  const handleClickRandomizeName = () => {
     const oddEven = Math.floor(Math.random() * 2);
     const prevState = getState();
     let {
@@ -206,7 +222,7 @@ export const NameComponent = (): ReactElement => {
     <div>
       <FirstNameComponent />
       <LastNameComponent />
-      <button onClick={handleClickToggleName}>Toggle name</button>
+      <button onClick={handleClickRandomizeName}>Randomize name</button>
     </div>
   );
 };
