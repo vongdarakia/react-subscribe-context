@@ -8,7 +8,8 @@
     "source": "src/react-subscribe-context/index.ts",
     "main": "dist/index.js",
     "module": "dist/index.js",
-    "typings": "dist/index.js",
+    "types": "dist/index.js.map",
+    "typings": "dist/index.js.map",
     "files": [
         "dist/*"
     ],
