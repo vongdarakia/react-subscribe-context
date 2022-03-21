@@ -6,6 +6,7 @@ import { BASIC_COLOR } from "examples/BasicDemo/colors";
 import { DeepSubscriberDemo } from "examples/DeepSubscriberDemo/DeepSubscriberDemo";
 import { MessagingDemo } from "examples/MessagingDemo/MessagingDemo";
 import { ReactTrackDemo } from "examples/ReactTrackDemo/ReactTrackDemo";
+import { SpiderManDemo } from "examples/SpiderManDemo";
 import { SUBSCRIBER_COLOR } from "examples/SubscriberDemo/colors";
 import { SubscriberDemo } from "examples/SubscriberDemo/SubscriberDemo";
 import React, { useState } from "react";
@@ -46,6 +47,7 @@ function App() {
     const apps = [
         "Basic Context",
         // "Memo Demo",
+        "Use Case Demo",
         "Advanced Context",
         "Subscriber Context",
         "Deep Subscriber Demo",
@@ -63,6 +65,9 @@ function App() {
         // case "Memo Demo":
         //     app = <MemoDemo />;
         //     break;
+        case "Use Case Demo":
+            app = <SpiderManDemo />;
+            break;
         case "Messenger Demo":
             app = <MessagingDemo />;
             break;
@@ -115,13 +120,8 @@ const AppContainer = styled.div<{ appName?: string }>`
     border: 1px solid white;
 
     &.Messenger_Demo {
-        /* border-radius: 12px; */
         border: none;
         padding: 0;
-        /* background: white; */
-        /* height: 450px;
-        max-width: 720px;
-        margin: auto; */
     }
 `;
 
