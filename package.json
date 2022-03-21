@@ -7,9 +7,8 @@
     "license": "MIT",
     "source": "src/react-subscribe-context/index.ts",
     "main": "dist/index.js",
-    "module": "dist/index.js",
-    "types": "dist/index.js.map",
-    "typings": "dist/index.js.map",
+    "module": "dist/module.js",
+    "types": "dist/index.d.ts",
     "files": [
         "dist/*"
     ],
@@ -22,7 +21,7 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "build-lib": "rm -rf dist && node esbuild.config.js"
+        "build-lib": "rm -rf dist && parcel build"
     },
     "eslintConfig": {
         "extends": [
@@ -44,6 +43,7 @@
         ]
     },
     "dependencies": {
+        "@swc/helpers": "^0.3.8",
         "deep-proxy-polyfill": "^1.0.4",
         "react": "^17.0.2"
     },
