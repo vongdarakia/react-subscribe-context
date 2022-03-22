@@ -45,6 +45,9 @@ export const {
   Context: SpiderManContext,
   Provider: SpiderManProvider, // Note: This is not the same as what Context.Provider returns
 } = createSubscriberContext({ initialState });
+
+// alternative way
+export const [SpiderManContext, SpiderManProvider] = createSubscriberContext({ initialState });
 ```
 
 ```tsx
@@ -74,6 +77,11 @@ import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const MovieCounterComponent = (): ReactElement => {
   const [movieCounter, setMovieCounter] = useSubscribe(SpiderManContext, "movieCounter");
+  // alternative way
+  const { value: movieCounter, setValue: setMovieCounter } = useSubscribe(
+    SpiderManContext,
+    "movieCounter"
+  );
 
   const handleClickCounter = () => {
     setMovieCounter(movieCounter + 1);
@@ -94,6 +102,9 @@ import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const FirstNameComponent = (): ReactElement => {
   const [user] = useSubscribe(SpiderManContext, "user");
+  // alternative way
+  const { value: user } = useSubscribe(SpiderManContext, "user");
+
   const {
     name: { first },
   } = user;
@@ -109,6 +120,9 @@ import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const LastNameComponent = (): ReactElement => {
   const [state] = useSubscribe(SpiderManContext);
+  // alternative way
+  const { state } = useSubscribe(SpiderManContext, "user");
+
   const {
     user: {
       name: { last },
@@ -189,7 +203,10 @@ import { LastNameComponent } from "path/to/LastNameComponent";
 export const NameComponent = (): ReactElement => {
   const [, , contextControl] = useSubscribe(SpiderManContext);
   // Or this way
-  // const contextControl = React.useContext(SpiderManContext);
+  const { contextControl } = useSubscribe(SpiderManContext);
+  // Or this way
+  const contextControl = React.useContext(SpiderManContext);
+
   const { getState, setState } = contextControl;
 
   const handleClickRandomizeName = () => {
@@ -242,7 +259,9 @@ const contextControl = useContext(MyControlContext);
 
 ```tsx
 const [state, setState, contextControl] = useSubscribe(MyControlContext);
+const { state, setState, contextControl } = useSubscribe(MyControlContext);
 const [value, setValue, contextControl] = useSubscribe(MyControlContext, "key");
+const { value, setValue, contextControl } = useSubscribe(MyControlContext, "key");
 ```
 
 ### ContextControl functions

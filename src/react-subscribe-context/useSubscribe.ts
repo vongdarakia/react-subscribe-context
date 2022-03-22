@@ -13,13 +13,21 @@ type UseSubscribeValueReturn<TState, TKey extends keyof TState & string> = [
     TState[TKey],
     UpdateValue<TState, TKey>,
     ContextControl<TState>
-];
+] & {
+    value: TState[TKey];
+    setValue: UpdateValue<TState, TKey>;
+    contextControl: ContextControl<TState>;
+};
 
 type UseSubscribeStateReturn<TState> = [
     TState,
     ContextControl<TState>["setState"],
     ContextControl<TState>
-];
+] & {
+    state: TState;
+    setState: ContextControl<TState>["setState"];
+    contextControl: ContextControl<TState>;
+};
 
 export function useSubscribe<TState, TKey extends keyof TState & string>(
     Context: Context<ContextControl<TState>>,
@@ -92,13 +100,26 @@ export function useSubscribe<TState extends object, TKey extends keyof TState & 
 
     if (key) {
         const value = getValue(key);
+        let result: any[] & any = [getValue(key)];
 
         if (typeof value === "object" && !Array.isArray(value)) {
-            return [deepProxy(value, valueProxyHandler), updateValue, contextControl];
+            result = [deepProxy(value, valueProxyHandler)];
         }
 
-        return [value, updateValue, contextControl];
+        result.push(updateValue, contextControl);
+
+        result.value = result[0];
+        result.setValue = updateValue;
+        result.contextControl = contextControl;
+
+        return result;
     }
 
-    return [deepProxy(getState(), stateProxyHandler), setState, contextControl];
+    const result: any = [deepProxy(getState(), stateProxyHandler), setState, contextControl];
+
+    result.state = result[0];
+    result.setValue = setState;
+    result.contextControl = contextControl;
+
+    return result as UseSubscribeStateReturn<TState>;
 }
