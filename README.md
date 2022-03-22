@@ -121,7 +121,7 @@ import { SpiderManContext } from "path/to/SpiderManContext";
 export const LastNameComponent = (): ReactElement => {
   const [state] = useSubscribe(SpiderManContext);
   // alternative way
-  const { state } = useSubscribe(SpiderManContext, "user");
+  const { state } = useSubscribe(SpiderManContext);
 
   const {
     user: {
