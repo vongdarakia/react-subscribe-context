@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { createContext, ReactElement } from "react";
+import { Context, createContext, ReactElement } from "react";
 import { ContextControl } from "./subscriber-types";
 import { useSubscribeProvider } from "./useSubscribeProvider";
 
@@ -7,9 +7,16 @@ interface CreateControlContextOptions<TState> {
     initialState: TState;
 }
 
+type CustomProvider = (props: { children: ReactElement | ReactElement[] }) => JSX.Element;
+
+type ContextReturn<TState> = [Context<ContextControl<TState>>, CustomProvider] & {
+    Context: Context<ContextControl<TState>>;
+    Provider: CustomProvider;
+};
+
 export const createSubscriberContext = <TState,>({
     initialState,
-}: CreateControlContextOptions<TState>) => {
+}: CreateControlContextOptions<TState>): ContextReturn<TState> => {
     const initialControl: ContextControl<TState> = {
         emitter: new EventEmitter(),
         getState: () => {
@@ -39,5 +46,10 @@ export const createSubscriberContext = <TState,>({
         return <Context.Provider value={control.current}>{children}</Context.Provider>;
     };
 
-    return { Context, Provider };
+    const result = [Context, Provider] as any;
+
+    result.Context = Context;
+    result.Provider = Provider;
+
+    return result as ContextReturn<TState>;
 };

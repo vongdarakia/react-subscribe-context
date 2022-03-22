@@ -25,5 +25,6 @@ const initialState: {
 
 export type DeepSubscriberState = typeof initialState;
 
-export const { Context: DeepSubscriberContext, Provider: DeepSubscriberProvider } =
-    createSubscriberContext({ initialState });
+export const [DeepSubscriberContext, DeepSubscriberProvider] = createSubscriberContext({
+    initialState,
+});
