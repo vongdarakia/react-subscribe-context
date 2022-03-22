@@ -15,7 +15,7 @@ export interface SetValue<TState> {
 
 export interface SetState<TState> {
     (nextState: Partial<TState>): void | Promise<void>;
-    (getState: (state: TState) => TState): void | Promise<void>;
+    (getState: (state: TState) => Partial<TState>): void | Promise<void>;
 }
 
 export type GetValue<TState> = <TKey extends Key<TState>>(key: TKey) => TState[TKey];

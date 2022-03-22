@@ -5,13 +5,8 @@ import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ContextControl } from "./subscriber-types";
 
 interface UpdateValue<TState, TKey extends keyof TState & string> {
-    (value: TState[TKey]): void;
+    (nextValue: TState[TKey]): void;
     (getState: (state: TState) => TState[TKey]): void;
-}
-
-interface UpdateState<TState> {
-    (stateValues: Partial<TState>): void;
-    (getState: (state: TState) => Partial<TState>): void;
 }
 
 type UseSubscribeValueReturn<TState, TKey extends keyof TState & string> = [
@@ -20,7 +15,11 @@ type UseSubscribeValueReturn<TState, TKey extends keyof TState & string> = [
     ContextControl<TState>
 ];
 
-type UseSubscribeStateReturn<TState> = [TState, UpdateState<TState>, ContextControl<TState>];
+type UseSubscribeStateReturn<TState> = [
+    TState,
+    ContextControl<TState>["setState"],
+    ContextControl<TState>
+];
 
 export function useSubscribe<TState, TKey extends keyof TState & string>(
     Context: Context<ContextControl<TState>>,
@@ -41,16 +40,6 @@ export function useSubscribe<TState extends object, TKey extends keyof TState & 
     const [, setFakeValue] = useState({});
     const rerender = useCallback(() => setFakeValue({}), []);
     const subscribedCache = useRef<SubscribedCache>({});
-
-    const updateState: UpdateState<TState> = useCallback(
-        (values) => {
-            if (values instanceof Function) {
-                return setState(values(getState()));
-            }
-            setState(values);
-        },
-        [getState, setState]
-    );
 
     const updateValue: UpdateValue<TState, TKey> = useCallback(
         (value) => {
@@ -78,10 +67,6 @@ export function useSubscribe<TState extends object, TKey extends keyof TState & 
     );
 
     useEffect(() => {
-        const handleValueUpdated = () => {
-            rerender();
-        };
-
         if (key) {
             const value = getValue(key);
 
@@ -95,12 +80,12 @@ export function useSubscribe<TState extends object, TKey extends keyof TState & 
         );
 
         events.forEach((event) => {
-            emitter.on(event, handleValueUpdated);
+            emitter.on(event, rerender);
         });
 
         return () => {
             events.forEach((event) => {
-                emitter.off(event, handleValueUpdated);
+                emitter.off(event, rerender);
             });
         };
     }, [emitter, rerender, key, getValue]);
@@ -115,5 +100,5 @@ export function useSubscribe<TState extends object, TKey extends keyof TState & 
         return [value, updateValue, contextControl];
     }
 
-    return [deepProxy(getState(), stateProxyHandler), updateState, contextControl];
+    return [deepProxy(getState(), stateProxyHandler), setState, contextControl];
 }
