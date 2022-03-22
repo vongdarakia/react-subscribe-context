@@ -61,7 +61,6 @@
         "@types/styled-components": "^5.1.23",
         "axios": "^0.26.0",
         "deep-proxy-polyfill": "^1.0.4",
-        "esbuild": "^0.14.27",
         "parcel": "^2.3.2",
         "react": "^17.0.2",
         "react-app-polyfill": "^3.0.0",
