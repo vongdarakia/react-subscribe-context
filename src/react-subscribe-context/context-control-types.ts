@@ -3,19 +3,16 @@ import { EventEmitter } from "events";
 type Key<TState> = keyof TState & string;
 
 export interface SetValue<TState> {
-    <TKey extends Key<TState>, TValue extends TState[TKey]>(
+    <TKey extends Key<TState>>(key: TKey, nextValue: TState[TKey]): void | Promise<void>;
+    <TKey extends Key<TState>>(
         key: TKey,
-        value: TValue
-    ): void | Promise<void>;
-    <TKey extends Key<TState>, TValue extends TState[TKey]>(
-        key: TKey,
-        getState: (state: TState) => TValue
+        getNextValue: (value: TState[TKey], state: TState) => TState[TKey]
     ): void | Promise<void>;
 }
 
 export interface SetState<TState> {
     (nextState: Partial<TState>): void | Promise<void>;
-    (getState: (state: TState) => Partial<TState>): void | Promise<void>;
+    (getNextState: (state: TState) => Partial<TState>): void | Promise<void>;
 }
 
 export type GetValue<TState> = <TKey extends Key<TState>>(key: TKey) => TState[TKey];

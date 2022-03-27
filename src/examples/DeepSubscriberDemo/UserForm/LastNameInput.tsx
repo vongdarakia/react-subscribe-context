@@ -15,7 +15,7 @@ export const LastNameInput = (): ReactElement => {
     const handleChangeLastName: ChangeEventHandler<HTMLInputElement> = (e) => {
         const last = e.target.value;
 
-        setValue(({ user }) => ({ ...user, name: { ...user.name, last } }));
+        setValue((user) => ({ ...user, name: { ...user.name, last } }));
     };
 
     logRender("lastName Input");

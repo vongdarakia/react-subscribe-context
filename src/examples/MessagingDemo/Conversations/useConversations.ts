@@ -98,7 +98,7 @@ export const useConversations = () => {
             setState({ selectedReceiverName: contactName });
 
             (function readCurrentMessages() {
-                setConversations(({ conversations: prevConversations }) =>
+                setConversations((prevConversations) =>
                     prevConversations.map((conversation) => {
                         if (conversation.name === contactName) {
                             return { ...conversation, numUnreadMessages: 0 };
