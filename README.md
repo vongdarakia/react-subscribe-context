@@ -13,6 +13,13 @@ It did exactly what I was looking for, except that it wasn't IE11 compatible, so
 
 Using Proxy and EventEmitter, I created a tool where you can subscribe to a value just by accessing it, and it works for nested objects as well. It's simple to set up and works similar to the React hook, `useState`!
 
+## Rendering performance example
+
+With render highlighting on via React Developer Tools, the example below shows how rendering only happens to components with data that had changed.
+
+![react-subscriber-render-performance](https://user-images.githubusercontent.com/4285261/160267333-9048ddb8-3eaa-456a-bfa1-6a14567de911.gif)
+
+
 ## Installation
 
 ```bash
@@ -202,37 +209,29 @@ import { LastNameComponent } from "path/to/LastNameComponent";
 
 export const NameComponent = (): ReactElement => {
   const [, , contextControl] = useSubscribe(SpiderManContext);
-  // Or this way
+  // alternative way
   const { contextControl } = useSubscribe(SpiderManContext);
-  // Or this way
+  // another alternative way
   const contextControl = React.useContext(SpiderManContext);
 
   const { getState, setState } = contextControl;
 
   const handleClickRandomizeName = () => {
-    const oddEven = Math.floor(Math.random() * 2);
-    const prevState = getState();
-    let {
-      user: {
-        name: { first, last },
-      },
-    } = prevState;
+    setContextState((prevState) => {
+      let {
+        user: { name },
+      } = prevState;
 
-    if (oddEven === 0) {
-      first = first === first ? last : first;
-    } else {
-      last = last === last ? first : last;
-    }
+      const randomSpiderManName = getRandomSpiderManName(name);
 
-    const nextState = {
-      ...prevState,
-      user: {
-        ...prevState.user,
-        name: { first, last },
-      },
-    };
-
-    setState(nextState);
+      return {
+        ...prevState,
+        user: {
+          ...prevState.user,
+          name: randomSpiderManName,
+        },
+      };
+    });
   };
 
   return (
