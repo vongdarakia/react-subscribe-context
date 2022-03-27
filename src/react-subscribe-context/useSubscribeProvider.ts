@@ -1,36 +1,7 @@
 import { useRef } from "react";
 import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ContextControl } from "./context-control-types";
-
-interface ObjectDiff {
-    [key: string]: boolean;
-}
-
-const getObjectDiff = <TObject extends Object>(
-    oldObj: TObject,
-    newObj: TObject,
-    path: string = ""
-): ObjectDiff => {
-    const keys = Object.keys(newObj) as (keyof TObject & string)[];
-    const results: ObjectDiff = {};
-
-    keys.forEach((key) => {
-        if (newObj[key] !== oldObj[key]) {
-            const currentPath = path.length > 0 ? `${path}.${key}` : key;
-
-            if (typeof newObj[key] === "object" && !Array.isArray(newObj[key])) {
-                const objDiffs = getObjectDiff(oldObj[key], newObj[key], currentPath);
-
-                Object.keys(objDiffs).forEach((diffKey: string) => {
-                    results[diffKey] = objDiffs[diffKey];
-                });
-            }
-            results[currentPath] = true;
-        }
-    });
-
-    return results;
-};
+import { getStateChanges } from "./getStateChanges";
 
 export const useSubscribeProvider = <TState, TControlState extends ContextControl<TState>>(
     initialControl: TControlState,
@@ -46,12 +17,12 @@ export const useSubscribeProvider = <TState, TControlState extends ContextContro
             nextState = nextState(control.current.getState());
         }
 
-        const objectDiff = getObjectDiff(contextState.current, nextState);
+        const stateChanges = getStateChanges(contextState.current, nextState);
 
         contextState.current = { ...contextState.current, ...nextState };
         control.current.emitter.emit("update-state", contextState.current);
 
-        Object.keys(objectDiff).forEach((key) => {
+        Object.keys(stateChanges).forEach((key) => {
             control.current.emitter.emit(getUpdateEventName(key), nextState);
         });
     };
@@ -64,11 +35,11 @@ export const useSubscribeProvider = <TState, TControlState extends ContextContro
         }
 
         const partialUpdatedState = { [key]: nextValue } as unknown as Partial<TState>;
-        const objectDiff = getObjectDiff(contextState.current, partialUpdatedState);
+        const stateChanges = getStateChanges(contextState.current, partialUpdatedState);
 
         contextState.current = { ...contextState.current, [key]: nextValue };
 
-        Object.keys(objectDiff).forEach((key) => {
+        Object.keys(stateChanges).forEach((key) => {
             control.current.emitter.emit(getUpdateEventName(key), partialUpdatedState);
         });
     };
