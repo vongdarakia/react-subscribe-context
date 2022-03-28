@@ -19,10 +19,19 @@ export type GetValue<TState> = <TKey extends Key<TState>>(key: TKey) => TState[T
 
 export type GetState<TState> = () => TState;
 
-export interface ContextControl<TState> {
+export interface BaseContextControl<TState> {
     emitter: EventEmitter;
     getValue: GetValue<TState>;
     getState: GetState<TState>;
     setValue: SetValue<TState>;
     setState: SetState<TState>;
 }
+
+export interface ContextControl<TState, TActions extends object>
+    extends BaseContextControl<TState> {
+    actions: TActions;
+}
+
+export type ActionsCreator<TState, TActions> = (
+    contextControl: BaseContextControl<TState>
+) => TActions;

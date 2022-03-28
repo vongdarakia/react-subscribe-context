@@ -1,11 +1,16 @@
 import { useRef } from "react";
 import { getUpdateEventName } from "utils/getUpdateEventName";
-import { ContextControl } from "./context-control-types";
+import { ActionsCreator, ContextControl } from "./context-control-types";
 import { getStateChanges } from "./getStateChanges";
 
-export const useSubscribeProvider = <TState, TControlState extends ContextControl<TState>>(
+export const useSubscribeProvider = <
+    TState,
+    TActions extends object,
+    TControlState extends ContextControl<TState, TActions>
+>(
     initialControl: TControlState,
-    initialState: TState
+    initialState: TState,
+    createActions?: ActionsCreator<TState, TActions>
 ) => {
     const control = useRef<TControlState>({ ...initialControl });
     const contextState = useRef<TState>({ ...initialState });
@@ -45,7 +50,11 @@ export const useSubscribeProvider = <TState, TControlState extends ContextContro
     };
 
     control.current.getValue = (fieldName) => contextState.current[fieldName];
+
     control.current.getState = () => contextState.current;
+
+    // @ts-ignore
+    control.current.actions = createActions ? createActions(control.current) : {};
 
     return control;
 };

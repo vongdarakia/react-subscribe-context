@@ -4,10 +4,13 @@ import styled from "styled-components";
 import { SpiderManContext } from "./SpiderManContext";
 
 export const MovieCounterComponent = (): ReactElement => {
-    const [movieCounter, setMovieCounter] = useSubscribe(SpiderManContext, "movieCounter");
+    const {
+        value: movieCounter,
+        contextControl: { actions },
+    } = useSubscribe(SpiderManContext, "movieCounter");
 
     const handleClickCounter = () => {
-        setMovieCounter(movieCounter + 1);
+        actions.incrementMovieCounter();
     };
 
     return <StyledButton onClick={handleClickCounter}>{movieCounter}</StyledButton>;
