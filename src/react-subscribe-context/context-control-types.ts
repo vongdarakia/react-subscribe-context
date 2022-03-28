@@ -2,6 +2,8 @@ import { EventEmitter } from "events";
 
 type Key<TState> = keyof TState & string;
 
+export type EventKey = `update-${string}`;
+
 export interface SetValue<TState> {
     <TKey extends Key<TState>>(key: TKey, nextValue: TState[TKey]): void | Promise<void>;
     <TKey extends Key<TState>>(

@@ -1,27 +1,27 @@
 import React from "react";
-
+import { EventKey } from "./context-control-types";
 export interface SubscribedCache {
-    [event: `update-${string}`]: boolean | undefined;
+    [event: EventKey]: boolean | undefined;
 }
 
 export const createProxyHandler = <TState extends object>(
-    subscribedCache: React.MutableRefObject<SubscribedCache>,
-    rerender: () => void,
+    subscriptionRef: React.MutableRefObject<SubscribedCache>,
+    rerender: Function,
     baseKey = ""
 ) => {
     return {
         get: (obj: TState, key: keyof TState, root: Object, keys: (keyof TState)[]) => {
             const parentPath = `${baseKey ? `${baseKey}.` : ""}${keys.join(".")}`;
             const path = `${parentPath}${keys.length > 0 ? `.${key}` : key}`;
-            const event: `update-${string}` = `update-${path}`;
+            const event: EventKey = `update-${path}`;
 
-            if (subscribedCache.current[event] === undefined) {
-                const parentEventToRemove: `update-${string}` = `update-${parentPath}`;
+            if (subscriptionRef.current[event] === undefined) {
+                const parentEventToRemove: EventKey = `update-${parentPath}`;
 
-                subscribedCache.current[event] = true;
+                subscriptionRef.current[event] = true;
 
-                if (subscribedCache.current[parentEventToRemove] === true) {
-                    subscribedCache.current[parentEventToRemove] = false;
+                if (subscriptionRef.current[parentEventToRemove] === true) {
+                    subscriptionRef.current[parentEventToRemove] = false;
                 }
 
                 rerender();

@@ -2,7 +2,7 @@ import deepProxy from "deep-proxy-polyfill";
 import { Context, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createProxyHandler, SubscribedCache } from "react-subscribe-context/createProxyHandler";
 import { getUpdateEventName } from "utils/getUpdateEventName";
-import { ContextControl } from "./context-control-types";
+import { ContextControl, EventKey } from "./context-control-types";
 
 interface UpdateValue<TState, TKey extends keyof TState & string> {
     (nextValue: TState[TKey]): void;
@@ -87,7 +87,7 @@ export function useSubscribe<
             }
         }
 
-        const events = (Object.keys(subscribedCache.current) as `update-${string}`[]).filter(
+        const events = (Object.keys(subscribedCache.current) as EventKey[]).filter(
             (path) => subscribedCache.current[path]
         );
 
