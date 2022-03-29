@@ -23,11 +23,15 @@ export const useSubscribeProvider = <
         }
 
         const stateChanges = getStateChanges(contextState.current, nextState);
+        const changedFields = Object.keys(stateChanges);
 
         contextState.current = { ...contextState.current, ...nextState };
-        control.current.emitter.emit("update-state", contextState.current);
 
-        Object.keys(stateChanges).forEach((key) => {
+        if (changedFields.length > 0) {
+            control.current.emitter.emit("update-state", contextState.current);
+        }
+
+        changedFields.forEach((key) => {
             control.current.emitter.emit(getUpdateEventName(key), nextState);
         });
     };
