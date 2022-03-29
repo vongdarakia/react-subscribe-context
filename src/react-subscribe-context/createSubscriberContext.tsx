@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { Context, createContext, ReactElement } from "react";
+import { Context, createContext, ReactElement, ReactNode } from "react";
 import { ActionsCreator, BaseContextControl, ContextControl } from "./context-control-types";
 import { useSubscribeProvider } from "./useSubscribeProvider";
 
@@ -8,7 +8,9 @@ interface CreateControlContextOptions<TState, TActions> {
     createActions?: ActionsCreator<TState, TActions>;
 }
 
-type CustomProvider = (props: { children: ReactElement | ReactElement[] }) => JSX.Element;
+type CustomProvider = (props: {
+    children: ReactElement | ReactElement[] | ReactNode;
+}) => JSX.Element;
 
 type ContextReturn<TState, TActions extends object> = [
     Context<ContextControl<TState, TActions>>,

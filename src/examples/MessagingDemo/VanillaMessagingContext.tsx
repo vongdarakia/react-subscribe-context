@@ -1,6 +1,6 @@
 import { Conversation } from "examples/MessagingDemo/FakeMessenger";
 import { MessageInfo, User } from "examples/MessagingDemo/types";
-import { createContext, ReactElement, useCallback, useState } from "react";
+import { createContext, ReactElement, ReactNode, useCallback, useState } from "react";
 
 interface SetState<TState> {
     (nextState: Partial<TState>): void | Promise<void>;
@@ -31,7 +31,7 @@ export const VanillaMessagingContext = createContext(initialState);
 export const VanillaMessagingProvider = ({
     children,
 }: {
-    children: ReactElement | ReactElement[];
+    children: ReactElement | ReactElement[] | ReactNode;
 }) => {
     const [state, setState] = useState<typeof initialState>(initialState);
 

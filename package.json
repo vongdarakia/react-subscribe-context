@@ -80,5 +80,14 @@
         "examples/*": "./src/examples/$1",
         "react-subscribe-context/*": "./src/react-subscribe-context/$1",
         "utils/*": "./src/utils/$1"
+    },
+    "jest": {
+        "collectCoverageFrom": [
+            "./src/react-subscribe-context/*.{ts,tsx}"
+        ],
+        "coveragePathIgnorePatterns": [
+            "<rootDir>/src/react-subscribe-context/index.ts",
+            "<rootDir>/src/react-subscribe-context/context-control-types.ts"
+        ]
     }
 }
