@@ -3,6 +3,13 @@ import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ActionsCreator, ContextControl } from "./context-control-types";
 import { getStateChanges } from "./getStateChanges";
 
+/**
+ * Creates a state management object to handle the given initial state.
+ * @param initialControl Initial control methods and emitter.
+ * @param initialState Initial state of the context.
+ * @param createActions Function to create reusable actions.
+ * @returns The control object used for manage the context.
+ */
 export const useSubscribeProvider = <
     TState,
     TActions extends object,

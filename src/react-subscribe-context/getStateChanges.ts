@@ -1,7 +1,17 @@
+/**
+ * A key value pair of state changes. `true` indicating that the field was changed.
+ */
 export interface StateChanges {
     [key: string]: boolean;
 }
 
+/**
+ * Compares the differences between the previous state and what will be changed.
+ * @param prevState The previous (or current) state that will be changed.
+ * @param nextState The next state (or partial update of the next state).
+ * @param path Current path of the changed nested value. i.e. user.name.first
+ * @returns A key value pair of what values were changed from the prevState.
+ */
 export const getStateChanges = <TObject extends Object>(
     prevState: TObject,
     nextState: TObject,

@@ -3,27 +3,38 @@ import { Context, createContext, ReactElement, ReactNode } from "react";
 import { ActionsCreator, BaseContextControl, ContextControl } from "./context-control-types";
 import { useSubscribeProvider } from "./useSubscribeProvider";
 
-interface CreateControlContextOptions<TState, TActions> {
+interface CreateControlContextConfig<TState, TActions> {
+    /**
+     * Initial state that the context will be based off of.
+     */
     initialState: TState;
+    /**
+     * Function used to create reusable actions that updates the state.
+     */
     createActions?: ActionsCreator<TState, TActions>;
 }
 
-type CustomProvider = (props: {
+type ControlProvider = (props: {
     children: ReactElement | ReactElement[] | ReactNode;
 }) => JSX.Element;
 
 type ContextReturn<TState, TActions extends object> = [
     Context<ContextControl<TState, TActions>>,
-    CustomProvider
+    ControlProvider
 ] & {
     Context: Context<ContextControl<TState, TActions>>;
-    Provider: CustomProvider;
+    Provider: ControlProvider;
 };
 
+/**
+ * Creates a context and provider to help control.
+ * @param config Configuration options of the control context.
+ * @returns A tuple of a control context and provider.
+ */
 export const createSubscriberContext = <TState, TActions extends object>({
     initialState,
     createActions,
-}: CreateControlContextOptions<TState, TActions>): ContextReturn<TState, TActions> => {
+}: CreateControlContextConfig<TState, TActions>): ContextReturn<TState, TActions> => {
     const baseControl: BaseContextControl<TState> = {
         emitter: new EventEmitter(),
         getState: () => {

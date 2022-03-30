@@ -8,36 +8,97 @@ const getSubscribedEvents = (subscribedCache: SubscribedCache) => {
     return (Object.keys(subscribedCache) as EventKey[]).filter((path) => subscribedCache[path]);
 };
 
+/**
+ * Function that returns the new value of the field.
+ * @param value Current value of the field.
+ * @param state Current state
+ * @returns Next value
+ */
+type GetNextValue<TState, TKey extends keyof TState & string> = (
+    value: TState[TKey],
+    state: TState
+) => TState[TKey];
+
 interface UpdateValue<TState, TKey extends keyof TState & string> {
+    /**
+     * The new value of the field.
+     */
     (nextValue: TState[TKey]): void;
-    (getNextValue: (value: TState[TKey], state: TState) => TState[TKey]): void;
+
+    /**
+     * Function that returns the new value of the field.
+     */
+    (getNextValue: GetNextValue<TState, TKey>): void;
 }
 
-export type UseSubscribeValueReturn<
+/**
+ * An array of the value, value setter and context control
+ */
+type UseSubscribeValueArrayReturn<
     TState,
     TKey extends keyof TState & string,
     TActions extends object
-> = [TState[TKey], UpdateValue<TState, TKey>, ContextControl<TState, TActions>] & {
+> = [TState[TKey], UpdateValue<TState, TKey>, ContextControl<TState, TActions>];
+
+/**
+ * An object holding the value, value setter and context control
+ */
+type UseSubscribeValueObjectReturn<
+    TState,
+    TKey extends keyof TState & string,
+    TActions extends object
+> = {
     value: TState[TKey];
     setValue: UpdateValue<TState, TKey>;
     contextControl: ContextControl<TState, TActions>;
 };
 
-export type UseSubscribeStateReturn<TState, TActions extends object> = [
+export type UseSubscribeValueReturn<
+    TState,
+    TKey extends keyof TState & string,
+    TActions extends object
+> = UseSubscribeValueArrayReturn<TState, TKey, TActions> &
+    UseSubscribeValueObjectReturn<TState, TKey, TActions>;
+
+/**
+ * An array of the state, state setter and context control
+ */
+type UseSubscribeStateArrayReturn<TState, TActions extends object> = [
     TState,
     ContextControl<TState, TActions>["setState"],
     ContextControl<TState, TActions>
-] & {
+];
+
+/**
+ * An object holding the state, state setter and context control
+ */
+type UseSubscribeStateObjectReturn<TState, TActions extends object> = {
     state: TState;
     setState: ContextControl<TState, TActions>["setState"];
     contextControl: ContextControl<TState, TActions>;
 };
 
+export type UseSubscribeStateReturn<TState, TActions extends object> = UseSubscribeStateArrayReturn<
+    TState,
+    TActions
+> &
+    UseSubscribeStateObjectReturn<TState, TActions>;
+
+/**
+ * Accesses the control context and subscribes to specified value.
+ * @param Context Control context that will be referenced.
+ * @param key Field to access and subscribe to.
+ */
 export function useSubscribe<TState, TKey extends keyof TState & string, TActions extends object>(
     Context: Context<ContextControl<TState, TActions>>,
     key: TKey
 ): UseSubscribeValueReturn<TState, TKey, TActions>;
 
+/**
+ * Accesses to the control context and subscribes to any value accessed from the returned state.
+ * @param Context Control context that will be referenced.
+ * @param key Undefined field key will return a state.
+ */
 export function useSubscribe<TState, TActions extends object>(
     Context: Context<ContextControl<TState, TActions>>,
     key?: undefined | null
