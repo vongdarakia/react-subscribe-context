@@ -4,12 +4,16 @@ import { createProxyHandler, SubscribedCache } from "react-subscribe-context/cre
 import { getUpdateEventName } from "utils/getUpdateEventName";
 import { ContextControl, EventKey } from "./context-control-types";
 
+const getSubscribedEvents = (subscribedCache: SubscribedCache) => {
+    return (Object.keys(subscribedCache) as EventKey[]).filter((path) => subscribedCache[path]);
+};
+
 interface UpdateValue<TState, TKey extends keyof TState & string> {
     (nextValue: TState[TKey]): void;
     (getNextValue: (value: TState[TKey], state: TState) => TState[TKey]): void;
 }
 
-type UseSubscribeValueReturn<
+export type UseSubscribeValueReturn<
     TState,
     TKey extends keyof TState & string,
     TActions extends object
@@ -19,7 +23,7 @@ type UseSubscribeValueReturn<
     contextControl: ContextControl<TState, TActions>;
 };
 
-type UseSubscribeStateReturn<TState, TActions extends object> = [
+export type UseSubscribeStateReturn<TState, TActions extends object> = [
     TState,
     ContextControl<TState, TActions>["setState"],
     ContextControl<TState, TActions>
@@ -51,30 +55,16 @@ export function useSubscribe<
     const { emitter, getState, getValue, setValue, setState } = contextControl;
     const [, setFakeValue] = useState({});
     const rerender = useCallback(() => setFakeValue({}), []);
-    const subscribedCache = useRef<SubscribedCache>({});
-
-    const updateValue: UpdateValue<TState, TKey> = useCallback(
-        (value) => {
-            if (!key) {
-                throw new Error("Somehow updating a value when should be updating state");
-            }
-
-            if (value instanceof Function) {
-                setValue(key, value);
-            } else {
-                setValue(key, value);
-            }
-        },
-        [key, setValue]
-    );
+    const subscribedCacheRef = useRef<SubscribedCache>({});
+    const numEvents = Object.keys(subscribedCacheRef.current).length;
 
     const stateProxyHandler = useMemo(
-        () => createProxyHandler<any>(subscribedCache, rerender),
+        () => createProxyHandler<any>(subscribedCacheRef, rerender),
         [rerender]
     );
 
     const valueProxyHandler = useMemo(
-        () => createProxyHandler<any>(subscribedCache, rerender, key as string),
+        () => createProxyHandler<any>(subscribedCacheRef, rerender, key as string),
         [rerender, key]
     );
 
@@ -83,13 +73,11 @@ export function useSubscribe<
             const value = getValue(key);
 
             if (typeof value !== "object" || Array.isArray(value)) {
-                subscribedCache.current[getUpdateEventName(key)] = true;
+                subscribedCacheRef.current[getUpdateEventName(key)] = true;
             }
         }
 
-        const events = (Object.keys(subscribedCache.current) as EventKey[]).filter(
-            (path) => subscribedCache.current[path]
-        );
+        const events = getSubscribedEvents(subscribedCacheRef.current);
 
         events.forEach((event) => {
             emitter.on(event, rerender);
@@ -100,7 +88,7 @@ export function useSubscribe<
                 emitter.off(event, rerender);
             });
         };
-    }, [emitter, rerender, key, getValue]);
+    }, [emitter, rerender, key, getValue, numEvents]);
 
     if (key) {
         const value = getValue(key);
@@ -110,19 +98,27 @@ export function useSubscribe<
             result = [deepProxy(value, valueProxyHandler)];
         }
 
+        const updateValue: UpdateValue<TState, TKey> = (value) => {
+            if (value instanceof Function) {
+                setValue(key, value);
+            } else {
+                setValue(key, value);
+            }
+        };
+
         result.push(updateValue, contextControl);
 
         result.value = result[0];
         result.setValue = updateValue;
         result.contextControl = contextControl;
 
-        return result;
+        return result as UseSubscribeValueReturn<TState, TKey, TActions>;
     }
 
     const result: any = [deepProxy(getState(), stateProxyHandler), setState, contextControl];
 
     result.state = result[0];
-    result.setValue = setState;
+    result.setState = setState;
     result.contextControl = contextControl;
 
     return result as UseSubscribeStateReturn<TState, TActions>;
