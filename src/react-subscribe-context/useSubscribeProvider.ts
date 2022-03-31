@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { getUpdateEventName } from "utils/getUpdateEventName";
+import { getUpdateEventName } from "react-subscribe-context/getUpdateEventName";
 import { ActionsCreator, ContextControl } from "./context-control-types";
 import { getStateChanges } from "./getStateChanges";
 

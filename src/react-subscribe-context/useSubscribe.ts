@@ -1,7 +1,7 @@
 import deepProxy from "deep-proxy-polyfill";
 import { Context, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createProxyHandler, SubscribedCache } from "react-subscribe-context/createProxyHandler";
-import { getUpdateEventName } from "utils/getUpdateEventName";
+import { getUpdateEventName } from "react-subscribe-context/getUpdateEventName";
 import { ContextControl, EventKey } from "./context-control-types";
 
 const getSubscribedEvents = (subscribedCache: SubscribedCache) => {
