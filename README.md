@@ -38,18 +38,18 @@ With render highlighting on via React Developer Tools, the example below shows h
 import { createSubscriberContext } from "react-subscribe-context";
 
 const initialState = {
-    user: {
-        name: {
-            first: "Peter",
-            last: "Parker",
-        },
+  user: {
+    name: {
+      first: "Peter",
+      last: "Parker",
     },
-    movieCounter: 9,
+  },
+  movieCounter: 9,
 };
 
 export const {
-    Context: SpiderManContext,
-    Provider: SpiderManProvider, // Note: This is not the same as what Context.Provider returns
+  Context: SpiderManContext,
+  Provider: SpiderManProvider, // Note: This is not the same as what Context.Provider returns
 } = createSubscriberContext({ initialState });
 
 // alternative way
@@ -63,14 +63,14 @@ import { NameComponent } from "path/to/NameComponent";
 import { SpiderManProvider } from "path/to/SpiderManContext";
 
 const App = (): ReactElement => {
-    return (
-        <SpiderManProvider>
-            <div>
-                <NameComponent />
-                <MovieCounterComponent />
-            </div>
-        </SpiderManProvider>
-    );
+  return (
+    <SpiderManProvider>
+      <div>
+        <NameComponent />
+        <MovieCounterComponent />
+      </div>
+    </SpiderManProvider>
+  );
 };
 ```
 
@@ -82,18 +82,18 @@ import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const MovieCounterComponent = (): ReactElement => {
-    const [movieCounter, setMovieCounter] = useSubscribe(SpiderManContext, "movieCounter");
-    // alternative way
-    const { value: movieCounter, setValue: setMovieCounter } = useSubscribe(
-        SpiderManContext,
-        "movieCounter"
-    );
+  const [movieCounter, setMovieCounter] = useSubscribe(SpiderManContext, "movieCounter");
+  // alternative way
+  const { value: movieCounter, setValue: setMovieCounter } = useSubscribe(
+    SpiderManContext,
+    "movieCounter"
+  );
 
-    const handleClickCounter = () => {
-        setMovieCounter(movieCounter + 1);
-    };
+  const handleClickCounter = () => {
+    setMovieCounter(movieCounter + 1);
+  };
 
-    return <button onClick={handleClickCounter}>{movieCounter}</button>;
+  return <button onClick={handleClickCounter}>{movieCounter}</button>;
 };
 ```
 
@@ -107,15 +107,15 @@ import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const FirstNameComponent = (): ReactElement => {
-    const [user] = useSubscribe(SpiderManContext, "user");
-    // alternative way
-    const { value: user } = useSubscribe(SpiderManContext, "user");
+  const [user] = useSubscribe(SpiderManContext, "user");
+  // alternative way
+  const { value: user } = useSubscribe(SpiderManContext, "user");
 
-    const {
-        name: { first },
-    } = user;
+  const {
+    name: { first },
+  } = user;
 
-    return <div>{first}</div>;
+  return <div>{first}</div>;
 };
 ```
 
@@ -125,17 +125,17 @@ import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const LastNameComponent = (): ReactElement => {
-    const [state] = useSubscribe(SpiderManContext);
-    // alternative way
-    const { state } = useSubscribe(SpiderManContext);
+  const [state] = useSubscribe(SpiderManContext);
+  // alternative way
+  const { state } = useSubscribe(SpiderManContext);
 
-    const {
-        user: {
-            name: { last },
-        },
-    } = state;
+  const {
+    user: {
+      name: { last },
+    },
+  } = state;
 
-    return <div>{last}</div>;
+  return <div>{last}</div>;
 };
 ```
 
@@ -150,50 +150,50 @@ import { LastNameComponent } from "path/to/LastNameComponent";
 type Name = { first: string; last: string };
 
 const spiderManNames: Name[] = [
-    { first: "Peter", last: "Parker" },
-    { first: "Peter", last: "Porker" },
-    { first: "Peni", last: "Parker" },
-    { first: "Miles", last: "Morales" },
+  { first: "Peter", last: "Parker" },
+  { first: "Peter", last: "Porker" },
+  { first: "Peni", last: "Parker" },
+  { first: "Miles", last: "Morales" },
 ];
 
 const getRandomSpiderManName = (currentName: Name) => {
-    let randomName: Name = spiderManNames[0];
+  let randomName: Name = spiderManNames[0];
 
-    do {
-        randomName = spiderManNames[Math.floor(Math.random() * spiderManNames.length)];
-    } while (currentName.first === randomName.first && currentName.last === randomName.last);
+  do {
+    randomName = spiderManNames[Math.floor(Math.random() * spiderManNames.length)];
+  } while (currentName.first === randomName.first && currentName.last === randomName.last);
 
-    return randomName;
+  return randomName;
 };
 
 export const NameComponent = (): ReactElement => {
-    const [, setContextState] = useSubscribe(SpiderManContext);
+  const [, setContextState] = useSubscribe(SpiderManContext);
 
-    const handleClickRandomizeName = () => {
-        setContextState((prevState) => {
-            let {
-                user: { name },
-            } = prevState;
+  const handleClickRandomizeName = () => {
+    setContextState((prevState) => {
+      let {
+        user: { name },
+      } = prevState;
 
-            const randomSpiderManName = getRandomSpiderManName(name);
+      const randomSpiderManName = getRandomSpiderManName(name);
 
-            return {
-                ...prevState,
-                user: {
-                    ...prevState.user,
-                    name: randomSpiderManName,
-                },
-            };
-        });
-    };
+      return {
+        ...prevState,
+        user: {
+          ...prevState.user,
+          name: randomSpiderManName,
+        },
+      };
+    });
+  };
 
-    return (
-        <div>
-            <button onClick={handleClickRandomizeName}>Randomize name</button>
-            <FirstNameComponent />
-            <LastNameComponent />
-        </div>
-    );
+  return (
+    <div>
+      <button onClick={handleClickRandomizeName}>Randomize name</button>
+      <FirstNameComponent />
+      <LastNameComponent />
+    </div>
+  );
 };
 ```
 
@@ -207,39 +207,39 @@ import { FirstNameComponent } from "path/to/FirstNameComponent";
 import { LastNameComponent } from "path/to/LastNameComponent";
 
 export const NameComponent = (): ReactElement => {
-    const [, , contextControl] = useSubscribe(SpiderManContext);
-    // alternative way
-    const { contextControl } = useSubscribe(SpiderManContext);
-    // another alternative way
-    const contextControl = React.useContext(SpiderManContext);
+  const [, , contextControl] = useSubscribe(SpiderManContext);
+  // alternative way
+  const { contextControl } = useSubscribe(SpiderManContext);
+  // another alternative way
+  const contextControl = React.useContext(SpiderManContext);
 
-    const { getState, setState } = contextControl;
+  const { getState, setState } = contextControl;
 
-    const handleClickRandomizeName = () => {
-        setContextState((prevState) => {
-            let {
-                user: { name },
-            } = prevState;
+  const handleClickRandomizeName = () => {
+    setContextState((prevState) => {
+      let {
+        user: { name },
+      } = prevState;
 
-            const randomSpiderManName = getRandomSpiderManName(name);
+      const randomSpiderManName = getRandomSpiderManName(name);
 
-            return {
-                ...prevState,
-                user: {
-                    ...prevState.user,
-                    name: randomSpiderManName,
-                },
-            };
-        });
-    };
+      return {
+        ...prevState,
+        user: {
+          ...prevState.user,
+          name: randomSpiderManName,
+        },
+      };
+    });
+  };
 
-    return (
-        <div>
-            <FirstNameComponent />
-            <LastNameComponent />
-            <button onClick={handleClickRandomizeName}>Randomize name</button>
-        </div>
-    );
+  return (
+    <div>
+      <FirstNameComponent />
+      <LastNameComponent />
+      <button onClick={handleClickRandomizeName}>Randomize name</button>
+    </div>
+  );
 };
 ```
 
@@ -250,28 +250,28 @@ export const NameComponent = (): ReactElement => {
 import { createSubscriberContext, BaseContextControl } from "react-subscribe-context";
 
 const initialState = {
-    user: {
-        name: {
-            first: "Peter",
-            last: "Parker",
-        },
+  user: {
+    name: {
+      first: "Peter",
+      last: "Parker",
     },
-    movieCounter: 9,
+  },
+  movieCounter: 9,
 };
 
 const createActions = (baseContextControl: BaseContextControl<typeof initialState>) => {
-    const { setValue } = baseContextControl;
+  const { setValue } = baseContextControl;
 
-    return {
-        incrementMovieCounter: () => {
-            setValue("movieCounter", (movieCounter) => movieCounter + 1);
-        },
-    };
+  return {
+    incrementMovieCounter: () => {
+      setValue("movieCounter", (movieCounter) => movieCounter + 1);
+    },
+  };
 };
 
 export const [SpiderManContext, SpiderManProvider] = createSubscriberContext({
-    initialState,
-    createActions,
+  initialState,
+  createActions,
 });
 ```
 
@@ -283,9 +283,9 @@ import { useSubscribe } from "react-subscribe-context";
 import { SpiderManContext } from "path/to/SpiderManContext";
 
 export const MovieCounterComponent = (): ReactElement => {
-    const { value: movieCounter, actions } = useSubscribe(SpiderManContext, "movieCounter");
+  const { value: movieCounter, actions } = useSubscribe(SpiderManContext, "movieCounter");
 
-    return <button onClick={actions.incrementMovieCounter}>{movieCounter}</button>;
+  return <button onClick={actions.incrementMovieCounter}>{movieCounter}</button>;
 };
 ```
 
@@ -322,24 +322,24 @@ Returns a value from your state based on the given key.
 
 Returns the state of your context
 
-#### setValue(key, value)
+#### setValue(key, nextValue)
 
 Sets a value in your state for the given field key.
 
-| Parameter | Type                                         | Description                                        |
-| :-------- | :------------------------------------------- | :------------------------------------------------- |
-| `key`     | `string`                                     | **Required**. Field key of your state              |
-| `value`   | `typeof state[key]`                          | **Required**. New value for `state[key]`           |
-| `value`   | `(state: typeof state) => typeof state[key]` | **Required**. Function that returns the next value |
+| Parameter   | Type                                                                    | Description                                        |
+| :---------- | :---------------------------------------------------------------------- | :------------------------------------------------- |
+| `key`       | `string`                                                                | **Required**. Field key of your state              |
+| `nextValue` | `typeof state[key]`                                                     | **Required**. New value for `state[key]`           |
+| `nextValue` | `(currValue: state[key], currState: typeof state) => typeof state[key]` | **Required**. Function that returns the next value |
 
 #### setState(nextState)
 
 Sets values of your state
 
-| Parameter   | Type                                             | Description                                        |
-| :---------- | :----------------------------------------------- | :------------------------------------------------- |
-| `nextState` | `Partial<typeof state>`                          | **Required**. Next state                           |
-| `nextState` | `(state: typeof state) => Partial<typeof state>` | **Required**. Function that returns the next state |
+| Parameter   | Type                                                 | Description                                        |
+| :---------- | :--------------------------------------------------- | :------------------------------------------------- |
+| `nextState` | `Partial<typeof state>`                              | **Required**. Next state                           |
+| `nextState` | `(currState: typeof state) => Partial<typeof state>` | **Required**. Function that returns the next state |
 
 #### actions
 
