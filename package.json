@@ -1,14 +1,13 @@
 {
     "name": "react-subscribe-context",
-    "version": "0.4.10",
+    "version": "0.5.0-beta",
     "private": false,
     "author": "Akia Vongdara",
     "description": "A simple and consistent way of state management to avoid prop drilling, and is optimized for component rerenders.",
     "license": "MIT",
     "source": "src/react-subscribe-context/index.ts",
-    "main": "dist/index.js",
-    "module": "dist/module.js",
-    "types": "dist/index.d.ts",
+    "main": "dist/bundle",
+    "typings": "dist/typings",
     "files": [
         "dist/*"
     ],
@@ -18,10 +17,11 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build",
+        "build": "rm -rf dist && npx webpack",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "build-lib": "rm -rf dist && parcel build"
+        "build-lib": "rm -rf dist && parcel build",
+        "generate-package-for-testing": "npm run build && npm pack"
     },
     "eslintConfig": {
         "extends": [
@@ -43,13 +43,15 @@
         ]
     },
     "dependencies": {
-        "@swc/helpers": "^0.3.8",
-        "deep-proxy-polyfill": "^1.0.4",
-        "react": "^17.0.2"
+        "deep-proxy-polyfill": "^1.0.4"
+    },
+    "peerDependencies": {
+        "react": ">=16.8.0"
     },
     "devDependencies": {
-        "@parcel/packager-ts": "^2.3.2",
-        "@parcel/transformer-typescript-types": "^2.3.2",
+        "@babel/core": "^7.17.8",
+        "@babel/preset-env": "^7.16.11",
+        "@babel/preset-react": "^7.16.7",
         "@testing-library/jest-dom": "^5.16.2",
         "@testing-library/react": "^12.1.4",
         "@testing-library/react-hooks": "^7.0.2",
@@ -61,17 +63,19 @@
         "@types/react-dom": "^17.0.11",
         "@types/styled-components": "^5.1.23",
         "axios": "^0.26.0",
+        "babel-loader": "^8.2.4",
         "deep-proxy-polyfill": "^1.0.4",
-        "parcel": "^2.3.2",
-        "react": "^17.0.2",
         "react-app-polyfill": "^3.0.0",
         "react-dom": "^17.0.2",
         "react-scripts": "^5.0.0",
         "react-tracked": "^1.7.6",
         "scheduler": "^0.20.2",
         "styled-components": "^5.3.3",
+        "ts-loader": "^9.2.8",
         "typescript": "^4.5.5",
-        "web-vitals": "^2.1.4"
+        "web-vitals": "^2.1.4",
+        "webpack-cli": "^4.9.2",
+        "webpack-node-externals": "^3.0.0"
     },
     "alias": {
         "components/*": "./src/components/$1",
