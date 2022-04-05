@@ -17,11 +17,11 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "rm -rf dist && npx webpack",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "build-lib": "rm -rf dist && parcel build",
-        "generate-package-for-testing": "npm run build && npm pack"
+        "build-lib": "rm -rf dist && npx webpack",
+        "generate-package-for-testing": "npm run build-lib && npm pack"
     },
     "eslintConfig": {
         "extends": [
