@@ -79,12 +79,11 @@ export const useConversations = () => {
         const fetchConversations = async () => {
             const data = await FakeMessenger.getConversations(getValue("currentUser").name);
 
-            setState({ selectedReceiverName: data[0].name });
-            setConversations(data);
+            setState({ selectedReceiverName: data[0].name, conversations: data });
         };
 
         fetchConversations();
-    }, [setState, getValue, setConversations]);
+    }, [setState, getValue]);
 
     const handleClickConversation: React.MouseEventHandler<HTMLDivElement> = useCallback(
         (e) => {
