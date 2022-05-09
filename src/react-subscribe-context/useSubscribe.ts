@@ -38,7 +38,7 @@ type UseSubscribeValueArrayReturn<
     TState,
     TKey extends keyof TState & string,
     TActions extends object
-> = [TState[TKey], UpdateValue<TState, TKey>, ContextControl<TState, TActions>];
+> = [TState[TKey], UpdateValue<TState, TKey>, TActions, ContextControl<TState, TActions>];
 
 /**
  * An object holding the value, value setter and context control
@@ -50,6 +50,7 @@ type UseSubscribeValueObjectReturn<
 > = {
     value: TState[TKey];
     setValue: UpdateValue<TState, TKey>;
+    actions: TActions;
     contextControl: ContextControl<TState, TActions>;
 };
 
@@ -66,6 +67,7 @@ export type UseSubscribeValueReturn<
 type UseSubscribeStateArrayReturn<TState, TActions extends object> = [
     TState,
     ContextControl<TState, TActions>['setState'],
+    TActions,
     ContextControl<TState, TActions>
 ];
 
@@ -75,6 +77,7 @@ type UseSubscribeStateArrayReturn<TState, TActions extends object> = [
 type UseSubscribeStateObjectReturn<TState, TActions extends object> = {
     state: TState;
     setState: ContextControl<TState, TActions>['setState'];
+    actions: TActions;
     contextControl: ContextControl<TState, TActions>;
 };
 
@@ -167,20 +170,27 @@ export function useSubscribe<
             }
         };
 
-        result.push(updateValue, contextControl);
+        result.push(updateValue, contextControl.actions, contextControl);
 
         result.value = result[0];
         result.setValue = updateValue;
         result.contextControl = contextControl;
+        result.actions = contextControl.actions;
 
         return result as UseSubscribeValueReturn<TState, TKey, TActions>;
     }
 
-    const result: any = [deepProxy(getState(), stateProxyHandler), setState, contextControl];
+    const result: any = [
+        deepProxy(getState(), stateProxyHandler),
+        setState,
+        contextControl.actions,
+        contextControl,
+    ];
 
     result.state = result[0];
     result.setState = setState;
     result.contextControl = contextControl;
+    result.actions = contextControl.actions;
 
     return result as UseSubscribeStateReturn<TState, TActions>;
 }
