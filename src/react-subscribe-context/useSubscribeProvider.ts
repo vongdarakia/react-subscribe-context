@@ -1,7 +1,7 @@
-import { useRef } from "react";
-import { getUpdateEventName } from "react-subscribe-context/getUpdateEventName";
-import { ActionsCreator, ContextControl } from "./context-control-types";
-import { getStateChanges } from "./getStateChanges";
+import { useRef } from 'react';
+import { ActionsCreator, ContextControl } from './context-control-types';
+import { getStateChanges } from './getStateChanges';
+import { getUpdateEventName } from './getUpdateEventName';
 
 /**
  * Creates a state management object to handle the given initial state.
@@ -35,7 +35,7 @@ export const useSubscribeProvider = <
         contextState.current = { ...contextState.current, ...nextState };
 
         if (changedFields.length > 0) {
-            control.current.emitter.emit("update-state", contextState.current);
+            control.current.emitter.emit('update-state', contextState.current);
         }
 
         changedFields.forEach((key) => {

@@ -1,5 +1,5 @@
-import React from "react";
-import { EventKey } from "./context-control-types";
+import React from 'react';
+import { EventKey } from './context-control-types';
 
 export interface SubscribedCache {
     [event: EventKey]: boolean | undefined;
@@ -17,12 +17,12 @@ export interface SubscribedCache {
  */
 export const createProxyHandler = <TState extends object>(
     subscriptionRef: React.MutableRefObject<SubscribedCache>,
-    rerender: Function,
-    baseKey = ""
+    rerender: () => void,
+    baseKey = ''
 ) => {
     return {
-        get: (obj: TState, key: keyof TState, root: Object, keys: (keyof TState)[]) => {
-            const parentPath = `${baseKey ? `${baseKey}.` : ""}${keys.join(".")}`;
+        get: (obj: TState, key: keyof TState, root: object, keys: (keyof TState)[]) => {
+            const parentPath = `${baseKey ? `${baseKey}.` : ''}${keys.join('.')}`;
             const path = `${parentPath}${keys.length > 0 ? `.${key}` : key}`;
             const event: EventKey = `update-${path}`;
 

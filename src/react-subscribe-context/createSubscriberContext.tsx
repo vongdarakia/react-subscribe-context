@@ -1,7 +1,7 @@
-import { EventEmitter } from "events";
-import { Context, createContext, ReactElement, ReactNode } from "react";
-import { ActionsCreator, BaseContextControl, ContextControl } from "./context-control-types";
-import { useSubscribeProvider } from "./useSubscribeProvider";
+import { EventEmitter } from 'events';
+import { Context, createContext, ReactElement, ReactNode } from 'react';
+import { ActionsCreator, BaseContextControl, ContextControl } from './context-control-types';
+import { useSubscribeProvider } from './useSubscribeProvider';
 
 interface CreateControlContextConfig<TState, TActions> {
     /**
@@ -38,25 +38,26 @@ export const createSubscriberContext = <TState, TActions extends object>({
     const baseControl: BaseContextControl<TState> = {
         emitter: new EventEmitter(),
         getState: () => {
-            console.error("Did you forget to use your control provider?");
+            console.error('Did you forget to use your control provider?');
             return initialState;
         },
         getValue: (fieldName) => {
-            console.error("Did you forget to use your control provider?");
+            console.error('Did you forget to use your control provider?');
             return initialState[fieldName];
         },
         setState: () => {
-            console.error("Did you forget to use your control provider?");
+            console.error('Did you forget to use your control provider?');
         },
         setValue: () => {
-            console.error("Did you forget to use your control provider?");
+            console.error('Did you forget to use your control provider?');
         },
     };
 
     const initialControl: ContextControl<TState, TActions> = {
         ...baseControl,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        actions: createActions ? createActions(baseControl) : {},
+        actions: {},
     };
     const Context = createContext<ContextControl<TState, TActions>>(initialControl);
 

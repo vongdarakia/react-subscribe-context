@@ -15,7 +15,7 @@ export interface StateChanges {
 export const getStateChanges = <TObject extends Object>(
     prevState: TObject,
     nextState: TObject,
-    path: string = ""
+    path = ''
 ): StateChanges => {
     const keys = Object.keys(nextState) as (keyof TObject & string)[];
     const results: StateChanges = {};
@@ -24,8 +24,12 @@ export const getStateChanges = <TObject extends Object>(
         if (nextState[key] !== prevState[key]) {
             const currentPath = path.length > 0 ? `${path}.${key}` : key;
 
-            if (typeof nextState[key] === "object" && !Array.isArray(nextState[key])) {
-                const objDiffs = getStateChanges(prevState[key], nextState[key], currentPath);
+            if (typeof nextState[key] === 'object' && !Array.isArray(nextState[key])) {
+                const objDiffs = getStateChanges(
+                    prevState[key] || {},
+                    nextState[key] || {},
+                    currentPath
+                );
 
                 Object.keys(objDiffs).forEach((diffKey: string) => {
                     results[diffKey] = objDiffs[diffKey];

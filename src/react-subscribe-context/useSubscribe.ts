@@ -1,8 +1,8 @@
-import deepProxy from "deep-proxy-polyfill";
-import { Context, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { createProxyHandler, SubscribedCache } from "react-subscribe-context/createProxyHandler";
-import { getUpdateEventName } from "react-subscribe-context/getUpdateEventName";
-import { ContextControl, EventKey } from "./context-control-types";
+import deepProxy from 'deep-proxy-polyfill';
+import { Context, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { ContextControl, EventKey } from './context-control-types';
+import { createProxyHandler, SubscribedCache } from './createProxyHandler';
+import { getUpdateEventName } from './getUpdateEventName';
 
 const getSubscribedEvents = (subscribedCache: SubscribedCache) => {
     return (Object.keys(subscribedCache) as EventKey[]).filter((path) => subscribedCache[path]);
@@ -65,7 +65,7 @@ export type UseSubscribeValueReturn<
  */
 type UseSubscribeStateArrayReturn<TState, TActions extends object> = [
     TState,
-    ContextControl<TState, TActions>["setState"],
+    ContextControl<TState, TActions>['setState'],
     ContextControl<TState, TActions>
 ];
 
@@ -74,7 +74,7 @@ type UseSubscribeStateArrayReturn<TState, TActions extends object> = [
  */
 type UseSubscribeStateObjectReturn<TState, TActions extends object> = {
     state: TState;
-    setState: ContextControl<TState, TActions>["setState"];
+    setState: ContextControl<TState, TActions>['setState'];
     contextControl: ContextControl<TState, TActions>;
 };
 
@@ -133,7 +133,7 @@ export function useSubscribe<
         if (key) {
             const value = getValue(key);
 
-            if (typeof value !== "object" || Array.isArray(value)) {
+            if (typeof value !== 'object' || Array.isArray(value)) {
                 subscribedCacheRef.current[getUpdateEventName(key)] = true;
             }
         }
@@ -155,7 +155,7 @@ export function useSubscribe<
         const value = getValue(key);
         let result: any[] & any = [getValue(key)];
 
-        if (typeof value === "object" && !Array.isArray(value)) {
+        if (typeof value === 'object' && !Array.isArray(value)) {
             result = [deepProxy(value, valueProxyHandler)];
         }
 
